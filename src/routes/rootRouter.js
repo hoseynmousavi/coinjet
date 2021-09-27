@@ -13,7 +13,7 @@ function rootRouter(app)
             if (message_id && from && chat && text)
             {
 
-                const text = text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
+                const textBack = text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
                     "سلام جیگر"
                     :
                     `کاملاً متوجه‌ام ${from.first_name} عزیز`
@@ -22,7 +22,7 @@ function rootRouter(app)
                     `https://api.telegram.org/bot${data.token}/sendMessage`,
                     {
                         chat_id: chat.id,
-                        text,
+                        text: textBack,
                         reply_to_message_id: message_id,
                         allow_sending_without_reply: true,
                     },
