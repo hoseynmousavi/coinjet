@@ -13,7 +13,10 @@ function rootRouter(app)
             if (message_id && from && chat && text)
             {
 
-                const textBack = text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
+                const textBack = text === "/start" ?
+                    `به‌به! ببین کی اینجاس! ${from.first_name} عزیزم!`
+                    :
+                    text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
                     "سلام جیگر"
                     :
                     `کاملاً متوجه‌ام ${from.first_name} عزیز`
