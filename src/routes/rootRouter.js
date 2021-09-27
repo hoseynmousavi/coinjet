@@ -9,14 +9,20 @@ function rootRouter(app)
             console.log("post: ", req.body)
 
             const {message} = req.body || {}
-            const {message_id, from, chat} = message || {}
-            if (message_id && from && chat)
+            const {message_id, from, chat, text} = message || {}
+            if (message_id && from && chat && text)
             {
+
+                const text = text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
+                    "سلام جیگر"
+                    :
+                    `کاملاً متوجه‌ام ${from.first_name} عزیز`
+
                 axios.post(
                     `https://api.telegram.org/bot${data.token}/sendMessage`,
                     {
                         chat_id: chat.id,
-                        text: `کاملاً متوجه‌ام ${from.first_name} عزیز`,
+                        text,
                         reply_to_message_id: message_id,
                         allow_sending_without_reply: true,
                     },
