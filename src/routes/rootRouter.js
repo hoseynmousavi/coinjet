@@ -16,10 +16,16 @@ function rootRouter(app)
                 const textBack = text === "/start" ?
                     `به‌به! ببین کی اینجاس! ${from.first_name} عزیزم!`
                     :
-                    text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
-                    "سلام جیگر"
-                    :
-                    `کاملاً متوجه‌ام ${from.first_name} عزیز`
+                    text.includes("خوب") ?
+                        "بله، خوبم!"
+                        :
+                        text.includes("بای") || text.includes("خداحافظ") || text.includes("یاعلی") ?
+                            `${text}!`
+                            :
+                            text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
+                                "سلام جیگر"
+                                :
+                                `کاملاً متوجه‌ام ${from.first_name} عزیز`
 
                 axios.post(
                     `https://api.telegram.org/bot${data.token}/sendMessage`,
