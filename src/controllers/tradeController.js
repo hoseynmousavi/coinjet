@@ -44,12 +44,36 @@ function getUser(req, res)
                 res.status(500).send({message: err?.response?.data})
             })
     }
-    else
+    else if (method === "POST")
     {
         axios.post(
             base + api,
             sendBody,
             {
+                headers: {
+                    "KC-API-KEY": data.kuCoinKey,
+                    "KC-API-SIGN": sign,
+                    "KC-API-TIMESTAMP": timeStamp,
+                    "KC-API-PASSPHRASE": passPhrase,
+                    "KC-API-KEY-VERSION": data.kuCoinApiVersion,
+                },
+            },
+        )
+            .then(respond =>
+            {
+                res.status(200).send({message: respond?.data})
+            })
+            .catch(err =>
+            {
+                res.status(500).send({message: err?.response?.data})
+            })
+    }
+    else if (method === "DELETE")
+    {
+        axios.delete(
+            base + api,
+            {
+                params: sendBody,
                 headers: {
                     "KC-API-KEY": data.kuCoinKey,
                     "KC-API-SIGN": sign,
