@@ -34,13 +34,11 @@ function getUser(req, res)
         )
             .then(respond =>
             {
-                console.log("respond", respond)
-                res.status(200).send({message: "yes"})
+                res.status(200).send({message: respond?.data})
             })
             .catch(err =>
             {
-                console.log(err.response.data)
-                res.status(500).send({message: "nope"})
+                res.status(500).send({message: err?.response?.data})
             })
     }
     else
