@@ -6,13 +6,14 @@ import e from "express"
 function getUser(req, res)
 {
     const sendBody = {...req.body}
+    delete sendBody.base
     delete sendBody.api
     delete sendBody.method
 
     console.log(sendBody)
 
     const body = Object.keys(sendBody).length ? JSON.stringify(sendBody) : ""
-    const base = "https://api.kucoin.com"
+    const base = req.body.base === "future" ? "https://api-futures.kucoin.com" : "https://api.kucoin.com"
     const api = req.body.api
     const method = req.body.method.toUpperCase()
 
