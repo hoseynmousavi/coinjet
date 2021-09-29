@@ -8,6 +8,9 @@ function getUser(req, res)
     const sendBody = {...req.body}
     delete sendBody.api
     delete sendBody.method
+
+    console.log(sendBody)
+
     const body = Object.keys(sendBody).length ? JSON.stringify(sendBody) : ""
     const base = "https://api.kucoin.com"
     const api = req.body.api
@@ -58,13 +61,11 @@ function getUser(req, res)
         )
             .then(respond =>
             {
-                console.log("respond", respond)
-                res.status(200).send({message: "yes"})
+                res.status(200).send({message: respond?.data})
             })
             .catch(err =>
             {
-                console.log(err.response.data)
-                res.status(500).send({message: "nope"})
+                res.status(500).send({message: err?.response?.data})
             })
     }
 }
