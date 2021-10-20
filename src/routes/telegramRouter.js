@@ -51,7 +51,7 @@ function rootRouter(app)
                     if (textBack)
                     {
                         axios.post(
-                            `https://api.telegram.org/bot${data.telegramToken}/sendMessage`,
+                            `${data.telegramApi}${data.telegramToken}/sendMessage`,
                             {
                                 chat_id: chat.id,
                                 text: textBack,
