@@ -1,9 +1,10 @@
-import axios from "axios"
+import routeConstant from "../constants/routeConstant"
 import data from "../data"
+import axios from "axios"
 
 function rootRouter(app)
 {
-    app.route("/")
+    app.route(routeConstant.telegram)
         .post((req, res) =>
         {
             console.log("post: ", req.body)
@@ -29,7 +30,7 @@ function rootRouter(app)
                                     `کاملاً متوجه‌ام ${from.first_name} عزیز`
 
                     axios.post(
-                        `https://api.telegram.org/bot${data.token}/sendMessage`,
+                        `${data.telegramApi}${data.telegramToken}/sendMessage`,
                         {
                             chat_id: chat.id,
                             text: textBack,
@@ -50,7 +51,7 @@ function rootRouter(app)
                     if (textBack)
                     {
                         axios.post(
-                            `https://api.telegram.org/bot${data.token}/sendMessage`,
+                            `https://api.telegram.org/bot${data.telegramToken}/sendMessage`,
                             {
                                 chat_id: chat.id,
                                 text: textBack,
