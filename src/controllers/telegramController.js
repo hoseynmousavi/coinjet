@@ -23,7 +23,7 @@ function handlePvChat(message)
                     // allow_sending_without_reply: true,
                 },
             })
-                .then(res => console.log({res}))
+                .then(res => console.log({res: res?.response?.data}))
                 .catch(err => console.log({err}))
         }
         else
