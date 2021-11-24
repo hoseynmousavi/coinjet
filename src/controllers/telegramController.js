@@ -21,11 +21,17 @@ function handlePvChat(message)
                         data: {
                             chat_id: chat.id,
                             text: telegramConstant.welcomeMsg,
-                            reply_markup: {
-                                keyboard: [
-                                    exchanges.map(item => ({text: item.name})),
-                                ],
-                            },
+                        },
+                    })
+                        .then(res => console.log({res: res?.data}))
+                        .catch(err => console.log({err: err?.response?.data}))
+
+                    request.post({
+                        isTelegram: true, url: telegramConstant.sendMessage,
+                        data: {
+                            chat_id: chat.id,
+                            text: telegramConstant.chooseExchanges,
+                            reply_markup: {keyboard: [exchanges.map(item => ({text: item.name}))]},
                             // reply_to_message_id: message_id,
                             // allow_sending_without_reply: true,
                         },
