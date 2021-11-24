@@ -17,6 +17,10 @@ const userModel = new schema({
         type: String,
         required: "enter username!",
     },
+    telegram_username: {
+        type: String,
+        required: "enter telegram_username!",
+    },
     created_date: {
         type: Date,
         default: Date.now,

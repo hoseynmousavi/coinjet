@@ -2,9 +2,12 @@ import axios from "axios"
 import urlMaker from "./urlMaker"
 import kuCoinHeaders from "./kuCoinHeaders"
 
-function get({isKuCoin, url, param = "", userId})
+function get({kuCoinUserExchange, url, param = ""})
 {
-    return axios.get(urlMaker({isKuCoin, url, param}), {headers: isKuCoin && kuCoinHeaders({url, method: "GET", userId})})
+    return axios.get(
+        urlMaker({isKuCoin: !!kuCoinUserExchange, url, param}),
+        {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "GET", userExchange: kuCoinUserExchange})},
+    )
         .then(res =>
         {
             return res.data
@@ -15,9 +18,13 @@ function get({isKuCoin, url, param = "", userId})
         })
 }
 
-function post({isKuCoin, url, param = "", data, userId})
+function post({kuCoinUserExchange, url, param = "", data})
 {
-    return axios.post(urlMaker({isKuCoin, url, param}), data, {headers: isKuCoin && kuCoinHeaders({url, method: "POST"})})
+    return axios.post(
+        urlMaker({isKuCoin: !!kuCoinUserExchange, url, param}),
+        data,
+        {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "POST", userExchange: kuCoinUserExchange, body: data})},
+    )
         .then(res =>
         {
             return res.data
@@ -28,9 +35,13 @@ function post({isKuCoin, url, param = "", data, userId})
         })
 }
 
-function put({isKuCoin, url, param = "", data, userId})
+function put({kuCoinUserExchange, url, param = "", data})
 {
-    return axios.put(urlMaker({isKuCoin, url, param}), data, {headers: isKuCoin && kuCoinHeaders(userId)})
+    return axios.put(
+        urlMaker({isKuCoin: !!kuCoinUserExchange, url, param}),
+        data,
+        {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "PUT", userExchange: kuCoinUserExchange, body: data})},
+    )
         .then(res =>
         {
             return res.data
@@ -41,9 +52,13 @@ function put({isKuCoin, url, param = "", data, userId})
         })
 }
 
-function patch({isKuCoin, url, param = "", data, userId})
+function patch({kuCoinUserExchange, url, param = "", data})
 {
-    return axios.patch(urlMaker({isKuCoin, url, param}), data, {headers: isKuCoin && kuCoinHeaders(userId)})
+    return axios.patch(
+        urlMaker({isKuCoin: !!kuCoinUserExchange, url, param}),
+        data,
+        {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "PATCH", userExchange: kuCoinUserExchange, body: data})},
+    )
         .then(res =>
         {
             return res.data
@@ -54,9 +69,15 @@ function patch({isKuCoin, url, param = "", data, userId})
         })
 }
 
-function del({isKuCoin, url, param = "", data, userId})
+function del({kuCoinUserExchange, url, param = "", data})
 {
-    return axios.delete(urlMaker({isKuCoin, url, param}), {headers: isKuCoin && kuCoinHeaders(userId), data})
+    return axios.delete(
+        urlMaker({isKuCoin: !!kuCoinUserExchange, url, param}),
+        {
+            headers: kuCoinUserExchange && kuCoinHeaders({url, method: "DELETE", userExchange: kuCoinUserExchange, body: data}),
+            data,
+        },
+    )
         .then(res =>
         {
             return res.data
