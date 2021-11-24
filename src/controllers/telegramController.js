@@ -31,7 +31,7 @@ function handlePvChat(message)
                         data: {
                             chat_id: chat.id,
                             text: telegramConstant.chooseExchanges,
-                            reply_markup: {keyboard: [exchanges.map(item => ({text: item.name}))], one_time_keyboard: true},
+                            reply_markup: {keyboard: [exchanges.map(item => ({text: item.name}))], one_time_keyboard: true, resize_keyboard: true},
                             // reply_to_message_id: message_id,
                             // allow_sending_without_reply: true,
                         },
