@@ -11,25 +11,29 @@ function handlePvChat(message)
     {
         if (text === "/start")
         {
-            console.log("got starts")
-            exchangeController.getExchangesHelper().then((err, shit) =>
+            exchangeController.getExchangesHelper().then((exchanges, err) =>
             {
-                console.log({err, shit})
+                if (err) console.log("have err:", err)
+                else
+                {
+                    request.post({
+                        isTelegram: true, url: telegramConstant.sendMessage,
+                        data: {
+                            chat_id: chat.id,
+                            text: telegramConstant.welcomeMsg,
+                            reply_markup: {
+                                keyboard: [
+                                    exchanges.map(item => ({text: item.name})),
+                                ],
+                            },
+                            // reply_to_message_id: message_id,
+                            // allow_sending_without_reply: true,
+                        },
+                    })
+                        .then(res => console.log({res: res?.data}))
+                        .catch(err => console.log({err: err?.response?.data}))
+                }
             })
-            // request.post({
-            //     isTelegram: true, url: telegramConstant.sendMessage,
-            //     data: {
-            //         chat_id: chat.id,
-            //         text: telegramConstant.welcomeMsg,
-            //         reply_markup: {
-            //             keyboard: [[{text: "kucoin"}]],
-            //         },
-            //         // reply_to_message_id: message_id,
-            //         // allow_sending_without_reply: true,
-            //     },
-            // })
-            //     .then(res => console.log({res: res?.data}))
-            //     .catch(err => console.log({err: err?.response?.data}))
         }
         else
         {
