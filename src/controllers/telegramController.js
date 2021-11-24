@@ -24,7 +24,7 @@ function handlePvChat(message)
                 },
             })
                 .then(res => console.log({res: res?.response?.data}))
-                .catch(err => console.log({err}))
+                .catch(err => console.log({err: err?.response?.data}))
         }
         else
         {
