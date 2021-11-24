@@ -17,7 +17,9 @@ function handlePvChat(message)
                     chat_id: chat.id,
                     text: telegramConstant.welcomeMsg,
                     reply_markup: {
-                        keyboard: [{text: "kucoin"}],
+                        keyboard: [
+                            [{text: "kucoin"}]
+                        ],
                     },
                     // reply_to_message_id: message_id,
                     // allow_sending_without_reply: true,
