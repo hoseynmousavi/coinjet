@@ -16,8 +16,14 @@ function addExchange(req, res)
     }
 }
 
+function getExchangesHelper()
+{
+    return exchangeTb.find(null, null, null)
+}
+
 const exchangeController = {
     addExchange,
+    getExchangesHelper,
 }
 
 export default exchangeController

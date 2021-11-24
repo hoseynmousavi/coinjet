@@ -2,6 +2,7 @@ import axios from "axios"
 import data from "../data"
 import request from "../request/request"
 import telegramConstant from "../constants/telegramConstant"
+import exchangeController from "./exchangeController"
 
 function handlePvChat(message)
 {
@@ -11,22 +12,24 @@ function handlePvChat(message)
         if (text === "/start")
         {
             console.log("got starts")
-            request.post({
-                isTelegram: true, url: telegramConstant.sendMessage,
-                data: {
-                    chat_id: chat.id,
-                    text: telegramConstant.welcomeMsg,
-                    reply_markup: {
-                        keyboard: [
-                            [{text: "kucoin"}]
-                        ],
-                    },
-                    // reply_to_message_id: message_id,
-                    // allow_sending_without_reply: true,
-                },
+            exchangeController.getExchangesHelper().then((err, shit) =>
+            {
+                console.log({err, shit})
             })
-                .then(res => console.log({res: res?.response?.data}))
-                .catch(err => console.log({err: err?.response?.data}))
+            // request.post({
+            //     isTelegram: true, url: telegramConstant.sendMessage,
+            //     data: {
+            //         chat_id: chat.id,
+            //         text: telegramConstant.welcomeMsg,
+            //         reply_markup: {
+            //             keyboard: [[{text: "kucoin"}]],
+            //         },
+            //         // reply_to_message_id: message_id,
+            //         // allow_sending_without_reply: true,
+            //     },
+            // })
+            //     .then(res => console.log({res: res?.data}))
+            //     .catch(err => console.log({err: err?.response?.data}))
         }
         else
         {
