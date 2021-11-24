@@ -1,47 +1,15 @@
 import routeConstant from "../constants/routeConstant"
 import data from "../data"
 import axios from "axios"
+import telegramController from "../controllers/telegramController"
 
 function rootRouter(app)
 {
     app.route(routeConstant.telegram)
         .post((req, res) =>
         {
-            console.log("post: ", req.body)
-
             const {message, channel_post} = req.body || {}
-            if (message)
-            {
-                const {message_id, from, chat, text} = message
-                if (message_id && from && chat && text)
-                {
-                    const textBack = text === "/start" ?
-                        `به‌به! ببین کی اینجاس! ${from.first_name} عزیزم!`
-                        :
-                        text.includes("خوب") ?
-                            "بله، خوبم!"
-                            :
-                            text.includes("بای") || text.includes("خداحافظ") || text.includes("یاعلی") ?
-                                `${text}!`
-                                :
-                                text.includes("سلام") || text.includes("hi") || text.includes("hello") ?
-                                    "سلام جیگر"
-                                    :
-                                    `کاملاً متوجه‌ام ${from.first_name} عزیز`
-
-                    axios.post(
-                        `${data.telegramApi}${data.telegramToken}/sendMessage`,
-                        {
-                            chat_id: chat.id,
-                            text: textBack,
-                            reply_to_message_id: message_id,
-                            allow_sending_without_reply: true,
-                        },
-                    )
-                        .then(() => console.log("sent"))
-                        .catch(() => console.error("not sent"))
-                }
-            }
+            if (message) telegramController.handlePvChat(message)
             else if (channel_post)
             {
                 const {message_id, author_signature, chat, text} = channel_post
