@@ -15,6 +15,7 @@ const telegramConstant = {
     alreadySettingExchange: "شما هم اکنون یک حساب صرافی ناقص دارید! می‌توانید حساب خود را کامل کنید\n",
     exchangeCompleted: "اطلاعات شما با موفقیت ثبت شد.\nHappy Trading 🙂",
     noUnCompletedExchange: "اطلاعات حساب صرافی‌های شما از قبل کامل است.",
+    notOk: "مفهوم پیام شما نامشخص است!",
 }
 
 export default telegramConstant

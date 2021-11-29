@@ -3,6 +3,8 @@ import exchangeController from "./exchangeController"
 import setUserExchangeProgress from "../helpers/telegram/setUserExchangeProgress"
 import setUserExchangeComplete from "../helpers/telegram/setUserExchangeComplete"
 import addExchangeTelegram from "../helpers/telegram/addExchangeTelegram"
+import sendTelegramMessage from "../helpers/telegram/sendTelegramMessage"
+import telegramConstant from "../constants/telegramConstant"
 
 function handlePvChat(message)
 {
@@ -16,17 +18,15 @@ function handlePvChat(message)
             if (text === "/start") startChatPv({message_id, from, chat})
             if (text === "/add_exchange") addExchangeTelegram({telegram_chat_id})
             else if (text.split(",").length === 4) setUserExchangeComplete({message_id, from, chat, data: text.trim().replace(/ /g, "").split(",")})
-            else
+            else if (exchangeController.getExchangesInstantly().some(item => item.name.toLowerCase() === text.toLowerCase()))
             {
-                exchangeController.getExchanges()
-                    .then(exchanges =>
-                    {
-                        exchanges.forEach(exchange =>
-                        {
-                            if (exchange.name.toLowerCase() === text.toLowerCase()) setUserExchangeProgress({message_id, from, chat, exchange})
-                        })
-                    })
+                const exchanges = exchangeController.getExchangesInstantly()
+                exchanges.forEach(exchange =>
+                {
+                    if (exchange.name.toLowerCase() === text.toLowerCase()) setUserExchangeProgress({message_id, from, chat, exchange})
+                })
             }
+            else sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
         }
     }
 }
