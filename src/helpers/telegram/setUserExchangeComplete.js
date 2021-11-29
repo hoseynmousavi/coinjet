@@ -19,7 +19,7 @@ function setUserExchangeComplete({message_id, from, chat, data})
                         const user_key = data[1]
                         const user_secret = data[2]
                         const user_passphrase = data[3]
-                        userExchangeController.updateUserExchange({userExchangeId: userExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret}})
+                        userExchangeController.updateUserExchange({userExchangeId: userExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
                             .then(() => sendTelegramMessage({chat_id: telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
                     }
                     else
