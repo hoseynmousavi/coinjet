@@ -13,6 +13,11 @@ function getUserExchangesByUserIdAndExchangeId({user_id, exchange_id, progress_l
     return userExchangeTb.find({user_id, exchange_id, progress_level})
 }
 
+function getUserExchangesByUserId({user_id, progress_level})
+{
+    return userExchangeTb.find({user_id, progress_level})
+}
+
 function updateUserExchange({userExchangeId, update})
 {
     return userExchangeTb.updateOne({_id: userExchangeId}, update)
@@ -21,6 +26,7 @@ function updateUserExchange({userExchangeId, update})
 const userExchangeController = {
     addUserExchange,
     getUserExchangesByUserIdAndExchangeId,
+    getUserExchangesByUserId,
     updateUserExchange,
 }
 

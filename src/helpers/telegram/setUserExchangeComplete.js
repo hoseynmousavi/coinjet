@@ -11,7 +11,7 @@ function setUserExchangeComplete({message_id, from, chat, data})
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserIdAndExchangeId({user_id: user._id, progress_level: "in-progress"})
+            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: "in-progress"})
                 .then(userExchanges =>
                 {
                     console.log(user._id)
