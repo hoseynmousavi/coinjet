@@ -2,6 +2,7 @@ import exchangeController from "../../controllers/exchangeController"
 import telegramConstant from "../../constants/telegramConstant"
 import signUpUser from "../user/signUpUser"
 import sendTelegramMessage from "./sendTelegramMessage"
+import addExchangeTelegram from "./addExchangeTelegram"
 
 function startChatPv({message_id, from, chat})
 {
@@ -11,11 +12,7 @@ function startChatPv({message_id, from, chat})
         .then(() =>
         {
             sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.welcomeMsg})
-            exchangeController.getExchanges()
-                .then(exchanges =>
-                {
-                    if (exchanges?.length) sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.chooseExchanges, reply_buttons: exchanges.map(item => ({text: item.name}))})
-                })
+            addExchangeTelegram({telegram_chat_id})
         })
 }
 
