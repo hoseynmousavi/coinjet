@@ -18,6 +18,7 @@ function handlePvChat(message)
             }
             else
             {
+                console.log("BITCH", text.split(",").length)
                 exchangeController.getExchanges()
                     .then(exchanges =>
                     {
