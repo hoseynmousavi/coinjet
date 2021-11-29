@@ -11,6 +11,7 @@ function handlePvChat(message)
     {
         if (!is_bot && type === "private")
         {
+            console.log(text)
             if (text === "/start") startChatPv({message_id, from, chat})
             else if (text.split(",").length === 4)
             {
