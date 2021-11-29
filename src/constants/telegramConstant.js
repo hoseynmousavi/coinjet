@@ -12,7 +12,9 @@ const telegramConstant = {
         "Name, API Key, API Secret, API Passphrase\n" +
         "مثال:\n" +
         "MyKuCoin, 92640192872398752395, 9w8fysdfoghdf, cocococo",
-    alreadySettingExchange: "شما هم اکنون یک حساب صرافی ناقص دارید! می‌توانید حساب خود را کامل کنید\n"
+    alreadySettingExchange: "شما هم اکنون یک حساب صرافی ناقص دارید! می‌توانید حساب خود را کامل کنید\n",
+    exchangeCompleted: "اطلاعات شما با موفقیت ثبت شد.",
+    noUnCompletedExchange: "اطلاعات حساب صرافی‌های شما از قبل کامل است.",
 }
 
 export default telegramConstant

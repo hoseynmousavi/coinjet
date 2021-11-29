@@ -1,6 +1,7 @@
 import startChatPv from "../helpers/telegram/startChatPv"
 import exchangeController from "./exchangeController"
-import setUserExchange from "../helpers/telegram/setUserExchange"
+import setUserExchangeProgress from "../helpers/telegram/setUserExchangeProgress"
+import setUserExchangeComplete from "../helpers/telegram/setUserExchangeComplete"
 
 function handlePvChat(message)
 {
@@ -11,24 +12,16 @@ function handlePvChat(message)
     {
         if (!is_bot && type === "private")
         {
-            console.log(text)
             if (text === "/start") startChatPv({message_id, from, chat})
-            else if (text.split(",").length === 4)
-            {
-                console.log("YES")
-            }
+            else if (text.split(",").length === 4) setUserExchangeComplete({message_id, from, chat, data: text.trim().replace(/ /g, "").split(",")})
             else
             {
-                console.log("BITCH", text.split(",").length)
                 exchangeController.getExchanges()
                     .then(exchanges =>
                     {
                         exchanges.forEach(exchange =>
                         {
-                            if (exchange.name.toLowerCase() === text.toLowerCase())
-                            {
-                                setUserExchange({message_id, from, chat, exchange})
-                            }
+                            if (exchange.name.toLowerCase() === text.toLowerCase()) setUserExchangeProgress({message_id, from, chat, exchange})
                         })
                     })
             }

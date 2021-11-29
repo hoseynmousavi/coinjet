@@ -3,14 +3,14 @@ import userExchangeController from "../../controllers/userExchangeController"
 import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 
-function setUserExchange({message_id, from, chat, exchange})
+function setUserExchangeProgress({message_id, from, chat, exchange})
 {
     const {id: telegram_id} = from
     const {id: telegram_chat_id} = chat
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserIdAndExchangeId({user_id: user._id, exchange_id: exchange._id, progress_level: "in-progress"})
+            userExchangeController.getUserExchangesByUserIdAndExchangeId({user_id: user._id, exchange_id: exchange._id, progress_level: "in-progress"}) // there is a bug here, if another exchange added, and that's uncompleted
                 .then(userExchanges =>
                 {
                     if (userExchanges?.length)
@@ -29,4 +29,4 @@ function setUserExchange({message_id, from, chat, exchange})
         })
 }
 
-export default setUserExchange
+export default setUserExchangeProgress
