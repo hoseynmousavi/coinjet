@@ -13,7 +13,6 @@ function setUserExchange({message_id, from, chat, exchange})
             userExchangeController.getUserExchangesByUserIdAndExchangeId({user_id: user._id, exchange_id: exchange._id, progress_level: "in-progress"})
                 .then(userExchanges =>
                 {
-                    console.log(message_id)
                     if (userExchanges?.length)
                     {
                         sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.alreadySettingExchange + telegramConstant.sendYourCredentialsAndName, reply_to_message_id: message_id})
