@@ -4,7 +4,14 @@ import exchangeModel from "../models/exchangeModel"
 
 const exchangeTb = mongoose.model("exchange", exchangeModel)
 
-function addExchange(req, res)
+let exchanges = []
+
+getExchanges().then(allExchanges =>
+{
+    if (allExchanges?.length) exchanges = allExchanges
+})
+
+function addExchangeRes(req, res)
 {
     if (checkAdmin(req, res))
     {
@@ -18,11 +25,12 @@ function addExchange(req, res)
 
 function getExchanges()
 {
-    return exchangeTb.find(null, null, null)
+    if (exchanges?.length) return new Promise(resolve => resolve(exchanges))
+    else return exchangeTb.find()
 }
 
 const exchangeController = {
-    addExchange,
+    addExchangeRes,
     getExchanges,
 }
 

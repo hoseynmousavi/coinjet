@@ -4,6 +4,7 @@ const schema = mongoose.Schema
 
 const exchangeModel = new schema({
     name: {
+        unique: true,
         type: String,
         required: "enter name!",
     },

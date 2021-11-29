@@ -1,15 +1,31 @@
-import startChat from "../helpers/telegram/startChat"
+import startChatPv from "../helpers/telegram/startChatPv"
+import exchangeController from "./exchangeController"
+import setUserExchange from "../helpers/telegram/setUserExchange"
 
 function handlePvChat(message)
 {
     const {message_id, from, chat, text} = message
+    const {is_bot} = from
+    const {type} = chat
     if (message_id && from && chat && text)
     {
-        console.log(message)
-        if (text === "/start") startChat({message_id, from, chat, text})
-        else
+        if (!is_bot && type === "private")
         {
-            console.log("got shit")
+            if (text === "/start") startChatPv({message_id, from, chat})
+            else
+            {
+                exchangeController.getExchanges()
+                    .then(exchanges =>
+                    {
+                        exchanges.forEach(exchange =>
+                        {
+                            if (exchange.name.toLowerCase() === text.toLowerCase())
+                            {
+                                setUserExchange({message_id, from, chat, exchange})
+                            }
+                        })
+                    })
+            }
         }
     }
 }

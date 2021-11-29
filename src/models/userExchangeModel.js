@@ -13,17 +13,22 @@ const userExchangeModel = new schema({
         type: schema.Types.ObjectId,
         required: "enter exchange_id!",
     },
+    name: {
+        type: String,
+    },
     user_key: {
         type: String,
-        required: "enter user_key!",
     },
     user_passphrase: {
         type: String,
-        required: "enter user_passphrase!",
     },
     user_secret: {
         type: String,
-        required: "enter user_secret!",
+    },
+    progress_level: {
+        type: String,
+        enum: ["complete", "in-progress"],
+        required: "Enter progress_level!",
     },
     created_date: {
         type: Date,
