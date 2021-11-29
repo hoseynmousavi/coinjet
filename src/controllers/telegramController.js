@@ -15,9 +15,8 @@ function handlePvChat(message)
     {
         if (!is_bot && type === "private")
         {
-            console.log(text)
             if (text === "/start") startChatPv({message_id, from, chat})
-            if (text === "/add_exchange") addExchangeTelegram({telegram_chat_id})
+            else if (text === "/add_exchange") addExchangeTelegram({telegram_chat_id})
             else if (text.split(",").length === 4) setUserExchangeComplete({message_id, from, chat, data: text.trim().replace(/ /g, "").split(",")})
             else if (exchangeController.getExchangesInstantly().some(item => item.name.toLowerCase() === text.toLowerCase()))
             {
