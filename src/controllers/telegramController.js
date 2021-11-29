@@ -12,6 +12,10 @@ function handlePvChat(message)
         if (!is_bot && type === "private")
         {
             if (text === "/start") startChatPv({message_id, from, chat})
+            else if (text.split(",").length === 4)
+            {
+                console.log("YES")
+            }
             else
             {
                 exchangeController.getExchanges()
