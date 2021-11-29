@@ -9,7 +9,7 @@ function signUpUser({first_name, last_name, telegram_username, telegram_id})
             {
                 if (user)
                 {
-                    userController.updateUserByTelegramId({telegram_id, update: {first_name, last_name, telegram_username}})
+                    userController.updateUserByTelegramId({telegram_id, update: {first_name: first_name || "", last_name: last_name || "", telegram_username}})
                         .then(updatedUser => resolve(updatedUser))
                 }
                 else
