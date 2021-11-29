@@ -4,10 +4,12 @@ const schema = mongoose.Schema
 
 const userExchangeModel = new schema({
     user_id: {
+        index: true,
         type: schema.Types.ObjectId,
         required: "enter user_id!",
     },
     exchange_id: {
+        index: true,
         type: schema.Types.ObjectId,
         required: "enter exchange_id!",
     },

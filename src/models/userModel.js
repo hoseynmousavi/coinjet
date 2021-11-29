@@ -4,6 +4,7 @@ const schema = mongoose.Schema
 
 const userModel = new schema({
     telegram_id: {
+        index: true,
         type: Number,
         required: "enter telegram_id!",
     },
