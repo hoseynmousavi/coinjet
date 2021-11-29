@@ -16,8 +16,7 @@ function setUserExchange({message_id, from, chat, exchange})
                     console.log(message_id)
                     if (userExchanges?.length)
                     {
-                        sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.alreadySettingExchange, reply_to_message_id: message_id})
-                        sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.sendYourCredentialsAndName, reply_to_message_id: message_id})
+                        sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.alreadySettingExchange + telegramConstant.sendYourCredentialsAndName, reply_to_message_id: message_id})
                     }
                     else
                     {
