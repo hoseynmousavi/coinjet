@@ -15,24 +15,9 @@ function rootRouter(app)
                 const {message_id, author_signature, chat, text} = channel_post
                 if (message_id && author_signature && chat && text)
                 {
-                    const textBack = text.includes("سیگنال") && `گفتی سیگنال ${author_signature}؟ ایول`
-                    if (textBack)
-                    {
-                        axios.post(
-                            `${data.telegramApi}${data.telegramToken}/sendMessage`,
-                            {
-                                chat_id: chat.id,
-                                text: textBack,
-                                reply_to_message_id: message_id,
-                                allow_sending_without_reply: true,
-                            },
-                        )
-                            .then(() => console.log("sent"))
-                            .catch(() => console.error("not sent"))
-                    }
+
                 }
             }
-
             res.send({message: "OK"})
         })
 }

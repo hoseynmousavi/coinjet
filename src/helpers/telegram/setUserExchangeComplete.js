@@ -14,6 +14,8 @@ function setUserExchangeComplete({message_id, from, chat, data})
             userExchangeController.getUserExchangesByUserIdAndExchangeId({user_id: user._id, progress_level: "in-progress"})
                 .then(userExchanges =>
                 {
+                    console.log(user._id)
+                    console.log(userExchanges)
                     if (userExchanges?.length === 1)
                     {
                         console.log(userExchanges[0]._id)
