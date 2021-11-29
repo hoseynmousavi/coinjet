@@ -19,7 +19,7 @@ loadExchangesToMemory()
 function getExchangesInstantly()
 {
     if (exchanges?.length) return exchanges
-    else throw "exchanges not loaded"
+    else return []
 }
 
 function getExchanges()
