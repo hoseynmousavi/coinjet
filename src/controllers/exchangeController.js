@@ -26,7 +26,7 @@ function addExchangeRes(req, res)
 function getExchanges()
 {
     if (exchanges?.length) return new Promise(resolve => resolve(exchanges))
-    else return exchangeTb.find()
+    else return exchangeTb.find(null, null, null)
 }
 
 const exchangeController = {
