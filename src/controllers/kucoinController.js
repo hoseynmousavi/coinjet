@@ -24,7 +24,7 @@ function requestMiddleWareRes(req, res)
         userExchangeController.getUserExchangesByUserId({user_id, progress_level: "complete"})
             .then(userExchanges =>
             {
-                request[method.toLowerCase() === "get" ? "get" : "post"]({url, kuCoinUserExchange: userExchanges[0]})
+                request[method.toLowerCase() === "get" ? "get" : "post"]({url, kuCoinUserExchange: userExchanges[0], data})
                     .then(result =>
                     {
                         res.send(result)
