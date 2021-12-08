@@ -14,9 +14,9 @@ app.use(express.urlencoded({extended: false}))
 mongoose.Promise = global.Promise
 mongoose.connect(data.connectServerDb, {useNewUrlParser: true}).then(() => console.log("connected to db"))
 
-telegramRouter(app)
 exchangeRouter(app)
 kucoinRouter(app)
+telegramRouter(app)
 
 // kucoinController.getAccounts()
 //     .then(res => console.log("res", res))
