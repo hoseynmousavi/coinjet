@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import data from "./data"
 import exchangeRouter from "./routes/exchangeRouter"
 import kucoinRouter from "./routes/kucoinRouter"
+import userRouter from "./routes/userRouter"
 
 const app = express()
 app.use(cors())
@@ -15,6 +16,7 @@ mongoose.connect(data.connectServerDb, {useNewUrlParser: true}).then(() => conso
 
 exchangeRouter(app)
 kucoinRouter(app)
+userRouter(app)
 // telegramRouter(app)
 
 app.listen(data.port, () => console.log(`coinjet is Now Running on Port ${data.port}`))

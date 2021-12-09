@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import regexConstant from "../constants/regexConstant"
 
 const schema = mongoose.Schema
 
@@ -12,7 +13,8 @@ const userModel = new schema({
         type: String,
         unique: true,
         index: true,
-        validate: "",
+        lowercase: true,
+        validate: regexConstant.EMAIL_REGEX,
         required: "enter email!",
     },
     email_verified: {

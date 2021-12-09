@@ -1,8 +1,12 @@
 const routeConstant = {
     telegram: "/",
+
     exchange: "/exchange",
-    user: "/user",
-    kucoinMiddleWare: "/kucoin-middleware"
+
+    kucoinMiddleWare: "/kucoin-middleware",
+
+    userSignup: "/user/signup",
+    userLogin: "/user/login",
 }
 
 export default routeConstant
