@@ -52,7 +52,7 @@ function sendUserData({user, res})
 {
     if (user)
     {
-        const userJson = user.json()
+        const userJson = user.toJSON()
         tokenHelper.encodeToken({_id: userJson._id, password: userJson.password})
             .then(token =>
             {
