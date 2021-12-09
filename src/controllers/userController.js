@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import userModel from "../models/userModel"
 import tokenHelper from "../helpers/tokenHelper"
+import resConstant from "../constants/resConstant"
 
 const userTb = mongoose.model("user", userModel)
 
@@ -29,7 +30,11 @@ function signupRes(req, res)
     const data = {...req.body, role: "user"}
     addUser(data)
         .then(user => sendUserData({user, res}))
-        .catch(err => res.status(400).send({massage: err}))
+        .catch(err =>
+        {
+            if (err?.keyPattern?.email) res.status(400).send({massage: resConstant.alreadyExists})
+            else res.status(400).send({massage: err})
+        })
 }
 
 function loginRes(req, res)
@@ -55,7 +60,7 @@ function sendUserData({user, res})
                 res.send(sendingUser)
             })
     }
-    else res.status(404).send({message: "اکانتی با اطلاعات ارسال شده یافت نشد."})
+    else res.status(404).send({message: resConstant.noUserFound})
 }
 
 const userController = {
