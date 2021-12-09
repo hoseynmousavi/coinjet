@@ -32,8 +32,8 @@ function signupRes(req, res)
         .then(user => sendUserData({user, res}))
         .catch(err =>
         {
-            if (err?.keyPattern?.email) res.status(400).send({massage: resConstant.alreadyExists})
-            else res.status(400).send({massage: err})
+            if (err?.keyPattern?.email) res.status(400).send({message: resConstant.alreadyExists})
+            else res.status(400).send({message: err})
         })
 }
 
@@ -44,7 +44,7 @@ function loginRes(req, res)
     {
         findOneUser({query: {email, password}})
             .then(user => sendUserData({user, res}))
-            .catch(err => res.status(400).send({massage: err}))
+            .catch(err => res.status(400).send({message: err}))
     }
 }
 
