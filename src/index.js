@@ -3,7 +3,6 @@ import cors from "cors"
 import mongoose from "mongoose"
 import data from "./data"
 import exchangeRouter from "./routes/exchangeRouter"
-import telegramRouter from "./routes/telegramRouter"
 import kucoinRouter from "./routes/kucoinRouter"
 
 const app = express()
@@ -16,10 +15,6 @@ mongoose.connect(data.connectServerDb, {useNewUrlParser: true}).then(() => conso
 
 exchangeRouter(app)
 kucoinRouter(app)
-telegramRouter(app)
-
-// kucoinController.getAccounts()
-//     .then(res => console.log("res", res))
-//     .catch(err => console.log("err", err.response.data))
+// telegramRouter(app)
 
 app.listen(data.port, () => console.log(`coinjet is Now Running on Port ${data.port}`))

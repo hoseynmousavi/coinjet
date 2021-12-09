@@ -3,31 +3,60 @@ import mongoose from "mongoose"
 const schema = mongoose.Schema
 
 const userModel = new schema({
-    telegram_id: {
+    full_name: {
+        type: String,
+        trim: true,
+        required: "enter full_name!",
+    },
+    email: {
+        type: String,
         unique: true,
         index: true,
-        type: Number,
-        required: "enter telegram_id!",
+        validate: "",
+        required: "enter email!",
     },
-    first_name: {
+    email_verified: {
+        type: Boolean,
+        default: false,
+    },
+    phone: {
         type: String,
-    },
-    last_name: {
-        type: String,
-    },
-    username: {
         unique: true,
+        sparse: true,
+        minlength: 11,
+        maxlength: 11,
+        index: true,
+    },
+    phone_verified: {
+        type: Boolean,
+        default: true,
+    },
+    password: {
         type: String,
-        required: "enter username!",
+        index: true,
+        minlength: 6,
+        maxlength: 32,
+        required: "enter password!",
+    },
+    avatar_url: {
+        type: String,
+        trim: true,
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
     },
     telegram_username: {
         type: String,
-        required: "enter telegram_username!",
+        unique: true,
+        sparse: true,
     },
     telegram_chat_id: {
-        unique: true,
         type: String,
-        required: "enter telegram_chat_id!",
+        index: true,
+        unique: true,
+        sparse: true,
     },
     created_date: {
         type: Date,
