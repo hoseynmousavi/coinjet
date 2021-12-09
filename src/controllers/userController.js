@@ -52,10 +52,11 @@ function sendUserData({user, res})
 {
     if (user)
     {
-        tokenHelper.encodeToken({_id: user._id, password: user.password})
+        const userJson = user.json()
+        tokenHelper.encodeToken({_id: userJson._id, password: userJson.password})
             .then(token =>
             {
-                const sendingUser = {...user, token}
+                const sendingUser = {...userJson, token}
                 delete sendingUser.password
                 res.send(sendingUser)
             })
