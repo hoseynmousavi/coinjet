@@ -14,6 +14,11 @@ function addUserExchanges(userExchange)
     return new userExchangeTb(userExchange).save()
 }
 
+function removeUserExchanges({query})
+{
+    return userExchangeTb.deleteOne({query})
+}
+
 function getUserExchangesRes(req, res)
 {
     checkPermission({req, res})
@@ -36,9 +41,22 @@ function addUserExchangesRes(req, res)
         })
 }
 
+function deleteUserExchangesRes(req, res)
+{
+    checkPermission({req, res})
+        .then(({_id}) =>
+        {
+            const {userExchangeId} = req.body
+            removeUserExchanges({query: {_id: userExchangeId, user_id: _id}})
+                .then(() => res.send({message: "OK"}))
+                .catch(err => res.status(400).send({message: err}))
+        })
+}
+
 const userExchangeController = {
     getUserExchangesRes,
     addUserExchangesRes,
+    deleteUserExchangesRes,
 }
 
 export default userExchangeController
