@@ -5,7 +5,7 @@ function checkPermission({req, res, minRole = "user"})
 {
     return new Promise(resolve =>
     {
-        tokenHelper.decodeToken(req.headers.authorization)
+        tokenHelper.decodeToken(req?.headers?.authorization)
             .then(({password, _id, role}) =>
             {
                 if (minRole === "user" || role === "admin") resolve({password, _id, role})
