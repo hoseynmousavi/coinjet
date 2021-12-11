@@ -17,7 +17,7 @@ function addUserExchanges(userExchange)
 
 function removeUserExchanges({query})
 {
-    return userExchangeTb.deleteOne({query})
+    return userExchangeTb.deleteOne(query)
 }
 
 function getUserExchangesRes(req, res)
@@ -52,10 +52,9 @@ function deleteUserExchangesRes(req, res)
         .then(({_id}) =>
         {
             const {userExchangeId} = req.body
-            console.log(userExchangeId)
-            // removeUserExchanges({query: {_id: userExchangeId, user_id: _id}})
-            //     .then(() => res.send({message: "OK"}))
-            //     .catch(err => res.status(400).send({message: err}))
+            removeUserExchanges({query: {_id: userExchangeId, user_id: _id}})
+                .then(() => res.send({message: "OK"}))
+                .catch(err => res.status(400).send({message: err}))
         })
 }
 
