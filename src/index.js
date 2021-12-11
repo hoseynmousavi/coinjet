@@ -17,6 +17,5 @@ mongoose.connect(data.connectServerDb, {useNewUrlParser: true}).then(() => conso
 exchangeRouter(app)
 kucoinRouter(app)
 userRouter(app)
-// telegramRouter(app)
 
 app.listen(data.port, () => console.log(`coinjet is Now Running on Port ${data.port}`))

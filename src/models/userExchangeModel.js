@@ -15,25 +15,26 @@ const userExchangeModel = new schema({
     },
     name: {
         type: String,
+        required: "enter name!",
     },
     user_key: {
         type: String,
+        required: "enter user_key!",
     },
     user_passphrase: {
         type: String,
+        required: "enter user_passphrase!",
     },
     user_secret: {
         type: String,
-    },
-    progress_level: {
-        type: String,
-        enum: ["complete", "in-progress"],
-        required: "Enter progress_level!",
+        required: "enter user_secret!",
     },
     created_date: {
         type: Date,
         default: Date.now,
     },
 })
+
+userExchangeModel.index({user_id: 1, name: 1}, {unique: true})
 
 export default userExchangeModel

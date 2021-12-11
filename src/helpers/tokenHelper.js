@@ -18,13 +18,11 @@ const decodeToken = token =>
     return new Promise((resolve, reject) =>
         jwt.verify(token, data.tokenSign, {algorithm: "HS512"}, (err, payload) =>
         {
-            if (err) reject({status: 403, err})
+            if (err) reject()
             else
             {
-                const {password, _id} = payload
-                userController.verifyToken({password, _id})
-                    .then((result) => resolve(result.user))
-                    .catch((result) => reject({status: result.status, err: result.err}))
+                const {password, _id, role} = payload
+                resolve({password, _id, role})
             }
         }),
     )

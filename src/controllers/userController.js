@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import userModel from "../models/userModel"
-import tokenHelper from "../helpers/tokenHelper"
 import resConstant from "../constants/resConstant"
+import sendUserData from "../helpers/user/sendUserData"
 
 const userTb = mongoose.model("user", userModel)
 
@@ -13,16 +13,6 @@ function addUser(user)
 function findOneUser({query, projection, options})
 {
     return userTb.findOne(query, projection, options)
-}
-
-function getUserByTelegramId({telegram_id})
-{
-    return userTb.findOne({telegram_id})
-}
-
-function updateUserByTelegramId({telegram_id, update})
-{
-    return userTb.updateOne({telegram_id}, update)
 }
 
 function signupRes(req, res)
@@ -48,26 +38,7 @@ function loginRes(req, res)
     }
 }
 
-function sendUserData({user, res})
-{
-    if (user)
-    {
-        const userJson = user.toJSON()
-        tokenHelper.encodeToken({_id: userJson._id, password: userJson.password})
-            .then(token =>
-            {
-                const sendingUser = {...userJson, token}
-                delete sendingUser.password
-                res.send(sendingUser)
-            })
-    }
-    else res.status(404).send({message: resConstant.noUserFound})
-}
-
 const userController = {
-    addUser,
-    getUserByTelegramId,
-    updateUserByTelegramId,
     signupRes,
     loginRes,
 }

@@ -3,7 +3,7 @@ const routeConstant = {
 
     exchange: "/exchange",
 
-    kucoinMiddleWare: "/kucoin-middleware",
+    exchangeMyAccounts: "/exchange/my-accounts",
 
     userSignup: "/user/signup",
     userLogin: "/user/login",

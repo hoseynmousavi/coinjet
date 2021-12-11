@@ -3,31 +3,13 @@ import userExchangeModel from "../models/userExchangeModel"
 
 const userExchangeTb = mongoose.model("user-exchange", userExchangeModel)
 
-function addUserExchange(userExchange)
+function getUserExchanges({query, projection, options})
 {
-    return new userExchangeTb(userExchange).save()
-}
-
-function getUserExchangesByUserIdAndExchangeId({user_id, exchange_id, progress_level})
-{
-    return userExchangeTb.find({user_id, exchange_id, progress_level})
-}
-
-function getUserExchangesByUserId({user_id, progress_level})
-{
-    return userExchangeTb.find({user_id, progress_level})
-}
-
-function updateUserExchange({userExchangeId, update})
-{
-    return userExchangeTb.updateOne({_id: userExchangeId}, update)
+    return userExchangeTb.find(query, projection, options)
 }
 
 const userExchangeController = {
-    addUserExchange,
-    getUserExchangesByUserIdAndExchangeId,
-    getUserExchangesByUserId,
-    updateUserExchange,
+    getUserExchanges,
 }
 
 export default userExchangeController
