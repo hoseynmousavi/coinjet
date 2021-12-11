@@ -16,17 +16,16 @@ function getUserExchangeDataRes(req, res)
                     if (userExchanges.length === 1)
                     {
                         const userExchange = userExchanges[0].toJSON()
-                        console.log(userExchange)
                         request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.getAccounts})
-                            .then(data =>
+                            .then(accounts =>
                             {
-                                res.send(data)
+                                request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.prices})
+                                    .then(prices =>
+                                    {
+                                        res.send({accounts, prices})
+                                    })
                             })
-                            .catch(err =>
-                            {
-                                console.log(err)
-                                res.status(400).send({message: err})
-                            })
+                            .catch(err => res.status(400).send({message: err}))
                     }
                     else res.status(400).send({message: resConstant.noFound})
                 })
