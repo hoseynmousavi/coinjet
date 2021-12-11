@@ -5,6 +5,8 @@ const routeConstant = {
 
     userExchange: "/user-exchange",
 
+    kucoinUserExchangeData: "/kucoin/data/:user_exchange_id",
+
     userSignup: "/user/signup",
     userLogin: "/user/login",
 }

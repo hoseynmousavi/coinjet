@@ -1,3 +1,9 @@
+function getUserExchangeDataRes(req, res)
+{
+    console.log(req.params)
+    // const {user_exchange_id} = req.params
+}
+
 // const {user_id, url, method, data} = req.body || {}
 // if (user_id && url && method)
 // {
@@ -17,6 +23,8 @@
 // }
 // else res.status(400).send({message: "fields are incomplete."})
 
-const kucoinController = {}
+const kucoinController = {
+    getUserExchangeDataRes,
+}
 
 export default kucoinController
