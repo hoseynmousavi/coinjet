@@ -20,11 +20,12 @@ const decodeToken = token =>
         {
             if (err)
             {
-                console.log(err)
+                console.log("err", err)
                 reject()
             }
             else
             {
+                console.log({payload})
                 const {password, _id, role} = payload
                 resolve({password, _id, role})
             }
