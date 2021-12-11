@@ -25,7 +25,11 @@ function getUserExchangeDataRes(req, res)
                                         res.send({accounts, prices})
                                     })
                             })
-                            .catch(err => res.status(400).send({message: err}))
+                            .catch(err =>
+                            {
+                                console.log(err)
+                                res.status(400).send({message: resConstant.incorrectData})
+                            })
                     }
                     else res.status(400).send({message: resConstant.noFound})
                 })

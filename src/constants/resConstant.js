@@ -4,6 +4,7 @@ const resConstant = {
     dontHavePermission: "شما پرمیشن لازم را ندارید.",
     noUserFound: "اکانتی با اطلاعات ارسال شده یافت نشد.",
     noFound: "اطلاعاتی یافت نشد.",
+    incorrectData: "سرور در بارگیری اطلاعات با داده‌های ارسالی شما با خطا مواجه شد.",
 }
 
 export default resConstant
