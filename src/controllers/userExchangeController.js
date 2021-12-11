@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import userExchangeModel from "../models/userExchangeModel"
 import checkPermission from "../helpers/checkPermission"
+import resConstant from "../constants/resConstant"
 
 const userExchangeTb = mongoose.model("user-exchange", userExchangeModel)
 
@@ -37,7 +38,11 @@ function addUserExchangesRes(req, res)
             const {exchange_id, name, user_key, user_secret, user_passphrase} = req.body
             addUserExchanges({user_id: _id, exchange_id, name, user_key, user_secret, user_passphrase})
                 .then(addedUserExchange => res.send(addedUserExchange))
-                .catch(err => res.status(400).send({message: err}))
+                .catch(err =>
+                {
+                    if (err?.keyPattern?.user_id && err?.keyPattern?.name) res.status(400).send({message: resConstant.nameAlreadyExists})
+                    else res.status(400).send({message: err})
+                })
         })
 }
 
