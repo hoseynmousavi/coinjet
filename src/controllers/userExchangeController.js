@@ -59,6 +59,7 @@ function deleteUserExchangesRes(req, res)
 }
 
 const userExchangeController = {
+    getUserExchanges,
     getUserExchangesRes,
     addUserExchangesRes,
     deleteUserExchangesRes,
