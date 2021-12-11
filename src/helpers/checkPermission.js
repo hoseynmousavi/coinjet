@@ -5,6 +5,7 @@ function checkPermission({req, res, minRole = "user"})
 {
     return new Promise(resolve =>
     {
+        console.log(req?.headers?.authorization)
         tokenHelper.decodeToken(req?.headers?.authorization)
             .then(({password, _id, role}) =>
             {
