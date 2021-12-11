@@ -1,4 +1,3 @@
-import checkAdmin from "../helpers/checkAdmin"
 import mongoose from "mongoose"
 import exchangeModel from "../models/exchangeModel"
 import checkPermission from "../helpers/checkPermission"

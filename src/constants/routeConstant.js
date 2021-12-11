@@ -3,7 +3,7 @@ const routeConstant = {
 
     exchange: "/exchange",
 
-    exchangeMyAccounts: "/exchange/my-accounts",
+    userExchange: "/user-exchange",
 
     userSignup: "/user/signup",
     userLogin: "/user/login",

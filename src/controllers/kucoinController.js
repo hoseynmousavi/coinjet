@@ -1,16 +1,3 @@
-import userExchangeController from "./userExchangeController"
-import checkPermission from "../helpers/checkPermission"
-
-function getMyAccountsRes(req, res)
-{
-    checkPermission({req, res})
-        .then(({_id}) =>
-        {
-            userExchangeController.getUserExchanges({query: {user_id: _id}})
-                .then(userExchanges => res.send(userExchanges))
-        })
-}
-
 // const {user_id, url, method, data} = req.body || {}
 // if (user_id && url && method)
 // {
@@ -30,8 +17,6 @@ function getMyAccountsRes(req, res)
 // }
 // else res.status(400).send({message: "fields are incomplete."})
 
-const kucoinController = {
-    getMyAccountsRes,
-}
+const kucoinController = {}
 
 export default kucoinController
