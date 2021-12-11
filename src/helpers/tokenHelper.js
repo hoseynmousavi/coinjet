@@ -18,7 +18,11 @@ const decodeToken = token =>
     return new Promise((resolve, reject) =>
         jwt.verify(token, data.tokenSign, {algorithm: "HS512"}, (err, payload) =>
         {
-            if (err) reject()
+            if (err)
+            {
+                console.log(err)
+                reject()
+            }
             else
             {
                 const {password, _id, role} = payload
