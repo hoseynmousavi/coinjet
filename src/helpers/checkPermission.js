@@ -5,10 +5,10 @@ function checkPermission({req, res, minRole = "user"})
 {
     return new Promise(resolve =>
     {
-        console.log(req?.headers?.authorization)
         tokenHelper.decodeToken(req?.headers?.authorization)
             .then(({password, _id, role}) =>
             {
+                console.log("here", minRole === "user" || role === "admin")
                 if (minRole === "user" || role === "admin") resolve({password, _id, role})
                 else res.status(403).send({message: resConstant.dontHavePermission})
             })

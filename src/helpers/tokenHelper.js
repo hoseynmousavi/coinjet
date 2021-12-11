@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken"
 import data from "../data"
-import userController from "../controllers/userController"
 
 const encodeToken = payload =>
 {
@@ -18,14 +17,9 @@ const decodeToken = token =>
     return new Promise((resolve, reject) =>
         jwt.verify(token, data.tokenSign, {algorithm: "HS512"}, (err, payload) =>
         {
-            if (err)
-            {
-                console.log("err", err)
-                reject()
-            }
+            if (err) reject()
             else
             {
-                console.log({payload})
                 const {password, _id, role} = payload
                 resolve({password, _id, role})
             }
