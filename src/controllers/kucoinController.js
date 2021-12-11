@@ -15,7 +15,7 @@ function getUserExchangeDataRes(req, res)
                 {
                     if (userExchanges.length === 1)
                     {
-                        const userExchange = userExchanges[0]
+                        const userExchange = userExchanges[0].toJSON()
                         request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.getAccounts})
                             .then(data =>
                             {
