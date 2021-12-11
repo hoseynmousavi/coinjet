@@ -21,7 +21,11 @@ function getUserExchangeDataRes(req, res)
                             {
                                 res.send(data)
                             })
-                            .catch(err => res.status(400).send({message: err}))
+                            .catch(err =>
+                            {
+                                console.log(err)
+                                res.status(400).send({message: err})
+                            })
                     }
                     else res.status(400).send({message: resConstant.noFound})
                 })
