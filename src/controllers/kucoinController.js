@@ -22,7 +22,15 @@ function getUserExchangeDataRes(req, res)
                                 request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.prices})
                                     .then(prices =>
                                     {
-                                        res.send({accounts, prices})
+                                        request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.deposits})
+                                            .then(deposits =>
+                                            {
+                                                request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.withdrawals})
+                                                    .then(withdrawals =>
+                                                    {
+                                                        res.send({accounts, prices, deposits, withdrawals})
+                                                    })
+                                            })
                                     })
                             })
                             .catch(err =>
