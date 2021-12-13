@@ -4,6 +4,11 @@ import checkPermission from "../helpers/checkPermission"
 
 const exchangeTb = mongoose.model("exchange", exchangeModel)
 
+function getExchanges({query, projection, options})
+{
+    return exchangeTb.find(query, projection, options)
+}
+
 function addExchangeRes(req, res)
 {
     checkPermission({req, res, minRole: "admin"})
@@ -17,8 +22,19 @@ function addExchangeRes(req, res)
         })
 }
 
+function getExchangesRes(req, res)
+{
+    getExchanges({})
+        .then((exchanges, err) =>
+        {
+            if (err) res.status(500).send({message: err})
+            else res.send(exchanges)
+        })
+}
+
 const exchangeController = {
     addExchangeRes,
+    getExchangesRes,
 }
 
 export default exchangeController
