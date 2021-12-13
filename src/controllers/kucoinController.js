@@ -17,18 +17,46 @@ function getUserExchangeDataRes(req, res)
                     {
                         const userExchange = userExchanges[0].toJSON()
                         request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.getAccounts})
-                            .then(accounts =>
+                            .then(accountsRes =>
                             {
                                 request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.prices})
-                                    .then(prices =>
+                                    .then(pricesRes =>
                                     {
                                         request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.deposits})
-                                            .then(deposits =>
+                                            .then(depositsRes =>
                                             {
                                                 request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.withdrawals})
-                                                    .then(withdrawals =>
+                                                    .then(withdrawalsRes =>
                                                     {
-                                                        res.send({accounts, prices, deposits, withdrawals})
+                                                        const accountsArr = accountsRes.data
+                                                        const prices = pricesRes.data
+                                                        const deposits = depositsRes.data.items
+                                                        const withdrawals = withdrawalsRes.data.items
+
+                                                        let accounts = {}
+
+                                                        for (let i = 0; i < accountsArr.length; i++)
+                                                        {
+                                                            const item = accountsArr[i]
+                                                            if (item.balance > 0)
+                                                            {
+                                                                if (accounts[item.currency]) accounts[item.currency].balance += +item.balance
+                                                                else accounts[item.currency] = {currency: item.currency, balance: +item.balance}
+                                                            }
+                                                        }
+
+                                                        Object.values(accounts).forEach(item => item.valueInUSDT = item.balance * (+prices[item.currency]))
+
+                                                        accounts = Object.values(accounts).sort((a, b) => b.valueInUSDT - a.valueInUSDT)
+
+                                                        const allBalance = accounts.reduce((sum, item) => sum + item.valueInUSDT, 0)
+                                                        const allWithdrawals = withdrawals.reduce((sum, item) => sum + (item.currency === "USDT" ? +item.amount : 0), 0)
+                                                        const allDeposits = deposits.reduce((sum, item) => sum + (item.currency === "USDT" ? +item.amount : 0), 0)
+                                                        const allProfitOrShit = allBalance + allWithdrawals - allDeposits
+                                                        const allProfitOrShitPercent = (allBalance + allWithdrawals) / allDeposits
+                                                        const allProfitOrShitPercentTotal = allProfitOrShitPercent <= 1 ? (1 - allProfitOrShitPercent) * 100 : allProfitOrShitPercent * 100
+
+                                                        res.send({accounts, prices, allProfitOrShit, allProfitOrShitPercentTotal})
                                                     })
                                             })
                                     })
@@ -43,25 +71,6 @@ function getUserExchangeDataRes(req, res)
                 })
         })
 }
-
-// const {user_id, url, method, data} = req.body || {}
-// if (user_id && url && method)
-// {
-//     userExchangeController.getUserExchanges({user_id})
-//         .then(userExchanges =>
-//         {
-//             request[method.toLowerCase() === "get" ? "get" : "post"]({url, kuCoinUserExchange: userExchanges[0], data})
-//                 .then(result =>
-//                 {
-//                     res.send(result)
-//                 })
-//                 .catch(err =>
-//                 {
-//                     res.status(err?.response?.status || 500).send(err?.response?.data || {message: "we have err"})
-//                 })
-//         })
-// }
-// else res.status(400).send({message: "fields are incomplete."})
 
 const kucoinController = {
     getUserExchangeDataRes,
