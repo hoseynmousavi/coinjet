@@ -47,7 +47,7 @@ function getUserExchangeDataRes(req, res)
 
                             const allBalance = accounts.reduce((sum, item) => sum + item.valueInUSDT, 0)
                             const allWithdraws = withdraws.reduce((sum, item) => sum + (item.currency.toUpperCase() === "USDT" ? +item.amount : 0), 0)
-                            const allDeposits = deposits.reduce((sum, item) => sum + (item.transaction.currency.toUpperCase() === "USDT" ? +item.transaction.amount : 0), 0)
+                            const allDeposits = deposits.reduce((sum, item) => sum + (item.transaction.currency.toUpperCase() === "USDT" ? +item.transaction.amount : item.transaction.currency.toUpperCase() === "RLS" ? +item.transaction.amount / usdtPrice : 0), 0)
                             const allProfitOrShit = allBalance + allWithdraws - allDeposits
                             const allProfitOrShitPercent = (allBalance + allWithdraws) / allDeposits
                             const allProfitOrShitPercentTotal = allProfitOrShitPercent <= 1 ? (1 - allProfitOrShitPercent) * 100 : allProfitOrShitPercent * 100
