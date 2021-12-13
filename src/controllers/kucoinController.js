@@ -65,7 +65,7 @@ function getUserExchangeDataRes(req, res)
                             })
                             .catch(() => res.status(400).send({message: resConstant.incorrectData}))
 
-                        request.get({url: kucoinConstant.prices})
+                        request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.prices})
                             .then(pricesRes =>
                             {
                                 pricesTemp = pricesRes
