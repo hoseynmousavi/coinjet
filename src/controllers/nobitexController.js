@@ -4,6 +4,7 @@ import resConstant from "../constants/resConstant"
 import request from "../request/request"
 import kucoinConstant from "../constants/kucoinConstant"
 import nobitexConstant from "../constants/nobitexConstant"
+import data from "../data"
 
 function getUserExchangeDataRes(req, res)
 {
@@ -73,7 +74,7 @@ function getUserExchangeDataRes(req, res)
                                 sendRes()
                             })
 
-                        request.get({kuCoinUserExchange: userExchange, url: kucoinConstant.prices})
+                        request.get({kuCoinUserExchange: {user_key: data.myKucoinUserKey, user_passphrase: data.myKucoinPass, user_secret: data.myKucoinSecret}, url: kucoinConstant.prices})
                             .then(pricesRes =>
                             {
                                 pricesTemp = pricesRes
