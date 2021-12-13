@@ -44,10 +44,10 @@ function getUserExchangeDataRes(req, res)
                             accounts = Object.values(accounts).sort((a, b) => b.valueInUSDT - a.valueInUSDT)
 
                             const allBalance = accounts.reduce((sum, item) => sum + item.valueInUSDT, 0)
-                            const allWithdrawals = withdrawals.reduce((sum, item) => sum + (item.currency === "USDT" ? +item.amount : 0), 0)
+                            const allWithdraws = withdrawals.reduce((sum, item) => sum + (item.currency === "USDT" ? +item.amount : 0), 0)
                             const allDeposits = deposits.reduce((sum, item) => sum + (item.currency === "USDT" ? +item.amount : 0), 0)
-                            const allProfitOrShit = allBalance + allWithdrawals - allDeposits
-                            const allProfitOrShitPercent = (allBalance + allWithdrawals) / allDeposits
+                            const allProfitOrShit = allBalance + allWithdraws - allDeposits
+                            const allProfitOrShitPercent = (allBalance + allWithdraws) / allDeposits
                             const allProfitOrShitPercentTotal = allProfitOrShitPercent <= 1 ? (1 - allProfitOrShitPercent) * 100 : allProfitOrShitPercent * 100
 
                             res.send({accounts, prices, allBalance, allProfitOrShit, allProfitOrShitPercentTotal})
