@@ -23,11 +23,17 @@ const userExchangeModel = new schema({
     },
     user_passphrase: {
         type: String,
-        required: "enter user_passphrase!",
+        required: [
+            () => this.exchange_id === "61b4799ee1699274c1a7e360",
+            "username is required if id is specified",
+        ],
     },
     user_secret: {
         type: String,
-        required: "enter user_secret!",
+        required: [
+            () => this.exchange_id === "61b4799ee1699274c1a7e360",
+            "username is required if id is specified",
+        ],
     },
     created_date: {
         type: Date,
