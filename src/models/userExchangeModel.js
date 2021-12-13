@@ -24,14 +24,20 @@ const userExchangeModel = new schema({
     user_passphrase: {
         type: String,
         required: [
-            () => this.exchange_id === "61b4799ee1699274c1a7e360",
+            function ()
+            {
+                this.exchange_id === "61b4799ee1699274c1a7e360"
+            },
             "username is required if id is specified",
         ],
     },
     user_secret: {
         type: String,
         required: [
-            () => this.exchange_id === "61b4799ee1699274c1a7e360",
+            function ()
+            {
+                this.exchange_id === "61b4799ee1699274c1a7e360"
+            },
             "username is required if id is specified",
         ],
     },
