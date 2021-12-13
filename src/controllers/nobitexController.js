@@ -25,7 +25,7 @@ function getUserExchangeDataRes(req, res)
                         if (accountsTemp && pricesTemp && depositsTemp && usdtPrice)
                         {
                             const accountsArr = accountsTemp.wallets
-                            const prices = {...pricesTemp.data, "RLS": usdtPrice}
+                            const prices = {...pricesTemp.data, "RLS": 1 / usdtPrice}
                             const deposits = depositsTemp.deposits
                             const withdraws = depositsTemp.withdraws
 
