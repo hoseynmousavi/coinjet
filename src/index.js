@@ -6,6 +6,7 @@ import exchangeRouter from "./routes/exchangeRouter"
 import kucoinRouter from "./routes/kucoinRouter"
 import userRouter from "./routes/userRouter"
 import userExchangeRouter from "./routes/userExchangeRouter"
+import nobitexRouter from "./routes/nobitexRouter"
 
 const app = express()
 app.use(cors())
@@ -18,6 +19,7 @@ mongoose.connect(data.connectServerDb, {useNewUrlParser: true}).then(() => conso
 userExchangeRouter(app)
 exchangeRouter(app)
 kucoinRouter(app)
+nobitexRouter(app)
 userRouter(app)
 
 app.listen(data.port, () => console.log(`coinjet is Now Running on Port ${data.port}`))

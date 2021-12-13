@@ -1,6 +1,5 @@
 import routeConstant from "../constants/routeConstant"
 import kucoinController from "../controllers/kucoinController"
-import userExchangeController from "../controllers/userExchangeController"
 
 function kucoinRouter(app)
 {
