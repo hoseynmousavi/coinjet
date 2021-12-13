@@ -51,7 +51,7 @@ function getUserExchangeDataRes(req, res)
                             const allProfitOrShitPercent = (allBalance + allWithdrawals) / allDeposits
                             const allProfitOrShitPercentTotal = allProfitOrShitPercent <= 1 ? (1 - allProfitOrShitPercent) * 100 : allProfitOrShitPercent * 100
 
-                            res.send({accounts, prices, allProfitOrShit, allProfitOrShitPercentTotal})
+                            res.send({accounts, prices, allBalance, allProfitOrShit, allProfitOrShitPercentTotal})
                         }
                     }
 
