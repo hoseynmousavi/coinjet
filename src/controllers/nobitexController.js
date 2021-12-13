@@ -59,6 +59,7 @@ function getUserExchangeDataRes(req, res)
                     if (userExchanges.length === 1)
                     {
                         const userExchange = userExchanges[0].toJSON()
+                        console.log(userExchange)
                         request.get({nobitexUserExchange: userExchange, url: nobitexConstant.getAccounts})
                             .then(accountsRes =>
                             {
