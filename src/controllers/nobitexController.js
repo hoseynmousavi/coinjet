@@ -65,7 +65,11 @@ function getUserExchangeDataRes(req, res)
                                 accountsTemp = accountsRes
                                 sendRes()
                             })
-                            .catch(() => res.status(400).send({message: resConstant.incorrectData}))
+                            .catch(err =>
+                            {
+                                console.log(err?.response?.data)
+                                res.status(400).send({message: resConstant.incorrectData})
+                            })
 
                         request.get({url: nobitexConstant.usdtPrice})
                             .then(usdtPriceRes =>
