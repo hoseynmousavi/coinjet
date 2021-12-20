@@ -29,8 +29,6 @@ function getUserExchangeDataRes(req, res)
                             const deposits = depositsTemp.filter(item => item.tp === "deposit")
                             const withdraws = depositsTemp.filter(item => item.tp === "withdraw")
 
-                            console.log(deposits)
-
                             let accounts = {}
 
                             for (let i = 0; i < accountsArr.length; i++)
@@ -113,7 +111,7 @@ function getTransactions({userExchange})
             .then(actionsRes =>
             {
                 data = [...data, ...actionsRes.transactions]
-                console.log(actionsRes.hasNext)
+                console.log(data)
                 if (actionsRes.hasNext)
                 {
                     page++
