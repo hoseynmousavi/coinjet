@@ -26,8 +26,8 @@ function getUserExchangeDataRes(req, res)
                         {
                             const accountsArr = accountsTemp.wallets
                             const prices = {...pricesTemp.data, "RLS": 1 / usdtPrice}
-                            const deposits = depositsTemp.deposits
-                            const withdraws = depositsTemp.withdraws
+                            const deposits = depositsTemp.filter(item => item.type === "واریز")
+                            const withdraws = depositsTemp.filter(item => item.type === "برداشت")
 
                             let accounts = {}
 
@@ -88,15 +88,29 @@ function getUserExchangeDataRes(req, res)
                                 sendRes()
                             })
 
-                        request.get({nobitexUserExchange: userExchange, url: nobitexConstant.deposits})
-                            .then(depositsRes =>
-                            {
-                                depositsTemp = depositsRes
-                                sendRes()
-                            })
+                        getTransactions({userExchange, sendRes, depositsTemp})
                     }
                     else res.status(400).send({message: resConstant.noFound})
                 })
+        })
+}
+
+function getTransactions({userExchange, sendRes, depositsTemp, data = [], page = 1})
+{
+    request.get({nobitexUserExchange: userExchange, url: nobitexConstant.transactionsHistory, param: `?page=${page}`})
+        .then(actionsRes =>
+        {
+            data = [...data, actionsRes.transactions]
+            if (actionsRes.hasNext)
+            {
+                page++
+                getTransactions({userExchange, sendRes, depositsTemp, data, page})
+            }
+            else
+            {
+                depositsTemp = data
+                sendRes()
+            }
         })
 }
 
