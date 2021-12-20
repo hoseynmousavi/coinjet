@@ -114,7 +114,7 @@ function getTransactions({userExchange})
         request.post({nobitexUserExchange: userExchange, url: nobitexConstant.transactionsHistory, data: {page}})
             .then(actionsRes =>
             {
-                data = [...data, actionsRes.transactions]
+                data = [...data, ...actionsRes.transactions]
                 if (actionsRes.hasNext)
                 {
                     page++
