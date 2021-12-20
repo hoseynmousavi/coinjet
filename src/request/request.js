@@ -26,6 +26,7 @@ function get({kuCoinUserExchange, nobitexUserExchange, isTelegram, url, param = 
 
 function post({kuCoinUserExchange, nobitexUserExchange, isTelegram, url, param = "", data})
 {
+    if (!!kuCoinUserExchange) console.log(urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}))
     return axios.post(
         urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}),
         data,
