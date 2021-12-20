@@ -122,6 +122,7 @@ function getTransactions({userExchange})
                 }
                 else resolve(data)
             })
+            .catch(err => console.log(err?.response?.data))
     }
 
     return new Promise(resolve => getData(resolve))
