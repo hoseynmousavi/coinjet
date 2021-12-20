@@ -100,7 +100,7 @@ function getUserExchangeDataRes(req, res)
 
 function getTransactions({userExchange, sendRes, depositsTemp, data = [], page = 1})
 {
-    request.get({nobitexUserExchange: userExchange, url: nobitexConstant.transactionsHistory, param: `?page=${page}`})
+    request.post({nobitexUserExchange: userExchange, url: nobitexConstant.transactionsHistory, data: {page}})
         .then(actionsRes =>
         {
             data = [...data, actionsRes.transactions]
