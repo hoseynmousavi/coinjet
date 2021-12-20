@@ -29,10 +29,6 @@ function getUserExchangeDataRes(req, res)
                             const deposits = depositsTemp.filter(item => item.tp === "deposit")
                             const withdraws = depositsTemp.filter(item => item.tp === "withdraw")
 
-                            console.log(depositsTemp)
-                            console.log(deposits)
-                            console.log(withdraws)
-
                             let accounts = {}
 
                             for (let i = 0; i < accountsArr.length; i++)
@@ -69,7 +65,6 @@ function getUserExchangeDataRes(req, res)
                         request.get({nobitexUserExchange: userExchange, url: nobitexConstant.getAccounts})
                             .then(accountsRes =>
                             {
-                                console.log({accountsRes})
                                 accountsTemp = accountsRes
                                 sendRes()
                             })
