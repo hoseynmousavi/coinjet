@@ -113,6 +113,7 @@ function getTransactions({userExchange})
             .then(actionsRes =>
             {
                 data = [...data, ...actionsRes.transactions]
+                console.log(actionsRes.hasNext)
                 if (actionsRes.hasNext)
                 {
                     page++
