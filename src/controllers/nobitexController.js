@@ -111,13 +111,16 @@ function getTransactions({userExchange})
             .then(actionsRes =>
             {
                 data = [...data, ...actionsRes.transactions]
-                console.log(data)
                 if (actionsRes.hasNext)
                 {
                     page++
                     getData(resolve)
                 }
-                else resolve(data)
+                else
+                {
+                    console.log(data)
+                    resolve(data)
+                }
             })
             .catch(err => console.log(err?.response?.data))
     }
