@@ -29,6 +29,8 @@ function getUserExchangeDataRes(req, res)
                             const deposits = depositsTemp.filter(item => item.tp === "deposit")
                             const withdraws = depositsTemp.filter(item => item.tp === "withdraw")
 
+                            console.log(deposits)
+
                             let accounts = {}
 
                             for (let i = 0; i < accountsArr.length; i++)
