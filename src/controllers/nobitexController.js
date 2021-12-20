@@ -91,30 +91,39 @@ function getUserExchangeDataRes(req, res)
                                 sendRes()
                             })
 
-                        getTransactions({userExchange, sendRes, depositsTemp})
+                        getTransactions({userExchange})
+                            .then(depositsRes =>
+                            {
+                                depositsTemp = depositsRes
+                                sendRes()
+                            })
                     }
                     else res.status(400).send({message: resConstant.noFound})
                 })
         })
 }
 
-function getTransactions({userExchange, sendRes, depositsTemp, data = [], page = 1})
+function getTransactions({userExchange})
 {
-    request.post({nobitexUserExchange: userExchange, url: nobitexConstant.transactionsHistory, data: {page}})
-        .then(actionsRes =>
-        {
-            data = [...data, actionsRes.transactions]
-            if (actionsRes.hasNext)
+    let page = 1
+    let data = []
+
+    function getData(resolve)
+    {
+        request.post({nobitexUserExchange: userExchange, url: nobitexConstant.transactionsHistory, data: {page}})
+            .then(actionsRes =>
             {
-                page++
-                getTransactions({userExchange, sendRes, depositsTemp, data, page})
-            }
-            else
-            {
-                depositsTemp = data
-                sendRes()
-            }
-        })
+                data = [...data, actionsRes.transactions]
+                if (actionsRes.hasNext)
+                {
+                    page++
+                    getData(resolve)
+                }
+                else resolve(data)
+            })
+    }
+
+    return new Promise(resolve => getData(resolve))
 }
 
 const nobitexController = {
