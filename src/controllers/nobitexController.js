@@ -55,7 +55,7 @@ function getUserExchangeDataRes(req, res)
                                 :
                                 (allProfitOrShitPercent - 1) * 100
 
-                            res.send({accounts, prices, allBalance, allProfitOrShit, allProfitOrShitPercentTotal})
+                            res.send({accounts, prices, allBalance, allProfitOrShit, allProfitOrShitPercentTotal, deposits, withdraws})
                         }
                     }
 
@@ -116,11 +116,7 @@ function getTransactions({userExchange})
                     page++
                     getData(resolve)
                 }
-                else
-                {
-                    console.log(data)
-                    resolve(data)
-                }
+                else resolve(data)
             })
             .catch(err => console.log(err?.response?.data))
     }
