@@ -69,6 +69,7 @@ function getUserExchangeDataRes(req, res)
                         request.get({nobitexUserExchange: userExchange, url: nobitexConstant.getAccounts})
                             .then(accountsRes =>
                             {
+                                console.log({accountsRes})
                                 accountsTemp = accountsRes
                                 sendRes()
                             })
