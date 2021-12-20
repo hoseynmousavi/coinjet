@@ -26,8 +26,8 @@ function getUserExchangeDataRes(req, res)
                         {
                             const accountsArr = accountsTemp.wallets
                             const prices = {...pricesTemp.data, "RLS": 1 / usdtPrice}
-                            const deposits = depositsTemp.filter(item => item.type === "واریز")
-                            const withdraws = depositsTemp.filter(item => item.type === "برداشت")
+                            const deposits = depositsTemp.filter(item => item.tp === "deposit")
+                            const withdraws = depositsTemp.filter(item => item.tp === "withdraw")
 
                             console.log(depositsTemp)
                             console.log(deposits)
