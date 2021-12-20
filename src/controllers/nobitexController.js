@@ -92,6 +92,7 @@ function getUserExchangeDataRes(req, res)
                             .then(depositsRes =>
                             {
                                 depositsTemp = depositsRes
+                                console.log(depositsRes)
                                 sendRes()
                             })
                     }
