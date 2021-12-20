@@ -92,7 +92,8 @@ function getUserExchangeDataRes(req, res)
                             .then(depositsRes =>
                             {
                                 depositsTemp = depositsRes
-                                console.log(depositsRes)
+                                console.log(depositsRes.filter(item => item.tp === "deposit").length)
+                                console.log(depositsRes.filter(item => item.tp === "withdraw").length)
                                 sendRes()
                             })
                     }
