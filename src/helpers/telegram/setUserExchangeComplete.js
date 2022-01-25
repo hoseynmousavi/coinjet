@@ -3,8 +3,9 @@ import userExchangeController from "../../controllers/userExchangeController"
 import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 
-function setUserExchangeComplete({message_id, from, chat, data})
+function setUserExchangeComplete({message_id, from, chat, text})
 {
+    const data = text.trim().replace(/ /g, "").split(",")
     const {id: telegram_id} = from
     const {id: telegram_chat_id} = chat
     userController.getUserByTelegramId({telegram_id})

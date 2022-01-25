@@ -39,7 +39,6 @@ function requestMiddleWareRes(req, res)
 }
 
 const kucoinController = {
-    getAccounts,
     requestMiddleWareRes,
 }
 

@@ -1,4 +1,3 @@
-import exchangeController from "../../controllers/exchangeController"
 import telegramConstant from "../../constants/telegramConstant"
 import signUpUser from "../user/signUpUser"
 import sendTelegramMessage from "./sendTelegramMessage"

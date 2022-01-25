@@ -18,8 +18,4 @@ exchangeRouter(app)
 kucoinRouter(app)
 telegramRouter(app)
 
-// kucoinController.getAccounts()
-//     .then(res => console.log("res", res))
-//     .catch(err => console.log("err", err.response.data))
-
 app.listen(data.port, () => console.log(`coinjet is Now Running on Port ${data.port}`))
