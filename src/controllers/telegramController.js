@@ -30,11 +30,10 @@ function handlePvChat({message})
     }
 }
 
-function handleChannelChat({message, channel_post})
+function handleChannelChat({channel_post})
 {
     // const {message_id, author_signature, chat, text} = channel_post
     console.log({
-        message,
         channel_post,
     })
 }

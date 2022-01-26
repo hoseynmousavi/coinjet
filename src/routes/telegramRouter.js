@@ -8,7 +8,7 @@ function rootRouter(app)
         {
             const {message, channel_post} = req.body || {}
             if (message) telegramController.handlePvChat({message})
-            else if (channel_post) telegramController.handleChannelChat({message, channel_post})
+            else if (channel_post) telegramController.handleChannelChat({channel_post})
 
             res.send({message: "OK"})
         })
