@@ -18,6 +18,7 @@ const telegramConstant = {
     noUnCompletedExchange: "اطلاعات حساب صرافی‌های شما از قبل کامل است.",
     repeatedUserExchangeName: "نامی که انتخاب کردید تکراری است. نام دیگری انتخاب کنید.",
     notOk: "مفهوم پیام شما نامشخص است!",
+    unsupportedWay: "پیام شما در محیطی است که ما فعلا ساپورت نمیکنیم.",
     removeExchange: "Remove: ",
 }
 

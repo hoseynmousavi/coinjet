@@ -1,6 +1,4 @@
 import routeConstant from "../constants/routeConstant"
-import data from "../data"
-import axios from "axios"
 import telegramController from "../controllers/telegramController"
 
 function rootRouter(app)
@@ -9,15 +7,9 @@ function rootRouter(app)
         .post((req, res) =>
         {
             const {message, channel_post} = req.body || {}
-            if (message) telegramController.handlePvChat(message)
-            else if (channel_post)
-            {
-                const {message_id, author_signature, chat, text} = channel_post
-                if (message_id && author_signature && chat && text)
-                {
+            if (message) telegramController.handlePvChat({message})
+            else if (channel_post) telegramController.handleChannelChat({message, channel_post})
 
-                }
-            }
             res.send({message: "OK"})
         })
 }
