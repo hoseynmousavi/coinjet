@@ -32,10 +32,8 @@ function handlePvChat({message})
 
 function handleChannelChat({channel_post})
 {
-    // const {message_id, author_signature, chat, text} = channel_post
-    console.log({
-        channel_post,
-    })
+    const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
+
 }
 
 const telegramController = {
