@@ -10,11 +10,12 @@ function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserId({user_id: user._id})
+            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: "complete"})
                 .then(userExchanges =>
                 {
                     userExchanges.forEach(item =>
                     {
+                        console.log(data, item.name)
                         if (item.name === data)
                         {
                             userExchangeController.removeUserExchangeByUserExchangeIdAndUserId({userExchangeId: item._id, user_id: user._id})
