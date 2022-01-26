@@ -23,11 +23,17 @@ function updateUserExchange({userExchangeId, update})
     return userExchangeTb.updateOne({_id: userExchangeId}, update)
 }
 
+function removeUserExchangeByUserExchangeIdAndUserId({userExchangeId, user_id})
+{
+    return userExchangeTb.deleteOne({_id: userExchangeId, user_id})
+}
+
 const userExchangeController = {
     addUserExchange,
     getUserExchangesByUserIdAndExchangeId,
     getUserExchangesByUserId,
     updateUserExchange,
+    removeUserExchangeByUserExchangeIdAndUserId,
 }
 
 export default userExchangeController

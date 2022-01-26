@@ -1,13 +1,13 @@
 import request from "../../request/request"
-import telegramConstant from "../../constants/telegramConstant"
+import telegramEndpoints from "../../constants/telegramEndpoints"
 
-function sendTelegramMessage({chat_id, text, reply_buttons, reply_to_message_id})
+function sendTelegramMessage({telegram_chat_id, text, reply_buttons, reply_to_message_id})
 {
     request.post({
         isTelegram: true,
-        url: telegramConstant.sendMessage,
+        url: telegramEndpoints.sendMessage,
         data: {
-            chat_id,
+            chat_id: telegram_chat_id,
             text,
             reply_markup: reply_buttons?.length ? {keyboard: [reply_buttons], one_time_keyboard: true, resize_keyboard: true} : undefined,
             reply_to_message_id,

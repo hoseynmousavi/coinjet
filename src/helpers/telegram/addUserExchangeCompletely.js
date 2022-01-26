@@ -3,11 +3,9 @@ import userExchangeController from "../../controllers/userExchangeController"
 import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 
-function setUserExchangeComplete({message_id, from, chat, text})
+function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
 {
     const data = text.trim().replace(/ /g, "").split(",")
-    const {id: telegram_id} = from
-    const {id: telegram_chat_id} = chat
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
@@ -21,14 +19,14 @@ function setUserExchangeComplete({message_id, from, chat, text})
                         const user_secret = data[2]
                         const user_passphrase = data[3]
                         userExchangeController.updateUserExchange({userExchangeId: userExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
-                            .then(() => sendTelegramMessage({chat_id: telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
+                            .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
                     }
                     else
                     {
-                        sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.noUnCompletedExchange, reply_to_message_id: message_id})
+                        sendTelegramMessage({telegram_chat_id, text: telegramConstant.noUnCompletedExchange, reply_to_message_id: message_id})
                     }
                 })
         })
 }
 
-export default setUserExchangeComplete
+export default addUserExchangeCompletely

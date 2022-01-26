@@ -1,17 +1,15 @@
 import telegramConstant from "../../constants/telegramConstant"
 import signUpUser from "../user/signUpUser"
 import sendTelegramMessage from "./sendTelegramMessage"
-import addExchangeTelegram from "./addExchangeTelegram"
+import promptAddExchangeTelegram from "./promptAddExchangeTelegram"
 
-function startChatPv({message_id, from, chat})
+function startChatPv({first_name, last_name, telegram_username, telegram_id, telegram_chat_id})
 {
-    const {first_name, last_name, username: telegram_username, id: telegram_id} = from
-    const {id: telegram_chat_id} = chat
     signUpUser({telegram_id, first_name, last_name, telegram_username, telegram_chat_id})
         .then(() =>
         {
-            sendTelegramMessage({chat_id: telegram_chat_id, text: telegramConstant.welcomeMsg})
-            setTimeout(() => addExchangeTelegram({telegram_chat_id}), 150)
+            sendTelegramMessage({telegram_chat_id, text: telegramConstant.welcomeMsg})
+            setTimeout(() => promptAddExchangeTelegram({telegram_chat_id}), 150)
         })
 }
 
