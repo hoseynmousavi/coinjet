@@ -15,7 +15,7 @@ function getUserExchangesByUserIdAndExchangeId({user_id, exchange_id, progress_l
 
 function getUserExchangesByUserId({user_id, progress_level})
 {
-    return userExchangeTb.find({user_id, progress_level})
+    return userExchangeTb.find({user_id, ...(progress_level ? {progress_level} : {})})
 }
 
 function updateUserExchange({userExchangeId, update})
