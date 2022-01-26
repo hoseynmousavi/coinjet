@@ -16,12 +16,10 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                     if (inProgressExchanges?.length === 1)
                     {
                         const name = data[0]
-                        console.log(userExchanges.map(item => item.name), name)
-                        console.log(!userExchanges.some(item => item === name))
                         const user_key = data[1]
                         const user_secret = data[2]
                         const user_passphrase = data[3]
-                        if (!userExchanges.some(item => item === name))
+                        if (!userExchanges.some(item => item.name === name))
                         {
                             userExchangeController.updateUserExchange({userExchangeId: inProgressExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
                                 .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
