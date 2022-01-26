@@ -15,7 +15,6 @@ function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text
                 {
                     userExchanges.forEach(item =>
                     {
-                        console.log(data, item.name)
                         if (item.name === data)
                         {
                             userExchangeController.removeUserExchangeByUserExchangeIdAndUserId({userExchangeId: item._id, user_id: user._id})
