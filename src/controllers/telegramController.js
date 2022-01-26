@@ -43,7 +43,8 @@ function handleChannelChat({channel_post})
                     .replaceAll(regexConstant.emoji, "")
                     .replaceAll(" ", "")
                     .replaceAll("\n", ",")
-                    .split(","),
+                    .split(",")
+                    .join("\n"),
             telegram_chat_id,
             reply_to_message_id: message_id,
         })
