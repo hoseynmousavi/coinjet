@@ -10,7 +10,7 @@ function addUserExchange(userExchange)
 
 function getUserExchangesByUserIdAndExchangeId({user_id, exchange_id, progress_level})
 {
-    return userExchangeTb.find({user_id, exchange_id, progress_level})
+    return userExchangeTb.find({user_id, exchange_id, ...(progress_level ? {progress_level} : {})})
 }
 
 function getUserExchangesByUserId({user_id, progress_level})
