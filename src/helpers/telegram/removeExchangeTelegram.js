@@ -6,7 +6,6 @@ import userController from "../../controllers/userController"
 function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
 {
     const data = text.replace(telegramConstant.removeExchange, "")
-
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
