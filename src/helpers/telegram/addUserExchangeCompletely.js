@@ -18,8 +18,19 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                         const user_key = data[1]
                         const user_secret = data[2]
                         const user_passphrase = data[3]
-                        userExchangeController.updateUserExchange({userExchangeId: userExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
-                            .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
+                        userExchangeController.getUserExchangesByUserId({user_id: user._id})
+                            .then(userExchanges =>
+                            {
+                                if (!userExchanges.some(item => item === name))
+                                {
+                                    userExchangeController.updateUserExchange({userExchangeId: userExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
+                                        .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
+                                }
+                                else
+                                {
+                                    sendTelegramMessage({telegram_chat_id, text: telegramConstant.repeatedUserExchangeName, reply_to_message_id: message_id})
+                                }
+                            })
                     }
                     else
                     {
