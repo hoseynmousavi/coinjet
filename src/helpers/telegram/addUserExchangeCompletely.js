@@ -21,6 +21,7 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                         userExchangeController.getUserExchangesByUserId({user_id: user._id})
                             .then(userExchanges =>
                             {
+                                console.log(userExchanges)
                                 if (!userExchanges.some(item => item === name))
                                 {
                                     userExchangeController.updateUserExchange({userExchangeId: userExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
