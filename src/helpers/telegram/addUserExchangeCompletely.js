@@ -12,7 +12,8 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
             userExchangeController.getUserExchangesByUserId({user_id: user._id})
                 .then(userExchanges =>
                 {
-                    console.log(userExchanges.map(item=>item.name))
+                    console.log(userExchanges.map(item => item.name), name)
+                    console.log(!userExchanges.some(item => item === name))
                     const inProgressExchanges = userExchanges.filter(item => item.progress_level === "in-progress")
                     if (inProgressExchanges?.length === 1)
                     {
