@@ -8,7 +8,7 @@ function promptRemoveExchangeTelegram({message_id, telegram_id, telegram_chat_id
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserId({user_id: user._id})
+            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: "complete"})
                 .then(userExchanges =>
                 {
                     if (userExchanges?.length)
