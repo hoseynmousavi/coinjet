@@ -8,6 +8,7 @@ import promptRemoveExchangeTelegram from "../helpers/telegram/promptRemoveExchan
 import addUserExchangeInProgress from "../helpers/telegram/addUserExchangeInProgress"
 import addUserExchangeCompletely from "../helpers/telegram/addUserExchangeCompletely"
 import removeExchangeTelegram from "../helpers/telegram/removeExchangeTelegram"
+import regexConstant from "../constants/regexConstant"
 
 function handlePvChat({message})
 {
@@ -33,7 +34,21 @@ function handlePvChat({message})
 function handleChannelChat({channel_post})
 {
     const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
-
+    const {type, id: telegram_chat_id} = chat
+    if (type === "channel")
+    {
+        sendTelegramMessage({
+            text:
+                text.toLowerCase()
+                    .replaceAll(regexConstant.emoji, "")
+                    .replaceAll(" ", "")
+                    .replaceAll("\n", ",")
+                    .split(","),
+            telegram_chat_id,
+            reply_to_message_id: message_id,
+        })
+    }
+    else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
 }
 
 const telegramController = {
