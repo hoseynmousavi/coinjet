@@ -23,7 +23,7 @@ function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, te
                             })
                             .catch(err =>
                             {
-                                console.log({err: err?.response?.data})
+                                console.log(err)
                             })
                     }
                     else sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.userExchange404})

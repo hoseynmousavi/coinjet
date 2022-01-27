@@ -26,7 +26,6 @@ function requestMiddleWareRes(req, res)
 
 function getFutureAccountOverview({userExchange})
 {
-    console.log(userExchange)
     return request.get({
         url: kucoinConstant.future.accountOverview,
         isKucoinFuture: true,
