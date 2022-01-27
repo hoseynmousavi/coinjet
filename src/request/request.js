@@ -4,6 +4,7 @@ import kuCoinHeaders from "./kuCoinHeaders"
 
 function get({kuCoinUserExchange, isKuCoin, isKucoinFuture, isTelegram, url, param = ""})
 {
+    console.log(kuCoinUserExchange && kuCoinHeaders({url, method: "GET", userExchange: kuCoinUserExchange}))
     return axios.get(
         urlMaker({isKuCoin, isKucoinFuture, isTelegram, url, param}),
         {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "GET", userExchange: kuCoinUserExchange})},
