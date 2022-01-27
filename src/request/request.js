@@ -2,10 +2,10 @@ import axios from "axios"
 import urlMaker from "./urlMaker"
 import kuCoinHeaders from "./kuCoinHeaders"
 
-function get({kuCoinUserExchange, isTelegram, url, param = ""})
+function get({kuCoinUserExchange, isKuCoin, isKucoinFuture, isTelegram, url, param = ""})
 {
     return axios.get(
-        urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}),
+        urlMaker({isKuCoin, isKucoinFuture, isTelegram, url, param}),
         {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "GET", userExchange: kuCoinUserExchange})},
     )
         .then(res =>
@@ -18,10 +18,10 @@ function get({kuCoinUserExchange, isTelegram, url, param = ""})
         })
 }
 
-function post({kuCoinUserExchange, isTelegram, url, param = "", data})
+function post({kuCoinUserExchange, isKuCoin, isKucoinFuture, isTelegram, url, param = "", data})
 {
     return axios.post(
-        urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}),
+        urlMaker({isKuCoin, isKucoinFuture, isTelegram, url, param}),
         data,
         {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "POST", userExchange: kuCoinUserExchange, body: data})},
     )
@@ -35,10 +35,10 @@ function post({kuCoinUserExchange, isTelegram, url, param = "", data})
         })
 }
 
-function put({kuCoinUserExchange, isTelegram, url, param = "", data})
+function put({kuCoinUserExchange, isKuCoin, isKucoinFuture, isTelegram, url, param = "", data})
 {
     return axios.put(
-        urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}),
+        urlMaker({isKuCoin, isKucoinFuture, isTelegram, url, param}),
         data,
         {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "PUT", userExchange: kuCoinUserExchange, body: data})},
     )
@@ -52,10 +52,10 @@ function put({kuCoinUserExchange, isTelegram, url, param = "", data})
         })
 }
 
-function patch({kuCoinUserExchange, isTelegram, url, param = "", data})
+function patch({kuCoinUserExchange, isKuCoin, isKucoinFuture, isTelegram, url, param = "", data})
 {
     return axios.patch(
-        urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}),
+        urlMaker({isKuCoin, isKucoinFuture, isTelegram, url, param}),
         data,
         {headers: kuCoinUserExchange && kuCoinHeaders({url, method: "PATCH", userExchange: kuCoinUserExchange, body: data})},
     )
@@ -69,10 +69,10 @@ function patch({kuCoinUserExchange, isTelegram, url, param = "", data})
         })
 }
 
-function del({kuCoinUserExchange, isTelegram, url, param = "", data})
+function del({kuCoinUserExchange, isKuCoin, isKucoinFuture, isTelegram, url, param = "", data})
 {
     return axios.delete(
-        urlMaker({isKuCoin: !!kuCoinUserExchange, isTelegram, url, param}),
+        urlMaker({isKuCoin, isKucoinFuture, isTelegram, url, param}),
         {
             headers: kuCoinUserExchange && kuCoinHeaders({url, method: "DELETE", userExchange: kuCoinUserExchange, body: data}),
             data,
