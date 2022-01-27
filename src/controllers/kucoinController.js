@@ -27,8 +27,8 @@ function requestMiddleWareRes(req, res)
 function getFutureAccountOverview({userExchange})
 {
     return request.get({
-        url: kucoinConstant.spot.getAccounts,
-        isKuCoin: true,
+        url: kucoinConstant.future.accountOverview,
+        isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
     })
 }
