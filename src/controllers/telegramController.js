@@ -9,6 +9,7 @@ import addUserExchangeInProgress from "../helpers/telegram/addUserExchangeInProg
 import addUserExchangeCompletely from "../helpers/telegram/addUserExchangeCompletely"
 import removeExchangeTelegram from "../helpers/telegram/removeExchangeTelegram"
 import regexConstant from "../constants/regexConstant"
+import overviewExchangeTelegram from "../helpers/telegram/overviewExchangeTelegram"
 
 function handlePvChat({message})
 {
@@ -25,6 +26,7 @@ function handlePvChat({message})
             else if (text.split(",").length === 4) addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
             else if (text === telegramCommands.removeExchange) promptRemoveExchangeTelegram({message_id, telegram_id, telegram_chat_id})
             else if (text.includes(telegramConstant.removeExchange)) removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
+            else if (text.includes(telegramConstant.overviewExchange)) overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})

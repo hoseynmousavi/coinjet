@@ -2,10 +2,11 @@ import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 import userExchangeController from "../../controllers/userExchangeController"
 import userController from "../../controllers/userController"
+import kucoinController from "../../controllers/kucoinController"
 
-function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
+function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
 {
-    const data = text.replace(telegramConstant.removeExchange, "")
+    const data = text.replace(telegramConstant.overviewExchange, "")
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
@@ -15,13 +16,19 @@ function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text
                     const item = userExchanges.filter(item => item.name === data)[0]
                     if (item)
                     {
-                        userExchangeController.removeUserExchangeByUserExchangeIdAndUserId({userExchangeId: item._id, user_id: user._id})
-                            .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.removeUserExchangeDone}))
-                            .catch(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.removeUserExchangeErr}))
+                        kucoinController.getFutureAccountOverview({userExchange: item})
+                            .then(res =>
+                            {
+                                console.log({res})
+                            })
+                            .catch(err =>
+                            {
+                                console.log({err})
+                            })
                     }
                     else sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.userExchange404})
                 })
         })
 }
 
-export default removeExchangeTelegram
+export default overviewExchangeTelegram
