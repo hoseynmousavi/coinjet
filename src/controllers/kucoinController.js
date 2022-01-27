@@ -1,13 +1,14 @@
 import request from "../request/request"
 import kucoinConstant from "../constants/kucoinConstant"
 import userExchangeController from "./userExchangeController"
+import userExchangeConstant from "../constants/userExchangeConstant"
 
 function requestMiddleWareRes(req, res)
 {
     const {user_id, url, method, data} = req.body || {}
     if (user_id && url && method)
     {
-        userExchangeController.getUserExchangesByUserId({user_id, progress_level: "complete"})
+        userExchangeController.getUserExchangesByUserId({user_id, progress_level: userExchangeConstant.progress_level.complete})
             .then(userExchanges =>
             {
                 request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKuCoin: true, kuCoinUserExchange: userExchanges[0], data})

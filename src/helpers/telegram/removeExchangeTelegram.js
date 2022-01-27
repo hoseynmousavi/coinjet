@@ -2,6 +2,7 @@ import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 import userExchangeController from "../../controllers/userExchangeController"
 import userController from "../../controllers/userController"
+import userExchangeConstant from "../../constants/userExchangeConstant"
 
 function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
 {
@@ -9,7 +10,7 @@ function removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: "complete"})
+            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: userExchangeConstant.progress_level.complete})
                 .then(userExchanges =>
                 {
                     const item = userExchanges.filter(item => item.name === data)[0]

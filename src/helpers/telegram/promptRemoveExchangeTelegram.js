@@ -2,13 +2,14 @@ import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 import userExchangeController from "../../controllers/userExchangeController"
 import userController from "../../controllers/userController"
+import userExchangeConstant from "../../constants/userExchangeConstant"
 
 function promptRemoveExchangeTelegram({message_id, telegram_id, telegram_chat_id})
 {
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: "complete"})
+            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: userExchangeConstant.progress_level.complete})
                 .then(userExchanges =>
                 {
                     if (userExchanges?.length)

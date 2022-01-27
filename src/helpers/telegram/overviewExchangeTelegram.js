@@ -3,6 +3,7 @@ import telegramConstant from "../../constants/telegramConstant"
 import userExchangeController from "../../controllers/userExchangeController"
 import userController from "../../controllers/userController"
 import kucoinController from "../../controllers/kucoinController"
+import userExchangeConstant from "../../constants/userExchangeConstant"
 
 function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
 {
@@ -10,7 +11,7 @@ function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, te
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
-            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: "complete"})
+            userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: userExchangeConstant.progress_level.complete})
                 .then(userExchanges =>
                 {
                     const item = userExchanges.filter(item => item.name === data)[0]

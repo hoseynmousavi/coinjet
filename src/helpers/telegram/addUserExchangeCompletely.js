@@ -2,6 +2,7 @@ import userController from "../../controllers/userController"
 import userExchangeController from "../../controllers/userExchangeController"
 import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
+import userExchangeConstant from "../../constants/userExchangeConstant"
 
 function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
 {
@@ -12,7 +13,7 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
             userExchangeController.getUserExchangesByUserId({user_id: user._id})
                 .then(userExchanges =>
                 {
-                    const inProgressExchanges = userExchanges.filter(item => item.progress_level === "in-progress")
+                    const inProgressExchanges = userExchanges.filter(item => item.progress_level === userExchangeConstant.progress_level.inProgress)
                     if (inProgressExchanges?.length === 1)
                     {
                         const name = data[0]
@@ -21,7 +22,7 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                         const user_passphrase = data[3]
                         if (!userExchanges.some(item => item.name === name))
                         {
-                            userExchangeController.updateUserExchange({userExchangeId: inProgressExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: "complete"}})
+                            userExchangeController.updateUserExchange({userExchangeId: inProgressExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete}})
                                 .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
                         }
                         else

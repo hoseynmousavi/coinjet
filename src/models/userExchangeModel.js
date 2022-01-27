@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import userExchangeConstant from "../constants/userExchangeConstant"
 
 const schema = mongoose.Schema
 
@@ -12,6 +13,10 @@ const userExchangeModel = new schema({
         index: true,
         type: schema.Types.ObjectId,
         required: "enter exchange_id!",
+    },
+    is_futures: {
+        type: Boolean,
+        required: "enter is_futures!",
     },
     name: {
         type: String,
@@ -27,7 +32,7 @@ const userExchangeModel = new schema({
     },
     progress_level: {
         type: String,
-        enum: ["complete", "in-progress"],
+        enum: [userExchangeConstant.progress_level.inProgress, userExchangeConstant.progress_level.complete],
         required: "Enter progress_level!",
     },
     created_date: {

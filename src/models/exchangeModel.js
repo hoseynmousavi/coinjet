@@ -8,6 +8,10 @@ const exchangeModel = new schema({
         type: String,
         required: "enter name!",
     },
+    have_futures: {
+        type: Boolean,
+        required: "enter have_futures!",
+    },
     created_date: {
         type: Date,
         default: Date.now,
