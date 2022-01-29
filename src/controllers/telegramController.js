@@ -11,6 +11,14 @@ import removeExchangeTelegram from "../helpers/telegram/removeExchangeTelegram"
 import regexConstant from "../constants/regexConstant"
 import overviewExchangeTelegram from "../helpers/telegram/overviewExchangeTelegram"
 
+function getMessage(req, res)
+{
+    const {message, channel_post} = req.body || {}
+    if (message) handlePvChat({message})
+    else if (channel_post) handleChannelChat({channel_post})
+    res.send({message: "OK"})
+}
+
 function handlePvChat({message})
 {
     const {message_id, from, chat, text} = message
@@ -56,8 +64,7 @@ function handleChannelChat({channel_post})
 }
 
 const telegramController = {
-    handlePvChat,
-    handleChannelChat,
+    getMessage,
 }
 
 export default telegramController
