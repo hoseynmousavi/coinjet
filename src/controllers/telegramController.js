@@ -21,9 +21,8 @@ function getMessage(req, res)
 
 function handlePvChat({message})
 {
-    console.log(message)
-    const {message_id, from, chat, text} = message
-    if (message_id && from && chat && text)
+    const {message_id, from, chat, date, text} = message
+    if (message_id && from && chat && date && text)
     {
         const {is_bot, first_name, last_name, username: telegram_username, id: telegram_id} = from
         const {type, id: telegram_chat_id} = chat
