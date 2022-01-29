@@ -3,7 +3,7 @@ const kucoinConstant = {
         getAccounts: "/api/v1/accounts",
     },
     future: {
-        accountOverview: "/api/v1/account-overview",
+        accountOverview: "/api/v1/account-overview?currency=USDT",
     },
 }
 
