@@ -14,7 +14,7 @@ function promptRemoveExchangeTelegram({message_id, telegram_id, telegram_chat_id
                 {
                     if (userExchanges?.length)
                     {
-                        sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.chooseExchanges, reply_buttons: userExchanges.map(item => ({text: telegramConstant.removeExchange + item.name}))})
+                        sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.chooseExchangesForRemove, reply_buttons: userExchanges.map(item => ({text: telegramConstant.removeExchange + item.name}))})
                     }
                     else
                     {

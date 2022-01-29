@@ -9,7 +9,7 @@ function startChatPv({first_name, last_name, telegram_username, telegram_id, tel
         .then(() =>
         {
             sendTelegramMessage({telegram_chat_id, text: telegramConstant.welcomeMsg})
-            setTimeout(() => promptAddExchangeTelegram({telegram_chat_id}), 150)
+            setTimeout(() => promptAddExchangeTelegram({telegram_chat_id, isWelcome: true}), 150)
         })
 }
 
