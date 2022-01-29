@@ -14,7 +14,6 @@ const telegramConstant = {
         "Name, API Key, API Secret, API Passphrase\n" +
         "مثال:\n" +
         "MyKuCoin, 92640192872398752395, 9w8fysdfoghdf, cocococo",
-    alreadySettingExchange: "شما هم اکنون یک حساب صرافی ناقص دارید! می‌توانید حساب خود را کامل کنید\n",
     exchangeCompleted: "اطلاعات شما با موفقیت ثبت شد.\nHappy Trading 🙂",
     noUnCompletedExchange: "اطلاعات حساب صرافی‌های شما از قبل کامل است.",
     repeatedUserExchangeName: "نامی که انتخاب کردید تکراری است. نام دیگری انتخاب کنید.",
@@ -22,6 +21,8 @@ const telegramConstant = {
     unsupportedWay: "پیام شما در محیطی است که ما فعلا ساپورت نمیکنیم.",
     removeExchange: "Remove: ",
     overviewExchange: "Overview: ",
+    userExchangeSpot: " (spot)",
+    userExchangeFutures: " (futures)",
 }
 
 export default telegramConstant

@@ -13,7 +13,7 @@ function promptAddExchangeTelegram({telegram_chat_id, message_id})
                     telegram_chat_id,
                     reply_to_message_id: message_id,
                     text: telegramConstant.chooseExchanges,
-                    reply_buttons: exchanges.reduce((sum, item) => item.have_futures ? [...sum, {text: item.name + " (spot)"}, {text: item.name + " (futures)"}] : [...sum, {text: item.name + " (spot)"}], []),
+                    reply_buttons: exchanges.reduce((sum, item) => item.have_futures ? [...sum, {text: item.name + telegramConstant.userExchangeSpot}, {text: item.name + telegramConstant.userExchangeFutures}] : [...sum, {text: item.name + telegramConstant.userExchangeSpot}], []),
                 })
             }
         })
