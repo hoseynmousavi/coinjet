@@ -21,6 +21,7 @@ function getMessage(req, res)
 
 function handlePvChat({message})
 {
+    console.log(message)
     const {message_id, from, chat, text} = message
     if (message_id && from && chat && text)
     {
@@ -45,22 +46,25 @@ function handleChannelChat({channel_post})
 {
     console.log(channel_post)
     const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
-    const {type, id: telegram_chat_id} = chat
-    if (type === "channel")
+    if (message_id && sender_chat && chat && date && text)
     {
-        sendTelegramMessage({
-            text:
-                text.toLowerCase()
-                    .replaceAll(regexConstant.emoji, "")
-                    .replaceAll(" ", "")
-                    .replaceAll("\n", ",")
-                    .split(",")
-                    .join("\n"),
-            telegram_chat_id,
-            reply_to_message_id: message_id,
-        })
+        const {type, id: telegram_chat_id} = chat
+        if (type === "channel")
+        {
+            sendTelegramMessage({
+                text:
+                    text.toLowerCase()
+                        .replaceAll(regexConstant.emoji, "")
+                        .replaceAll(" ", "")
+                        .replaceAll("\n", ",")
+                        .split(",")
+                        .join("\n"),
+                telegram_chat_id,
+                reply_to_message_id: message_id,
+            })
+        }
+        else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
     }
-    else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
 }
 
 const telegramController = {
