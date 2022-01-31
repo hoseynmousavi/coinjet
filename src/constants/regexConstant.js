@@ -4,7 +4,7 @@ const regexConstant = {
     leverage: /leverage:(\d*)x/,
     entry: /entry:(\d|\.|-)*/,
     target: /target:(\d|\.|-)*/,
-    stop: /stop:(\d*)/,
+    stop: /stop:(\d|\.)*/,
 }
 
 export default regexConstant
