@@ -51,7 +51,7 @@ function handleChannelChat({channel_post})
         if (type === "channel")
         {
             const message = text.toLowerCase().replaceAll(regexConstant.emoji, "").replaceAll(" ", "").replaceAll("\n", " ")
-            const isSignal = false
+            let isSignal = false
             let isShort, isFutures, pair, leverage, entry, target, stop = null
             if (message.includes("short") || message.includes("long")) isShort = message.includes("short")
             if (message.includes("spot") || message.includes("futures")) isFutures = message.includes("futures")
@@ -60,6 +60,8 @@ function handleChannelChat({channel_post})
             entry = message.match(regexConstant.entry)?.[0]?.replace("entry:", "")
             target = message.match(regexConstant.target)?.[0]?.replace("target:", "")
             stop = message.match(regexConstant.stop)?.[0]?.replace("stop:", "")
+
+            if (pair && entry && stop && target) isSignal = true
 
             sendTelegramMessage({
                 telegram_chat_id,
