@@ -50,16 +50,29 @@ function handleChannelChat({channel_post})
         const {type, id: telegram_chat_id} = chat
         if (type === "channel")
         {
+            const message = text.toLowerCase().replaceAll(regexConstant.emoji, "").replaceAll(" ", "").replaceAll("\n", " ")
+            const isSignal = false
+            let isShort, isFutures, pair, leverage, entry, target, stop = null
+            if (message.includes("short") || message.includes("long")) isShort = message.includes("short")
+            if (message.includes("spot") || message.includes("futures")) isFutures = message.includes("futures")
+            pair = message.match(regexConstant.pair)?.[0]?.replace("pair:", "")
+            leverage = message.match(regexConstant.leverage)?.[0]?.replace("leverage:", "")
+            entry = message.match(regexConstant.entry)?.[0]?.replace("entry:", "")
+            target = message.match(regexConstant.target)?.[0]?.replace("target:", "")
+            stop = message.match(regexConstant.stop)?.[0]?.replace("stop:", "")
+
             sendTelegramMessage({
-                text:
-                    text.toLowerCase()
-                        .replaceAll(regexConstant.emoji, "")
-                        .replaceAll(" ", "")
-                        .replaceAll("\n", ",")
-                        .split(",")
-                        .join("\n"),
                 telegram_chat_id,
                 reply_to_message_id: message_id,
+                text: JSON.stringify({
+                    isSignal,
+                    isFutures,
+                    pair,
+                    leverage,
+                    entry,
+                    target,
+                    stop,
+                }),
             })
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
