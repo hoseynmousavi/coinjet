@@ -50,7 +50,11 @@ function handleChannelChat({channel_post})
         const {type, id: telegram_chat_id} = chat
         if (type === "channel")
         {
-            const message = text.toLowerCase().replaceAll(regexConstant.emoji, "").replaceAll(" ", "").replaceAll("\n", " ")
+            const message = text.toLowerCase()
+                .replaceAll(regexConstant.emoji, "")
+                .replaceAll("#", "")
+                .replaceAll(" ", "")
+                .replaceAll("\n", " ")
             let isSignal = false
             let isShort, isFutures, pair, leverage, entry, target, stop = null
             if (message.includes("short") || message.includes("long")) isShort = message.includes("short")
