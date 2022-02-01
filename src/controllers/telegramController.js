@@ -43,7 +43,6 @@ function handlePvChat({message})
 
 function handleChannelChat({channel_post})
 {
-    console.log(channel_post)
     const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
     if (message_id && sender_chat && chat && date && text)
     {
@@ -65,7 +64,7 @@ function handleChannelChat({channel_post})
             target = message.match(regexConstant.target)?.[0]?.replace("target:", "")
             stop = message.match(regexConstant.stop)?.[0]?.replace("stop:", "")
 
-            if (pair && entry && stop && target) isSignal = true
+            if ((isFutures === false || (isFutures === true && isShort !== null && leverage)) && pair && entry && target && stop) isSignal = true
 
             sendTelegramMessage({
                 telegram_chat_id,
