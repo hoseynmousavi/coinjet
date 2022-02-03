@@ -10,6 +10,7 @@ import addUserExchangeCompletely from "../helpers/telegram/addUserExchangeComple
 import removeExchangeTelegram from "../helpers/telegram/removeExchangeTelegram"
 import regexConstant from "../constants/regexConstant"
 import overviewExchangeTelegram from "../helpers/telegram/overviewExchangeTelegram"
+import signalController from "./signalController"
 
 function getMessage(req, res)
 {
@@ -54,31 +55,32 @@ function handleChannelChat({channel_post})
                 .replaceAll("#", "")
                 .replaceAll(" ", "")
                 .replaceAll("\n", " ")
-            let isSignal = false
-            let isShort, isFutures, pair, leverage, entry, target, stop = null
-            if (message.includes("short") || message.includes("long")) isShort = message.includes("short")
-            if (message.includes("spot") || message.includes("futures")) isFutures = message.includes("futures")
+            let is_short, is_future, pair, leverage, entry, target, stop = null
+            if (message.includes("short") || message.includes("long")) is_short = message.includes("short")
+            if (message.includes("spot") || message.includes("futures")) is_future = message.includes("futures")
             pair = message.match(regexConstant.pair)?.[0]?.replace("pair:", "")
             leverage = message.match(regexConstant.leverage)?.[0]?.replace("leverage:", "")
-            entry = message.match(regexConstant.entry)?.[0]?.replace("entry:", "")
-            target = message.match(regexConstant.target)?.[0]?.replace("target:", "")
+            entry = message.match(regexConstant.entry)?.[0]?.replace("entry:", "").split("-")
+            target = message.match(regexConstant.target)?.[0]?.replace("target:", "").split("-")
             stop = message.match(regexConstant.stop)?.[0]?.replace("stop:", "")
 
-            if ((isFutures === false || (isFutures === true && isShort !== null && leverage)) && pair && entry && target && stop) isSignal = true
+            if ((is_future === false || (is_future === true && is_short !== null && leverage)) && pair && entry && target && stop)
+            {
+                signalController.addSignal({message, pair, stop, entry, target, is_future, is_short, leverage})
 
-            sendTelegramMessage({
-                telegram_chat_id,
-                reply_to_message_id: message_id,
-                text: JSON.stringify({
-                    isSignal,
-                    isFutures,
-                    pair,
-                    leverage,
-                    entry,
-                    target,
-                    stop,
-                }),
-            })
+                sendTelegramMessage({
+                    telegram_chat_id,
+                    reply_to_message_id: message_id,
+                    text: JSON.stringify({
+                        is_future,
+                        pair,
+                        leverage,
+                        entry,
+                        target,
+                        stop,
+                    }),
+                })
+            }
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
     }
