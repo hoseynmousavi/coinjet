@@ -10,7 +10,6 @@ function addOrder(order)
 
 function removeOrder({order_id})
 {
-    console.log(order_id)
     return orderTb.deleteOne({_id: order_id})
 }
 
