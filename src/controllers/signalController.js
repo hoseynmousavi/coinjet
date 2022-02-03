@@ -52,7 +52,7 @@ function addSignal(signal)
                                                     },
                                                 })
                                                     .then(res => console.log({res}))
-                                                    .catch(err => console.error({err}))
+                                                    .catch(err => console.error({err: err?.response?.data}))
                                             })
                                     })
                                 })
