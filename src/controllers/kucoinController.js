@@ -43,7 +43,7 @@ function createFutureOrder({userExchange, order: {clientOid, side, symbol, lever
         kuCoinUserExchange: userExchange,
         data: {
             remark: "coinjet bot added this", stopPriceType: "TP",
-            clientOid, side, symbol: "BTCUSDT", leverage, stop, stopPrice, price, size,
+            clientOid, side, symbol: "BTC/USDT", leverage, stop, stopPrice, price, size,
         },
     })
 }
