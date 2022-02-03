@@ -66,6 +66,7 @@ function handleChannelChat({channel_post})
 
             if ((is_futures === false || (is_futures === true && is_short !== null && leverage)) && pair && entry && target && stop)
             {
+                console.log("HERE WE ARE")
                 signalController.addSignal({message, pair, stop, entry, target, is_futures, is_short, leverage})
 
                 sendTelegramMessage({
@@ -81,6 +82,7 @@ function handleChannelChat({channel_post})
                     }),
                 })
             }
+            else console.log({is_futures, pair, leverage, entry, target, stop})
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
     }
