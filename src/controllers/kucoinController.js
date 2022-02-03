@@ -37,14 +37,13 @@ function getFutureAccountOverview({userExchange})
 
 function createFutureOrder({userExchange, order: {clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
 {
-    console.log(symbol.replace("/", ""))
     return request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
         data: {
             remark: "coinjet bot added this", stopPriceType: "TP",
-            clientOid, side, symbol: symbol.replace("/", ""), leverage, stop, stopPrice, price, size,
+            clientOid, side, symbol, leverage, stop, stopPrice, price, size,
         },
     })
 }
