@@ -44,7 +44,7 @@ function createFutureOrder({userExchange, order: {clientOid, side, symbol, lever
         data: {
             reduceOnly: false, closeOrder: false, forceHold: false, hidden: false, iceberg: false,
             postOnly: false, type: "limit", remark: "coinjet bot added this", stopPriceType: "TP",
-            clientOid, side, symbol: symbol.replace("/", ""), leverage, stop, stopPrice, price, size,
+            clientOid, side, symbol:symbol, leverage, stop, stopPrice, price, size,
         },
     })
 }
