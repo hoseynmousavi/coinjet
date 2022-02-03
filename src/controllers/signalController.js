@@ -55,7 +55,9 @@ function addSignal(signal)
                                                     .catch(err =>
                                                     {
                                                         console.error({error: err, err: err?.response?.data})
-                                                        orderController.removeOrder({order_id: order._id}).catch(fuck => console.log(fuck))
+                                                        orderController.removeOrder({order_id: order._id})
+                                                            .then(yes => console.log(yes))
+                                                            .catch(fuck => console.log(fuck))
                                                     })
                                             })
                                     })
