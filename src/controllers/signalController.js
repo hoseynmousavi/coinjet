@@ -47,6 +47,8 @@ function addSignal(signal)
                                                         leverage: addedSignal.leverage,
                                                         stop: addedSignal.is_short ? "up" : "down",
                                                         stopPrice: addedSignal.stop,
+                                                        price: item,
+                                                        size: useForEachEntry,
                                                     },
                                                 })
                                                     .then(res => console.log({res}))
