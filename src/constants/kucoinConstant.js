@@ -4,6 +4,7 @@ const kucoinConstant = {
     },
     future: {
         accountOverview: "/api/v1/account-overview?currency=USDT",
+        order: "/api/v1/orders",
     },
 }
 

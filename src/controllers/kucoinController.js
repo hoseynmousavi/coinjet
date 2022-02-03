@@ -35,9 +35,23 @@ function getFutureAccountOverview({userExchange})
         .then(res => res.data)
 }
 
+function createFutureOrder({userExchange, order: {clientOid, side, symbol, leverage, stop, stopPrice}})
+{
+    return request.post({
+        url: kucoinConstant.future.order,
+        isKucoinFuture: true,
+        kuCoinUserExchange: userExchange,
+        data: {
+            type: "limit", remark: "coinjet bot added this", stopPriceType: "TP",
+            clientOid, side, symbol, leverage, stop, stopPrice,
+        },
+    })
+}
+
 const kucoinController = {
     requestMiddleWareRes,
     getFutureAccountOverview,
+    createFutureOrder,
 }
 
 export default kucoinController

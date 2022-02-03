@@ -24,10 +24,8 @@ function addSignal(signal)
                                 {
                                     const {availableBalance} = res || {}
                                     const useForEachEntry = Math.floor(availableBalance / addedSignal.entry.length)
-                                    console.log("useForEachEntry: ", useForEachEntry)
                                     addedSignal.entry.forEach((item, index) =>
                                     {
-                                        console.log("entry: ", item)
                                         orderController.addOrder({
                                             user_id: userExchange.user_id,
                                             signal_id: addedSignal._id,
@@ -38,6 +36,22 @@ function addSignal(signal)
                                             entry_or_tp_index: index,
                                             is_open: true,
                                         })
+                                            .then(order =>
+                                            {
+                                                kucoinController.createFutureOrder({
+                                                    userExchange,
+                                                    order: {
+                                                        clientOid: order._id,
+                                                        side: addedSignal.is_short ? "sell" : "buy",
+                                                        symbol: addedSignal.pair,
+                                                        leverage: addedSignal.leverage,
+                                                        stop: addedSignal.is_short ? "up" : "down",
+                                                        stopPrice: addedSignal.stop,
+                                                    },
+                                                })
+                                                    .then(res => console.log({res}))
+                                                    .catch(err => console.error({err}))
+                                            })
                                     })
                                 })
                         })
