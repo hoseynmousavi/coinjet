@@ -52,7 +52,11 @@ function addSignal(signal)
                                                     },
                                                 })
                                                     .then(res => console.log({res}))
-                                                    .catch(err => console.error({error: err, err: err?.response?.data}))
+                                                    .catch(err =>
+                                                    {
+                                                        console.error({error: err, err: err?.response?.data})
+                                                        orderController.removeOrder({order_id: order._id})
+                                                    })
                                             })
                                     })
                                 })

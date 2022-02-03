@@ -42,9 +42,8 @@ function createFutureOrder({userExchange, order: {clientOid, side, symbol, lever
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
         data: {
-            reduceOnly: false, closeOrder: false, forceHold: false, hidden: false, iceberg: false,
-            postOnly: false, type: "limit", remark: "coinjet bot added this", stopPriceType: "TP",
-            clientOid, side, symbol:symbol, leverage, stop, stopPrice, price, size,
+            type: "limit", remark: "coinjet bot added this", stopPriceType: "TP",
+            clientOid, side, symbol: symbol, leverage, stop, stopPrice, price, size,
         },
     })
 }
