@@ -19,7 +19,6 @@ function addSignal(signal)
                     {
                         userExchanges.forEach(userExchange =>
                         {
-                            console.log({userExchange})
                             kucoinController.getFutureAccountOverview({userExchange})
                                 .then(res =>
                                 {
@@ -27,7 +26,6 @@ function addSignal(signal)
                                     const useForEachEntry = Math.floor(availableBalance * 0.05 / addedSignal.entry.length)
                                     addedSignal.entry.forEach((item, index) =>
                                     {
-                                        console.log({item})
                                         orderController.addOrder({
                                             user_id: userExchange.user_id,
                                             signal_id: addedSignal._id,
