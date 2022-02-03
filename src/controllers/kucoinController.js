@@ -37,7 +37,7 @@ function getFutureAccountOverview({userExchange})
 
 function createFutureOrder({userExchange, order: {clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
 {
-    console.log(symbol.replace("/").toUpperCase())
+    console.log(symbol.replace("/", "").toUpperCase())
     return request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
