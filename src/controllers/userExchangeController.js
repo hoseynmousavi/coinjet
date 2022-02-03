@@ -3,6 +3,11 @@ import userExchangeModel from "../models/userExchangeModel"
 
 const userExchangeTb = mongoose.model("user-exchange", userExchangeModel)
 
+function getUserExchanges({is_futures, progress_level})
+{
+    return userExchangeTb.find({is_futures, progress_level})
+}
+
 function addUserExchange(userExchange)
 {
     return new userExchangeTb(userExchange).save()
@@ -29,6 +34,7 @@ function removeUserExchangeByProgressLevel({progress_level, user_id})
 }
 
 const userExchangeController = {
+    getUserExchanges,
     addUserExchange,
     getUserExchangesByUserId,
     updateUserExchange,

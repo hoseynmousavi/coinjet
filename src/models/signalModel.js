@@ -23,18 +23,18 @@ const signalModel = new schema({
         type: Array,
         required: "enter target!",
     },
-    is_future: {
+    is_futures: {
         type: Boolean,
-        required: "enter is_future!",
+        required: "enter is_futures!",
     },
     is_short: {
         type: Boolean,
         required: [
             function ()
             {
-                this.is_future
+                this.is_futures
             },
-            "is_short is required if is_future is specified",
+            "is_short is required if is_futures is specified",
         ],
     },
     leverage: {
@@ -42,9 +42,9 @@ const signalModel = new schema({
         required: [
             function ()
             {
-                this.is_future
+                this.is_futures
             },
-            "leverage is required if is_future is specified",
+            "leverage is required if is_futures is specified",
         ],
     },
     created_date: {

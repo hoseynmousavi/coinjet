@@ -20,7 +20,7 @@ function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, te
                         kucoinController.getFutureAccountOverview({userExchange: item})
                             .then(res =>
                             {
-                                sendTelegramMessage({telegram_chat_id, text: res.data})
+                                sendTelegramMessage({telegram_chat_id, text: res})
                             })
                             .catch(err =>
                             {

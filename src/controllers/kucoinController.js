@@ -32,6 +32,7 @@ function getFutureAccountOverview({userExchange})
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
     })
+        .then(res => res.data)
 }
 
 const kucoinController = {
