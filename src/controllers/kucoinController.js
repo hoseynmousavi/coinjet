@@ -37,6 +37,7 @@ function getFutureAccountOverview({userExchange})
 
 function createFutureOrder({userExchange, order: {clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
 {
+    console.log(price, size)
     return request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
