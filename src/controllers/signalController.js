@@ -23,7 +23,7 @@ function addSignal(signal)
                                 .then(res =>
                                 {
                                     const {availableBalance} = res || {}
-                                    const useForEachEntry = Math.floor(availableBalance * 0.05 / addedSignal.entry.length)
+                                    const useForEachEntry = Math.floor(availableBalance * 0.5 / addedSignal.entry.length)
                                     addedSignal.entry.forEach((item, index) =>
                                     {
                                         orderController.addOrder({
