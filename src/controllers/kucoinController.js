@@ -35,16 +35,17 @@ function getFutureAccountOverview({userExchange})
         .then(res => res.data)
 }
 
-function createFutureOrder({userExchange, order: {clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
+function createFutureOrder({userExchange, order: {clientOid, side, pair, leverage, stop, stopPrice, price, size}})
 {
-    console.log({price, size, symbol: symbol.replace("/", "")})
+    const symbol = pair.replace("/") + "m"
+    console.log({symbol})
     return request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
         data: {
             remark: "coinjet bot added this", stopPriceType: "TP",
-            clientOid, side, symbol: symbol.replace("/", ""), leverage, stop, stopPrice, price, size,
+            clientOid, side, symbol, leverage, stop, stopPrice, price, size,
         },
     })
 }

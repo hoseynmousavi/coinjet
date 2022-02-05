@@ -23,7 +23,7 @@ function addSignal(signal)
                                 .then(res =>
                                 {
                                     const {availableBalance} = res || {}
-                                    const useForEachEntry = Math.floor(availableBalance * 0.5 / addedSignal.entry.length)
+                                    const useForEachEntry = Math.floor(availableBalance * 0.1 / addedSignal.leverage / addedSignal.entry.length)
                                     addedSignal.entry.forEach((item, index) =>
                                     {
                                         orderController.addOrder({
@@ -43,7 +43,7 @@ function addSignal(signal)
                                                     order: {
                                                         clientOid: order._id,
                                                         side: addedSignal.is_short ? "sell" : "buy",
-                                                        symbol: addedSignal.pair,
+                                                        pair: addedSignal.pair,
                                                         leverage: addedSignal.leverage,
                                                         stop: addedSignal.is_short ? "up" : "down",
                                                         stopPrice: addedSignal.stop,
