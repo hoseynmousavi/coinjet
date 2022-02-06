@@ -14,7 +14,7 @@ function getFutureAccountOverview({userExchange})
 
 function createFutureOrder({userExchange, order: {clientOid, side, pair, leverage, stop, stopPrice, price, size}})
 {
-    const symbol = pair.replace("/", "").replace("BTC", "XBT").replace("USDT").replace("USDTM")
+    const symbol = pair.replace("/", "").replace("BTC", "XBT").replace("USDT", "USDTM")
     console.log(symbol)
     return request.post({
         url: kucoinConstant.future.order,
