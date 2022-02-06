@@ -34,8 +34,8 @@ function userFuturesSocket()
                                     id,
                                     type: "subscribe",
                                     topic: "/contractMarket/tradeOrders",
-                                    privateChannel: false,
-                                    response: false,
+                                    privateChannel: true,
+                                    response: true,
                                 }))
                             }
                             socket.onmessage = item =>
