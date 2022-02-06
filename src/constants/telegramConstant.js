@@ -22,6 +22,8 @@ const telegramConstant = {
     unsupportedWay: "پیام شما در محیطی است که ما فعلا ساپورت نمیکنیم.",
     removeExchange: "Remove: ",
     overviewExchange: "Overview: ",
+    positionsExchange: "My Positions: ",
+    ordersExchange: "My Orders: ",
     userExchangeSpot: " (spot)",
     userExchangeFutures: " (futures)",
 }

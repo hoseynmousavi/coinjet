@@ -5,9 +5,9 @@ import userController from "../../controllers/userController"
 import kucoinController from "../../controllers/kucoinController"
 import userExchangeConstant from "../../constants/userExchangeConstant"
 
-function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
+function ordersExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
 {
-    const data = text.replace(telegramConstant.overviewExchange, "")
+    const data = text.replace(telegramConstant.ordersExchange, "")
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
@@ -17,7 +17,7 @@ function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, te
                     const item = userExchanges.filter(item => item.name === data)[0]
                     if (item)
                     {
-                        kucoinController.getFutureAccountOverview({userExchange: item})
+                        kucoinController.getFutureActiveOrders({userExchange: item})
                             .then(res =>
                             {
                                 sendTelegramMessage({telegram_chat_id, text: res})
@@ -28,4 +28,4 @@ function overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, te
         })
 }
 
-export default overviewExchangeTelegram
+export default ordersExchangeTelegram
