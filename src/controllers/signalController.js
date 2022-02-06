@@ -45,8 +45,6 @@ function addSignal(signal)
                                                         side: addedSignal.is_short ? "sell" : "buy",
                                                         pair: addedSignal.pair,
                                                         leverage: addedSignal.leverage,
-                                                        stop: addedSignal.is_short ? "up" : "down",
-                                                        stopPrice: addedSignal.stop,
                                                         price: item,
                                                         size: useForEachEntry,
                                                     },

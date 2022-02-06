@@ -13,6 +13,7 @@ const signalModel = new schema({
     },
     stop: {
         type: Number,
+        required: "enter stop!",
     },
     entry: {
         type: Array,
