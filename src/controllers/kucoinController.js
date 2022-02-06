@@ -1,29 +1,6 @@
 import request from "../request/request"
 import kucoinConstant from "../constants/kucoinConstant"
-import userExchangeController from "./userExchangeController"
-import userExchangeConstant from "../constants/userExchangeConstant"
-
-function requestMiddleWareRes(req, res)
-{
-    const {user_id, url, method, data} = req.body || {}
-    if (user_id && url && method)
-    {
-        userExchangeController.getUserExchangesByUserId({user_id, progress_level: userExchangeConstant.progress_level.complete})
-            .then(userExchanges =>
-            {
-                request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKuCoin: true, kuCoinUserExchange: userExchanges[0], data})
-                    .then(result =>
-                    {
-                        res.send(result)
-                    })
-                    .catch(err =>
-                    {
-                        res.status(err?.response?.status || 500).send(err?.response?.data || {message: "we have err"})
-                    })
-            })
-    }
-    else res.status(400).send({message: "fields are incomplete."})
-}
+import userFuturesSocket from "../helpers/kucoin/userFuturesSocket"
 
 function getFutureAccountOverview({userExchange})
 {
@@ -38,6 +15,7 @@ function getFutureAccountOverview({userExchange})
 function createFutureOrder({userExchange, order: {clientOid, side, pair, leverage, stop, stopPrice, price, size}})
 {
     const symbol = pair.replace("/", "").replace("BTC", "XBT").replace("USDT").replace("USDTM")
+    console.log(symbol)
     return request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
@@ -49,10 +27,15 @@ function createFutureOrder({userExchange, order: {clientOid, side, pair, leverag
     })
 }
 
+function startWebsocket()
+{
+    userFuturesSocket()
+}
+
 const kucoinController = {
-    requestMiddleWareRes,
     getFutureAccountOverview,
     createFutureOrder,
+    startWebsocket,
 }
 
 export default kucoinController

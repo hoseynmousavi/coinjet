@@ -25,7 +25,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.8"
+    "mongoose": "^6.1.8",
+    "ws": "^8.4.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
