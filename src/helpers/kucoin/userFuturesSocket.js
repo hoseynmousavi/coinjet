@@ -24,7 +24,7 @@ function userFuturesSocket()
                         const {endpoint, pingInterval, pingTimeout} = instanceServers?.[0]
                         if (token && endpoint)
                         {
-                            const id = userExchange.user_id
+                            const id = userExchange.user_id + getRandomId()
                             const socket = new WebSocket(`${endpoint}?token=${token}&[connectId=${id}]`)
                             socket.onopen = () =>
                             {
