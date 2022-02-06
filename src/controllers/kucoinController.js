@@ -20,8 +20,9 @@ function createFutureOrder({userExchange, order: {clientOid, side, pair, leverag
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
         data: {
-            remark: "coinjet bot added this", stopPriceType: "TP",
-            clientOid, side, symbol, leverage, stop, stopPrice, price, size,
+            remark: "coinjet bot added this",
+            ...(stop && stopPrice ? {stopPriceType: "TP", stop, stopPrice} : {}),
+            clientOid, side, symbol, leverage, price, size,
         },
     })
 }
