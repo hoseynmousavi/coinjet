@@ -5,6 +5,7 @@ import data from "./data"
 import exchangeRouter from "./routes/exchangeRouter"
 import telegramRouter from "./routes/telegramRouter"
 import kucoinController from "./controllers/kucoinController"
+import kucoinRouter from "./routes/kucoinRouter"
 
 const app = express()
 app.use(cors())
@@ -16,6 +17,7 @@ mongoose.connect(data.connectServerDb, {useNewUrlParser: true}).then(() => conso
 
 exchangeRouter(app)
 telegramRouter(app)
+kucoinRouter(app)
 
 kucoinController.startWebsocket()
 
