@@ -64,7 +64,7 @@ function handleChannelChat({channel_post})
             target = message.match(regexConstant.target)?.[0]?.replace("target:", "").split("-")
             stop = message.match(regexConstant.stop)?.[0]?.replace("stop:", "")
 
-            if ((is_futures === false || (is_futures === true && is_short !== null && leverage)) && pair && entry && target && stop)
+            if ((is_futures === false || (is_futures === true && is_short !== null && leverage)) && pair && entry && target)
             {
                 signalController.addSignal({message, pair, stop, entry, target, is_futures, is_short, leverage})
 
