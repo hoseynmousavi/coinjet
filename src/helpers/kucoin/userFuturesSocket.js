@@ -44,15 +44,18 @@ function userFuturesSocket()
                                     if (event.type !== "pong")
                                     {
                                         console.log("message", event)
-                                        if (event.topic === "/contractMarket/tradeOrders" && event.data.status === "done")
+                                        if (event.topic === "/contractMarket/tradeOrders" && event.data.status === "done" && (event.data.type === "filled" || event.data.type === "canceled"))
                                         {
                                             orderController.updateOrder({
-                                                query: {_id: event.data.clientOid, is_open: true},
-                                                update: {is_open: false, filled_date: new Date()},
+                                                query: {_id: event.data.clientOid, status: "open"},
+                                                update: {status: event.data.type, update_date: new Date()},
                                             })
-                                                .then((one, two) =>
+                                                .then((updatedOrder) =>
                                                 {
-                                                    console.log({one, two})
+                                                    if (updatedOrder?.status === "filled")
+                                                    {
+
+                                                    }
                                                 })
                                         }
                                     }

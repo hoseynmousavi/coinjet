@@ -45,7 +45,7 @@ function addSignal(signal)
                                                         symbol,
                                                         type: "entry",
                                                         entry_or_tp_index: index,
-                                                        is_open: true,
+                                                        status: "open",
                                                     })
                                                         .then(order =>
                                                         {
@@ -65,8 +65,8 @@ function addSignal(signal)
                                                                 {
                                                                     console.error({err: err?.response?.data})
                                                                     orderController.removeOrder({order_id: order._id})
-                                                                        .then(yes => console.log(yes))
-                                                                        .catch(fuck => console.log(fuck))
+                                                                        .then(ok => console.log({ok}))
+                                                                        .catch(err => console.log({err}))
                                                                 })
                                                         })
                                                 })

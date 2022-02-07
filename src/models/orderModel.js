@@ -44,16 +44,16 @@ const orderModel = new schema({
             "entry_or_tp_index is required if type is tp or entry",
         ],
     },
-    is_open: {
+    status: {
         index: true,
-        type: Boolean,
-        required: "enter is_open!",
+        enum: ["open", "filled", "canceled"],
+        required: "enter status!",
     },
     created_date: {
         type: Date,
         default: Date.now,
     },
-    filled_date: {
+    update_date: {
         type: Date,
     },
 })
