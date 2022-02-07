@@ -25,13 +25,20 @@ const orderModel = new schema({
         type: String,
         required: "enter symbol!",
     },
-    is_entry: { // not TP
-        type: Boolean,
-        required: "enter is_entry!",
+    type: {
+        type: String,
+        enum: ["stop", "tp", "entry"],
+        required: "Enter type!",
     },
     entry_or_tp_index: {
         type: Number,
-        required: "enter entry_or_tp_index!",
+        required: [
+            function ()
+            {
+                this.type === "tp" || this.type === "entry"
+            },
+            "entry_or_tp_index is required if type is tp or entry",
+        ],
     },
     is_open: {
         index: true,
