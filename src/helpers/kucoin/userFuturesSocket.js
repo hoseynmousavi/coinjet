@@ -1,9 +1,9 @@
 import request from "../../request/request"
 import kucoinConstant from "../../constants/kucoinConstant"
-import getRandomId from "../getRandomId"
 import WebSocket from "ws"
 import userExchangeController from "../../controllers/userExchangeController"
 import userExchangeConstant from "../../constants/userExchangeConstant"
+import orderController from "../../controllers/orderController"
 
 function userFuturesSocket()
 {
@@ -41,7 +41,21 @@ function userFuturesSocket()
                                 try
                                 {
                                     const event = JSON.parse(item.data)
-                                    if (event.type !== "pong") console.log("message", event)
+                                    if (event.type !== "pong")
+                                    {
+                                        console.log("message", event)
+                                        if (event.topic === "/contractMarket/tradeOrders" && event.data.status === "done")
+                                        {
+                                            orderController.updateOrder({
+                                                query: {_id: event.data.clientOid, is_open: true},
+                                                update: {is_open: false, filled_date: new Date()},
+                                            })
+                                                .then((one, two) =>
+                                                {
+                                                    console.log({one, two})
+                                                })
+                                        }
+                                    }
                                 }
                                 catch (e)
                                 {

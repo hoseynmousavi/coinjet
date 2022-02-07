@@ -53,6 +53,9 @@ const orderModel = new schema({
         type: Date,
         default: Date.now,
     },
+    filled_date: {
+        type: Date,
+    },
 })
 
 export default orderModel
