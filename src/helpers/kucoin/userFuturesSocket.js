@@ -42,7 +42,7 @@ function userFuturesSocket()
                             {
                                 try
                                 {
-                                    const event = JSON.parse(item)
+                                    const event = JSON.parse(item.data)
                                     if (event.type !== "pong") console.log("message", event)
                                 }
                                 catch (e)
