@@ -34,8 +34,7 @@ function addSignal(signal)
                                             {
                                                 addedSignal.entry.forEach((price, index) =>
                                                 {
-                                                    console.log(usdtBalance / price, contract.multiplier)
-                                                    if (usdtBalance / price > contract.multiplier)
+                                                    if (usdtBalance / price >= contract.multiplier)
                                                     {
                                                         const size = Math.floor((usdtBalance / price) / contract.multiplier)
                                                         orderController.addOrder({
