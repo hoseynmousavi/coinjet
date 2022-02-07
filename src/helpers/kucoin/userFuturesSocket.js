@@ -48,7 +48,7 @@ function userFuturesSocket()
                                         {
                                             orderController.updateOrder({
                                                 query: {_id: event.data.clientOid, status: "open"},
-                                                update: {status: event.data.type, update_date: new Date()},
+                                                update: {status: event.data.type, updated_date: new Date()},
                                             })
                                                 .then((updatedOrder) =>
                                                 {

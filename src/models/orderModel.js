@@ -46,6 +46,7 @@ const orderModel = new schema({
     },
     status: {
         index: true,
+        type: String,
         enum: ["open", "filled", "canceled"],
         required: "enter status!",
     },
@@ -53,7 +54,7 @@ const orderModel = new schema({
         type: Date,
         default: Date.now,
     },
-    update_date: {
+    updated_date: {
         type: Date,
     },
 })
