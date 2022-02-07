@@ -15,7 +15,7 @@ function removeOrder({order_id})
 
 function updateOrder({query, update})
 {
-    return orderTb.updateOne(query, update)
+    return orderTb.findOneAndUpdate(query, update, {new: true})
 }
 
 const orderController = {
