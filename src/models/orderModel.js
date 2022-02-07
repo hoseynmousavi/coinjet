@@ -21,6 +21,10 @@ const orderModel = new schema({
         type: Number,
         required: "enter size!",
     },
+    lot: {
+        type: Number,
+        required: "enter lot!",
+    },
     symbol: {
         type: String,
         required: "enter symbol!",

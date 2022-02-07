@@ -27,7 +27,6 @@ function userFuturesSocket()
                             const socket = new WebSocket(`${endpoint}?token=${token}&[connectId=${id}]`)
                             socket.onopen = () =>
                             {
-                                console.log("opened", id)
                                 setInterval(() => socket.send(JSON.stringify({id, type: "ping"})), pingInterval)
                                 socket.send(JSON.stringify({
                                     id,

@@ -22,7 +22,6 @@ function priceSocket()
                 socket = new WebSocket(`${endpoint}?token=${token}&[connectId=${id}]`)
                 socket.onopen = () =>
                 {
-                    console.log("opened")
                     socketInterval = setInterval(() => socket.send(JSON.stringify({id, type: "ping"})), pingInterval)
                     socket.send(JSON.stringify({
                         id,
@@ -33,8 +32,15 @@ function priceSocket()
                 }
                 socket.onmessage = item =>
                 {
-                    console.log("message", item.data)
-                    // Math.pow()
+                    try
+                    {
+                        const event = JSON.parse(item.data)
+                        if (event.type !== "pong") console.log("message", event)
+                    }
+                    catch (e)
+                    {
+                        console.log(item)
+                    }
                 }
                 socket.onclose = () =>
                 {
@@ -45,7 +51,6 @@ function priceSocket()
                     console.log("error", item.data)
                 }
             }
-            else console.log("fuk")
         })
 }
 
