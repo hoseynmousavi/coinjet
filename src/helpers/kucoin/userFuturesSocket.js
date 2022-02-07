@@ -55,7 +55,7 @@ function userFuturesSocket()
                                             })
                                                 .then((updatedOrder) =>
                                                 {
-                                                    if (updatedOrder.type === "entry" && updatedOrder?.status === "filled")
+                                                    if (updatedOrder && updatedOrder.type === "entry" && updatedOrder?.status === "filled")
                                                     {
                                                         signalController.getSignalById({signal_id: updatedOrder.signal_id})
                                                             .then(signal =>
