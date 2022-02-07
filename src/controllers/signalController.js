@@ -24,7 +24,7 @@ function addSignal(signal)
                                 .then(overview =>
                                 {
                                     const {availableBalance} = overview || {}
-                                    const usdtBalance = Math.floor(availableBalance * 0.1 / addedSignal.entry.length)
+                                    const usdtBalance = Math.floor(availableBalance * 0.5 / addedSignal.entry.length)
                                     kucoinController.getFuturesActiveContracts()
                                         .then(contracts =>
                                         {
