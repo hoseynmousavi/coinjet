@@ -40,8 +40,8 @@ function userFuturesSocket()
                             }
                             socket.onmessage = item =>
                             {
-                                console.log("message", item.data)
-                                // Math.pow()
+                                const event = JSON.parse(item)
+                                if (event.type !== "pong") console.log("message", event)
                             }
                             socket.onclose = () =>
                             {
