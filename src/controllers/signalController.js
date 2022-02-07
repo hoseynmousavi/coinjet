@@ -23,15 +23,14 @@ function addSignal(signal)
                                 .then(res =>
                                 {
                                     const {availableBalance} = res || {}
-                                    // const useForEachEntry = Math.floor(availableBalance * 0.1 / addedSignal.leverage / addedSignal.entry.length)
-                                    const useForEachEntry = 0.0002
-                                    addedSignal.entry.forEach((item, index) =>
+                                    const usdtBalance = Math.floor(availableBalance * 0.1 / addedSignal.leverage / addedSignal.entry.length)
+                                    addedSignal.entry.forEach((price, index) =>
                                     {
                                         orderController.addOrder({
                                             user_id: userExchange.user_id,
                                             signal_id: addedSignal._id,
-                                            price: item,
-                                            size: useForEachEntry,
+                                            price,
+                                            size: usdtBalance / price,
                                             symbol: addedSignal.pair,
                                             is_entry: true,
                                             entry_or_tp_index: index,
@@ -46,8 +45,8 @@ function addSignal(signal)
                                                         side: addedSignal.is_short ? "sell" : "buy",
                                                         pair: addedSignal.pair,
                                                         leverage: addedSignal.leverage,
-                                                        price: item,
-                                                        size: useForEachEntry,
+                                                        price: order.price,
+                                                        size: order.size,
                                                     },
                                                 })
                                                     .then(res => console.log({res}))
