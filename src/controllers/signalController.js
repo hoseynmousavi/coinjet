@@ -35,7 +35,7 @@ function addSignal(signal)
                                                 addedSignal.entry.forEach((price, index) =>
                                                 {
                                                     const size = (usdtBalance / price) / contract.multiplier
-                                                    console.log(size)
+                                                    console.log({size, one: usdtBalance / price, two: contract.multiplier})
                                                     orderController.addOrder({
                                                         user_id: userExchange.user_id,
                                                         signal_id: addedSignal._id,
