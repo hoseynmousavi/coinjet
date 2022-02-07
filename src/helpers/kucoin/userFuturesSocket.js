@@ -118,7 +118,7 @@ function userFuturesSocket()
                                                                                 order: {
                                                                                     type: "market",
                                                                                     clientOid: order._id,
-                                                                                    side: "sell",
+                                                                                    side: signal.is_short ? "buy" : "sell",
                                                                                     symbol: order.symbol,
                                                                                     leverage: 1,
                                                                                     size: order.size,
