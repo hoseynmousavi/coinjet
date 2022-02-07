@@ -26,6 +26,7 @@ function addSignal(signal)
                                     const usdtBalance = Math.floor(availableBalance * 0.1 / addedSignal.leverage / addedSignal.entry.length)
                                     addedSignal.entry.forEach((price, index) =>
                                     {
+                                        console.log(usdtBalance / price)
                                         orderController.addOrder({
                                             user_id: userExchange.user_id,
                                             signal_id: addedSignal._id,
