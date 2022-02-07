@@ -37,7 +37,7 @@ function addSignal(signal)
                                                     console.log(usdtBalance / price, contract.multiplier)
                                                     if (usdtBalance / price > contract.multiplier)
                                                     {
-                                                        const size = (usdtBalance / price) / contract.multiplier
+                                                        const size = Math.floor((usdtBalance / price) / contract.multiplier)
                                                         orderController.addOrder({
                                                             user_id: userExchange.user_id,
                                                             signal_id: addedSignal._id,
