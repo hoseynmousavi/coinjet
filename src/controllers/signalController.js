@@ -23,7 +23,7 @@ function addSignal(signal)
                                 .then(res =>
                                 {
                                     const {availableBalance} = res || {}
-                                    const usdtBalance = Math.floor(availableBalance * 0.2 / addedSignal.leverage / addedSignal.entry.length)
+                                    const usdtBalance = Math.floor(availableBalance * 0.1 / addedSignal.leverage / addedSignal.entry.length)
                                     addedSignal.entry.forEach((price, index) =>
                                     {
                                         console.log(usdtBalance / price)
@@ -47,7 +47,7 @@ function addSignal(signal)
                                                         pair: addedSignal.pair,
                                                         leverage: addedSignal.leverage,
                                                         price: order.price,
-                                                        size: order.size,
+                                                        size: 1,
                                                     },
                                                 })
                                                     .then(res => console.log({res}))
