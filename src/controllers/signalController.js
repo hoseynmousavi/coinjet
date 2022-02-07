@@ -24,7 +24,7 @@ function addSignal(signal)
                                 .then(overview =>
                                 {
                                     const {availableBalance} = overview || {}
-                                    const usdtBalance = Math.floor(availableBalance * 0.1 / addedSignal.entry.length)
+                                    const usdtBalance = Math.floor(availableBalance * 0.2 / addedSignal.entry.length)
                                     kucoinController.getFuturesActiveContracts()
                                         .then(contracts =>
                                         {
@@ -34,40 +34,42 @@ function addSignal(signal)
                                             {
                                                 addedSignal.entry.forEach((price, index) =>
                                                 {
-                                                    const size = (usdtBalance / price) / contract.multiplier
-                                                    console.log({size, one: usdtBalance / price, two: contract.multiplier})
-                                                    orderController.addOrder({
-                                                        user_id: userExchange.user_id,
-                                                        signal_id: addedSignal._id,
-                                                        price,
-                                                        size,
-                                                        symbol,
-                                                        is_entry: true,
-                                                        entry_or_tp_index: index,
-                                                        is_open: true,
-                                                    })
-                                                        .then(order =>
-                                                        {
-                                                            kucoinController.createFutureOrder({
-                                                                userExchange,
-                                                                order: {
-                                                                    clientOid: order._id,
-                                                                    side: addedSignal.is_short ? "sell" : "buy",
-                                                                    symbol,
-                                                                    leverage: addedSignal.leverage,
-                                                                    price: order.price,
-                                                                    size,
-                                                                },
-                                                            })
-                                                                .then(res => console.log({res}))
-                                                                .catch(err =>
-                                                                {
-                                                                    console.error({err: err?.response?.data})
-                                                                    orderController.removeOrder({order_id: order._id})
-                                                                        .then(yes => console.log(yes))
-                                                                        .catch(fuck => console.log(fuck))
-                                                                })
+                                                    if (usdtBalance / price > contract.multiplier)
+                                                    {
+                                                        const size = (usdtBalance / price) / contract.multiplier
+                                                        orderController.addOrder({
+                                                            user_id: userExchange.user_id,
+                                                            signal_id: addedSignal._id,
+                                                            price,
+                                                            size,
+                                                            symbol,
+                                                            is_entry: true,
+                                                            entry_or_tp_index: index,
+                                                            is_open: true,
                                                         })
+                                                            .then(order =>
+                                                            {
+                                                                kucoinController.createFutureOrder({
+                                                                    userExchange,
+                                                                    order: {
+                                                                        clientOid: order._id,
+                                                                        side: addedSignal.is_short ? "sell" : "buy",
+                                                                        symbol,
+                                                                        leverage: addedSignal.leverage,
+                                                                        price: order.price,
+                                                                        size,
+                                                                    },
+                                                                })
+                                                                    .then(res => console.log({res}))
+                                                                    .catch(err =>
+                                                                    {
+                                                                        console.error({err: err?.response?.data})
+                                                                        orderController.removeOrder({order_id: order._id})
+                                                                            .then(yes => console.log(yes))
+                                                                            .catch(fuck => console.log(fuck))
+                                                                    })
+                                                            })
+                                                    }
                                                 })
                                             }
                                         })
