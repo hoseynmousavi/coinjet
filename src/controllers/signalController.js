@@ -52,12 +52,13 @@ function addSignal(signal)
                                                             kucoinController.createFutureOrder({
                                                                 userExchange,
                                                                 order: {
+                                                                    type: "limit",
                                                                     clientOid: order._id,
                                                                     side: addedSignal.is_short ? "sell" : "buy",
-                                                                    symbol,
+                                                                    symbol: order.symbol,
                                                                     leverage: addedSignal.leverage,
                                                                     price: order.price,
-                                                                    size,
+                                                                    size: order.size,
                                                                 },
                                                             })
                                                                 .then(res => console.log({res}))
@@ -79,8 +80,14 @@ function addSignal(signal)
         })
 }
 
+function getSignalById({signal_id})
+{
+    return signalTb.findOne({_id: signal_id})
+}
+
 const signalController = {
     addSignal,
+    getSignalById,
 }
 
 export default signalController
