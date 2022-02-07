@@ -3,6 +3,7 @@ import kucoinConstant from "../constants/kucoinConstant"
 import userFuturesSocket from "../helpers/kucoin/userFuturesSocket"
 import userExchangeController from "./userExchangeController"
 import userExchangeConstant from "../constants/userExchangeConstant"
+import pairToFuturesSymbol from "../helpers/kucoin/pairToFuturesSymbol"
 
 function requestMiddleWareRes(req, res)
 {
@@ -56,9 +57,8 @@ function getFutureActiveOrders({userExchange})
         .then(res => res.data)
 }
 
-function createFutureOrder({userExchange, order: {clientOid, side, pair, leverage, stop, stopPrice, price, size}})
+function createFutureOrder({userExchange, order: {clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
 {
-    const symbol = pair.replace("/", "").replace("BTC", "XBT").replace("USDT", "USDTM")
     return request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
@@ -69,6 +69,15 @@ function createFutureOrder({userExchange, order: {clientOid, side, pair, leverag
             clientOid, side, symbol, leverage, price, size,
         },
     })
+}
+
+function getFuturesActiveContracts()
+{
+    return request.get({
+        url: kucoinConstant.future.activeContracts,
+        isKucoinFuture: true,
+    })
+        .then(res => res.data)
 }
 
 function startWebsocket()
@@ -83,6 +92,7 @@ const kucoinController = {
     getFutureActiveOrders,
     createFutureOrder,
     startWebsocket,
+    getFuturesActiveContracts,
 }
 
 export default kucoinController
