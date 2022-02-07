@@ -4,7 +4,6 @@ import getRandomId from "../getRandomId"
 import WebSocket from "ws"
 import userExchangeController from "../../controllers/userExchangeController"
 import userExchangeConstant from "../../constants/userExchangeConstant"
-import {re} from "@babel/core/lib/vendor/import-meta-resolve"
 
 function userFuturesSocket()
 {
@@ -24,7 +23,7 @@ function userFuturesSocket()
                         const {endpoint, pingInterval, pingTimeout} = instanceServers?.[0]
                         if (token && endpoint)
                         {
-                            const id = userExchange.user_id + getRandomId()
+                            const id = userExchange.user_id
                             const socket = new WebSocket(`${endpoint}?token=${token}&[connectId=${id}]`)
                             socket.onopen = () =>
                             {
