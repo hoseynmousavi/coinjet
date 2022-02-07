@@ -30,6 +30,7 @@ function addSignal(signal)
                                         {
                                             const symbol = pairToFuturesSymbol({pair: addedSignal.pair})
                                             const contract = contracts.filter(item => item.symbol === symbol)?.[0]
+                                            console.log({usdtBalance, contract})
                                             const enoughUsdtAndContract = addedSignal.entry.every(price => contract && usdtBalance / price >= contract.multiplier)
                                             if (enoughUsdtAndContract)
                                             {
