@@ -7,44 +7,42 @@ function updateFuturesStopOrder({tpOrder, userExchange})
     signalController.getSignalById({signal_id: tpOrder.signal_id})
         .then(signal =>
         {
-            orderController.findOrders({query: {user_id: userExchange.user_id, type: "stop", entry_fill_index: tpOrder.entry_fill_index, signal_id: signal._id}})
+            orderController.findOrders({query: {user_id: userExchange.user_id, entry_fill_index: tpOrder.entry_fill_index, signal_id: signal._id}})
                 .then(orders =>
                 {
-                    if (orders.length === 1)
-                    {
-                        const order = orders[0]
-                        if (order.price !== signal.entry[order.entry_fill_index])
-                        {
-                            kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
+                    const stopOrder = orders.filter(order => order.type === "stop")?.[0]
+                    if (stopOrder) kucoinController.cancelFutureOrder({userExchange, exchange_order_id: stopOrder.exchange_order_id})
 
-                            orderController.addOrder({
-                                user_id: order.user_id,
-                                signal_id: order.signal_id,
-                                price: signal.entry[order.entry_fill_index],
-                                size: order.size,
-                                lot: order.lot,
-                                symbol: order.symbol,
-                                type: order.type,
-                                entry_fill_index: order.entry_fill_index,
-                                status: order.status,
-                            })
-                                .then(order =>
-                                {
-                                    kucoinController.createFutureOrder({
-                                        userExchange,
-                                        order: {
-                                            type: "market",
-                                            clientOid: order._id,
-                                            side: signal.is_short ? "buy" : "sell",
-                                            symbol: order.symbol,
-                                            leverage: 1,
-                                            size: order.size,
-                                            stop: signal.is_short ? "up" : "down",
-                                            stopPrice: order.price,
-                                        },
-                                    })
+                    const tpOrders = orders.filter(order => order.type === "tp")
+                    if (tpOrders.some(order => order.status !== "open"))
+                    {
+                        orderController.addOrder({
+                            user_id: stopOrder.user_id,
+                            signal_id: stopOrder.signal_id,
+                            price: signal.entry[stopOrder.entry_fill_index],
+                            size: tpOrders.reduce((sum, order) => sum + (order.status === "open") ? order.size : 0, 0),
+                            lot: stopOrder.lot,
+                            symbol: stopOrder.symbol,
+                            type: stopOrder.type,
+                            entry_fill_index: stopOrder.entry_fill_index,
+                            status: stopOrder.status,
+                        })
+                            .then(order =>
+                            {
+                                kucoinController.createFutureOrder({
+                                    userExchange,
+                                    order: {
+                                        type: "market",
+                                        clientOid: order._id,
+                                        side: signal.is_short ? "buy" : "sell",
+                                        symbol: order.symbol,
+                                        leverage: 1,
+                                        size: order.size,
+                                        stop: signal.is_short ? "up" : "down",
+                                        stopPrice: order.price,
+                                    },
                                 })
-                        }
+                            })
                     }
                 })
         })
