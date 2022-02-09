@@ -36,7 +36,7 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                                         })
                                         .catch(err =>
                                         {
-                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + err?.response?.data ?? ""})
+                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + JSON.stringify(err?.response?.data ?? {})})
                                         })
                                 })
                         }
