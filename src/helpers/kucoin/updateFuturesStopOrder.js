@@ -20,7 +20,7 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                             user_id: stopOrder.user_id,
                             signal_id: stopOrder.signal_id,
                             price: signal.entry[stopOrder.entry_fill_index],
-                            size: tpOrders.reduce((sum, order) => sum + (order.status === "open") ? order.size : 0, 0),
+                            size: tpOrders.reduce((sum, order) => sum + (order.status === "open" ? order.size : 0), 0),
                             lot: stopOrder.lot,
                             symbol: stopOrder.symbol,
                             type: stopOrder.type,
