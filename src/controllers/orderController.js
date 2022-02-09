@@ -5,19 +5,17 @@ const orderTb = mongoose.model("order", orderModel)
 
 function addOrder(order)
 {
-    return new orderTb(order).save()
+    return new orderTb(order).save().then()
 }
 
 function removeOrder({order_id})
 {
-    return orderTb.deleteOne({_id: order_id})
-        .then()
+    return orderTb.deleteOne({_id: order_id}).then()
 }
 
 function updateOrder({query, update})
 {
-    return orderTb.findOneAndUpdate(query, update, {new: true})
-        .then()
+    return orderTb.findOneAndUpdate(query, update, {new: true}).then()
 }
 
 const orderController = {

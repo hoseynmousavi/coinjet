@@ -15,7 +15,7 @@ function getUserByTelegramId({telegram_id})
 
 function updateUserByTelegramId({telegram_id, update})
 {
-    return userTb.updateOne({telegram_id}, update)
+    return userTb.updateOne({telegram_id}, update).then()
 }
 
 const userController = {

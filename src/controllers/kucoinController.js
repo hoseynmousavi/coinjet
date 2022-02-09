@@ -3,7 +3,6 @@ import kucoinConstant from "../constants/kucoinConstant"
 import userFuturesSocket from "../helpers/kucoin/userFuturesSocket"
 import userExchangeController from "./userExchangeController"
 import userExchangeConstant from "../constants/userExchangeConstant"
-import pairToFuturesSymbol from "../helpers/kucoin/pairToFuturesSymbol"
 
 function requestMiddleWareRes(req, res)
 {

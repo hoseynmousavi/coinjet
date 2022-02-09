@@ -66,7 +66,6 @@ function addSignal(signal)
                                                                     if (res?.data?.orderId)
                                                                     {
                                                                         orderController.updateOrder({query: {_id: order._id}, update: {exchange_order_id: res.data.orderId}})
-                                                                            .then(shit => console.log(shit))
                                                                     }
                                                                     else
                                                                     {

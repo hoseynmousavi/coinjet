@@ -20,17 +20,17 @@ function getUserExchangesByUserId({user_id, progress_level})
 
 function updateUserExchange({userExchangeId, update})
 {
-    return userExchangeTb.updateOne({_id: userExchangeId}, update)
+    return userExchangeTb.updateOne({_id: userExchangeId}, update).then()
 }
 
 function removeUserExchangeByUserExchangeIdAndUserId({userExchangeId, user_id})
 {
-    return userExchangeTb.deleteOne({_id: userExchangeId, user_id})
+    return userExchangeTb.deleteOne({_id: userExchangeId, user_id}).then()
 }
 
 function removeUserExchangeByProgressLevel({progress_level, user_id})
 {
-    return userExchangeTb.deleteOne({progress_level, user_id})
+    return userExchangeTb.deleteOne({progress_level, user_id}).then()
 }
 
 const userExchangeController = {
