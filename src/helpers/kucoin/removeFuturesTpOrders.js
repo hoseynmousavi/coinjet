@@ -10,14 +10,10 @@ function removeFuturesTpOrders({stopOrder, userExchange})
             orderController.findOrders({query: {user_id: userExchange.user_id, type: "tp", entry_fill_index: stopOrder.entry_fill_index, signal_id: signal._id}})
                 .then(orders =>
                 {
-                    for (let i = 0; i < orders.length; i++)
+                    orders.forEach(order =>
                     {
-                        setTimeout(() =>
-                        {
-                            const order = orders[i]
-                            kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
-                        }, i * 1000)
-                    }
+                        kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
+                    })
                 })
         })
 }
