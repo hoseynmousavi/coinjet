@@ -3,6 +3,8 @@ import userExchangeController from "../../controllers/userExchangeController"
 import sendTelegramMessage from "./sendTelegramMessage"
 import telegramConstant from "../../constants/telegramConstant"
 import userExchangeConstant from "../../constants/userExchangeConstant"
+import userFuturesSocket from "../kucoin/userFuturesSocket"
+import kucoinController from "../../controllers/kucoinController"
 
 function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
 {
@@ -23,7 +25,20 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                         if (!userExchanges.some(item => item.name === name))
                         {
                             userExchangeController.updateUserExchange({userExchangeId: inProgressExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete}})
-                                .then(() => sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted}))
+                                .then(userExchange =>
+                                {
+                                    sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted})
+                                    kucoinController.getFutureAccountOverview({userExchange})
+                                        .then(res =>
+                                        {
+                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed + res})
+                                            userFuturesSocket.startUserSocket({userExchange})
+                                        })
+                                        .catch(err =>
+                                        {
+                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + err?.response?.data ?? ""})
+                                        })
+                                })
                         }
                         else
                         {

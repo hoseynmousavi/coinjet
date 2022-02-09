@@ -20,7 +20,7 @@ function getUserExchangesByUserId({user_id, progress_level})
 
 function updateUserExchange({userExchangeId, update})
 {
-    return userExchangeTb.updateOne({_id: userExchangeId}, update).then()
+    return userExchangeTb.findOneAndUpdate({_id: userExchangeId}, update, {new: true}).then()
 }
 
 function removeUserExchangeByUserExchangeIdAndUserId({userExchangeId, user_id})

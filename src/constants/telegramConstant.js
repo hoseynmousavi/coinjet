@@ -26,6 +26,8 @@ const telegramConstant = {
     ordersExchange: "My Orders: ",
     userExchangeSpot: " (spot)",
     userExchangeFutures: " (futures)",
+    connectionSucceed: "با موفقیت به اکانت شما متصل شدیم. موجودی شما:\n",
+    connectionFail: "در اتصال به اکانت شما با خطا مواجه شدیم.\n",
 }
 
 export default telegramConstant

@@ -119,7 +119,7 @@ function getFuturesActiveContracts()
 
 function startWebsocket()
 {
-    userFuturesSocket()
+    userFuturesSocket.start()
 }
 
 const kucoinController = {
