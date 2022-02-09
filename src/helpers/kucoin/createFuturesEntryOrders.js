@@ -26,7 +26,7 @@ function createFuturesEntryOrders({signal})
                                 {
                                     signal.entry.forEach((price, index) =>
                                     {
-                                        const size = Math.floor((usdtBalance / price) / contract.multiplier)
+                                        const size = Math.floor((usdtBalance * signal.leverage / price) / contract.multiplier)
                                         orderController.addOrder({
                                             user_id: userExchange.user_id,
                                             signal_id: signal._id,
