@@ -55,60 +55,21 @@ function userFuturesSocket()
                                             })
                                                 .then((updatedOrder) =>
                                                 {
-                                                    if (updatedOrder && updatedOrder.type === "entry" && updatedOrder?.status === "filled")
+                                                    if (updatedOrder)
                                                     {
-                                                        signalController.getSignalById({signal_id: updatedOrder.signal_id})
-                                                            .then(signal =>
-                                                            {
-                                                                orderController.addOrder({
-                                                                    user_id: userExchange.user_id,
-                                                                    signal_id: updatedOrder.signal_id,
-                                                                    price: signal.stop,
-                                                                    size: updatedOrder.size,
-                                                                    lot: updatedOrder.lot,
-                                                                    symbol: updatedOrder.symbol,
-                                                                    type: "stop",
-                                                                    status: "open",
-                                                                })
-                                                                    .then(order =>
-                                                                    {
-                                                                        kucoinController.createFutureOrder({
-                                                                            userExchange,
-                                                                            order: {
-                                                                                type: "market",
-                                                                                clientOid: order._id,
-                                                                                side: "sell",
-                                                                                symbol: order.symbol,
-                                                                                leverage: 1,
-                                                                                size: order.size,
-                                                                                stop: signal.is_short ? "up" : "down",
-                                                                                stopPrice: signal.stop,
-                                                                            },
-                                                                        })
-                                                                            .then(res => console.log({res}))
-                                                                            .catch(err =>
-                                                                            {
-                                                                                console.error({err: err?.response?.data})
-                                                                                orderController.removeOrder({order_id: order._id})
-                                                                                    .then(ok => console.log({ok}))
-                                                                                    .catch(err => console.log({err}))
-                                                                            })
-                                                                    })
-
-                                                                let remainedSize = updatedOrder.size
-                                                                signal.target.forEach((price, index) =>
+                                                        if (updatedOrder.type === "entry" && updatedOrder?.status === "filled")
+                                                        {
+                                                            signalController.getSignalById({signal_id: updatedOrder.signal_id})
+                                                                .then(signal =>
                                                                 {
-                                                                    const size = index === signal.target.length - 1 ? remainedSize : Math[updatedOrder.size <= signal.target.length ? "ceil" : "floor"](updatedOrder.size / signal.target.length)
-                                                                    remainedSize -= size
                                                                     orderController.addOrder({
                                                                         user_id: userExchange.user_id,
                                                                         signal_id: updatedOrder.signal_id,
-                                                                        price,
-                                                                        size: size,
+                                                                        price: signal.stop,
+                                                                        size: updatedOrder.size,
                                                                         lot: updatedOrder.lot,
                                                                         symbol: updatedOrder.symbol,
-                                                                        type: "tp",
-                                                                        entry_or_tp_index: index,
+                                                                        type: "stop",
                                                                         status: "open",
                                                                     })
                                                                         .then(order =>
@@ -118,12 +79,12 @@ function userFuturesSocket()
                                                                                 order: {
                                                                                     type: "market",
                                                                                     clientOid: order._id,
-                                                                                    side: signal.is_short ? "buy" : "sell",
+                                                                                    side: "sell",
                                                                                     symbol: order.symbol,
                                                                                     leverage: 1,
                                                                                     size: order.size,
-                                                                                    stop: signal.is_short ? "down" : "up",
-                                                                                    stopPrice: price,
+                                                                                    stop: signal.is_short ? "up" : "down",
+                                                                                    stopPrice: signal.stop,
                                                                                 },
                                                                             })
                                                                                 .then(res => console.log({res}))
@@ -135,8 +96,50 @@ function userFuturesSocket()
                                                                                         .catch(err => console.log({err}))
                                                                                 })
                                                                         })
+
+                                                                    let remainedSize = updatedOrder.size
+                                                                    signal.target.forEach((price, index) =>
+                                                                    {
+                                                                        const size = index === signal.target.length - 1 ? remainedSize : Math[updatedOrder.size <= signal.target.length ? "ceil" : "floor"](updatedOrder.size / signal.target.length)
+                                                                        remainedSize -= size
+                                                                        orderController.addOrder({
+                                                                            user_id: userExchange.user_id,
+                                                                            signal_id: updatedOrder.signal_id,
+                                                                            price,
+                                                                            size: size,
+                                                                            lot: updatedOrder.lot,
+                                                                            symbol: updatedOrder.symbol,
+                                                                            type: "tp",
+                                                                            entry_or_tp_index: index,
+                                                                            status: "open",
+                                                                        })
+                                                                            .then(order =>
+                                                                            {
+                                                                                kucoinController.createFutureOrder({
+                                                                                    userExchange,
+                                                                                    order: {
+                                                                                        type: "market",
+                                                                                        clientOid: order._id,
+                                                                                        side: signal.is_short ? "buy" : "sell",
+                                                                                        symbol: order.symbol,
+                                                                                        leverage: 1,
+                                                                                        size: order.size,
+                                                                                        stop: signal.is_short ? "down" : "up",
+                                                                                        stopPrice: price,
+                                                                                    },
+                                                                                })
+                                                                                    .then(res => console.log({res}))
+                                                                                    .catch(err =>
+                                                                                    {
+                                                                                        console.error({err: err?.response?.data})
+                                                                                        orderController.removeOrder({order_id: order._id})
+                                                                                            .then(ok => console.log({ok}))
+                                                                                            .catch(err => console.log({err}))
+                                                                                    })
+                                                                            })
+                                                                    })
                                                                 })
-                                                            })
+                                                        }
                                                     }
                                                 })
                                         }
