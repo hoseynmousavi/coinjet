@@ -92,8 +92,6 @@ function userFuturesSocket()
                                                                                 {
                                                                                     console.error({err: err?.response?.data})
                                                                                     orderController.removeOrder({order_id: order._id})
-                                                                                        .then(ok => console.log({ok}))
-                                                                                        .catch(err => console.log({err}))
                                                                                 })
                                                                         })
 
@@ -133,8 +131,6 @@ function userFuturesSocket()
                                                                                     {
                                                                                         console.error({err: err?.response?.data})
                                                                                         orderController.removeOrder({order_id: order._id})
-                                                                                            .then(ok => console.log({ok}))
-                                                                                            .catch(err => console.log({err}))
                                                                                     })
                                                                             })
                                                                     })

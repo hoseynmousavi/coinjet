@@ -61,13 +61,21 @@ function addSignal(signal)
                                                                     size: order.size,
                                                                 },
                                                             })
-                                                                .then(res => console.log({res}))
+                                                                .then(res =>
+                                                                {
+                                                                    if (res?.data?.orderId)
+                                                                    {
+                                                                        orderController.updateOrder({query: {_id: order._id}, update: {exchange_order_id: res.data.orderId}})
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        orderController.removeOrder({order_id: order._id})
+                                                                    }
+                                                                })
                                                                 .catch(err =>
                                                                 {
                                                                     console.error({err: err?.response?.data})
                                                                     orderController.removeOrder({order_id: order._id})
-                                                                        .then(ok => console.log({ok}))
-                                                                        .catch(err => console.log({err}))
                                                                 })
                                                         })
                                                 })
