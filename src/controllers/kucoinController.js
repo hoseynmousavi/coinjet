@@ -3,6 +3,7 @@ import kucoinConstant from "../constants/kucoinConstant"
 import userFuturesSocket from "../helpers/kucoin/userFuturesSocket"
 import userExchangeController from "./userExchangeController"
 import userExchangeConstant from "../constants/userExchangeConstant"
+import orderController from "./orderController"
 
 function requestMiddleWareRes(req, res)
 {
@@ -58,7 +59,7 @@ function getFutureActiveOrders({userExchange})
 
 function createFutureOrder({userExchange, order: {type, clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
 {
-    return request.post({
+    request.post({
         url: kucoinConstant.future.order,
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
@@ -69,6 +70,43 @@ function createFutureOrder({userExchange, order: {type, clientOid, side, symbol,
             type, clientOid, side, symbol, leverage, size,
         },
     })
+        .then(res =>
+        {
+            if (res?.data?.orderId)
+            {
+                orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
+            }
+            else
+            {
+                orderController.removeOrder({order_id: clientOid})
+            }
+        })
+        .catch(err =>
+        {
+            console.error({err: err?.response?.data})
+            orderController.removeOrder({order_id: clientOid})
+        })
+}
+
+function cancelFutureOrder({userExchange, exchange_order_id})
+{
+    request.del({
+        url: kucoinConstant.future.cancelOrder,
+        param: exchange_order_id,
+        isKucoinFuture: true,
+        kuCoinUserExchange: userExchange,
+    })
+        .then(res =>
+        {
+            if (res?.data?.cancelledOrderIds?.length)
+            {
+                orderController.updateOrder({query: {exchange_order_id}, update: {status: "canceled"}})
+            }
+        })
+        .catch(err =>
+        {
+            console.error({err: err?.response?.data})
+        })
 }
 
 function getFuturesActiveContracts()
@@ -92,6 +130,7 @@ const kucoinController = {
     getFutureActiveOrders,
     createFutureOrder,
     startWebsocket,
+    cancelFutureOrder,
     getFuturesActiveContracts,
 }
 

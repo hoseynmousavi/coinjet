@@ -10,6 +10,7 @@ const kucoinConstant = {
         positions: "/api/v1/positions",
         orders: "/api/v1/orders?status=active",
         activeContracts: "/api/v1/contracts/active",
+        cancelOrder: "/api/v1/orders",
     },
 }
 

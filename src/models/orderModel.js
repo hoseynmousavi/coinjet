@@ -38,6 +38,17 @@ const orderModel = new schema({
         enum: ["stop", "tp", "entry"],
         required: "Enter type!",
     },
+    entry_fill_index: {
+        index: true,
+        type: Number,
+        required: [
+            function ()
+            {
+                this.type === "tp" || this.type === "stop"
+            },
+            "entry_fill_index is required if type is tp or stop",
+        ],
+    },
     entry_or_tp_index: {
         type: Number,
         required: [
