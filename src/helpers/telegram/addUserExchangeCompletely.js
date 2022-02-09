@@ -31,8 +31,7 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                                     kucoinController.getFutureAccountOverview({userExchange})
                                         .then(res =>
                                         {
-                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed})
-                                            sendTelegramMessage({telegram_chat_id, text: res})
+                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed + JSON.stringify(res)})
                                             userFuturesSocket.startUserSocket({userExchange})
                                         })
                                         .catch(err =>
