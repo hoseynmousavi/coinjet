@@ -11,13 +11,13 @@ function addOrder(order)
 function removeOrder({order_id})
 {
     return orderTb.deleteOne({_id: order_id})
-        .then(() => arguments)
+        .then()
 }
 
 function updateOrder({query, update})
 {
     return orderTb.findOneAndUpdate(query, update, {new: true})
-        .then(() => arguments)
+        .then()
 }
 
 const orderController = {
