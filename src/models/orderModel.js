@@ -13,6 +13,10 @@ const orderModel = new schema({
         type: schema.Types.ObjectId,
         required: "enter signal_id!",
     },
+    exchange_order_id: {
+        index: true,
+        type: String,
+    },
     price: {
         type: Number,
         required: "enter price!",
