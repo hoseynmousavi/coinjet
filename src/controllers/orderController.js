@@ -11,12 +11,6 @@ function addOrder(order)
 function removeOrder({order_id})
 {
     return orderTb.deleteOne({_id: order_id})
-        .then(ok => console.log({ok}))
-        .catch(err =>
-        {
-            console.log({err})
-            throw err
-        })
 }
 
 function updateOrder({query, update})
