@@ -91,8 +91,7 @@ function createFutureOrder({userExchange, order: {type, clientOid, side, symbol,
 function cancelFutureOrder({userExchange, exchange_order_id})
 {
     request.del({
-        url: kucoinConstant.future.cancelOrder,
-        param: exchange_order_id,
+        url: kucoinConstant.future.cancelOrder(exchange_order_id),
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
     })
