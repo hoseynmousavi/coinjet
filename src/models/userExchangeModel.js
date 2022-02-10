@@ -41,4 +41,6 @@ const userExchangeModel = new schema({
     },
 })
 
+userExchangeModel.index({user_key: 1, user_passphrase: 1, user_secret: 1}, {unique: true})
+
 export default userExchangeModel
