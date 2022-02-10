@@ -22,6 +22,8 @@ const userExchangeModel = new schema({
         type: String,
     },
     user_key: {
+        unique: true,
+        sparse: true,
         type: String,
     },
     user_passphrase: {
@@ -40,7 +42,5 @@ const userExchangeModel = new schema({
         default: Date.now,
     },
 })
-
-userExchangeModel.index({user_key: 1, user_passphrase: 1, user_secret: 1}, {unique: true})
 
 export default userExchangeModel
