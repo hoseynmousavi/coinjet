@@ -8,7 +8,7 @@ import kucoinController from "../../controllers/kucoinController"
 
 function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
 {
-    const data = text.trim().replace(/ /g, "").split(",")
+    const data = text.split(",").map(item => item.trim())
     userController.getUserByTelegramId({telegram_id})
         .then(user =>
         {
