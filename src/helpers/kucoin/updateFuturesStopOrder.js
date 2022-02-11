@@ -13,11 +13,8 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                 .then(orders =>
                 {
                     const stopOrders = orders.filter(order => order.type === "stop")
-                    if (stopOrders.length)
-                    {
-                        const stopOrder = stopOrders[stopOrders.length - 1]
-                        kucoinController.cancelFutureOrder({userExchange, exchange_order_id: stopOrder.exchange_order_id})
-                    }
+                    const stopOrder = stopOrders[stopOrders.length - 1]
+                    kucoinController.cancelFutureOrder({userExchange, exchange_order_id: stopOrder.exchange_order_id})
 
                     const tpOrders = orders.filter(order => order.type === "tp")
                     if (tpOrder.entry_or_tp_index < signal.target.length - 1)
