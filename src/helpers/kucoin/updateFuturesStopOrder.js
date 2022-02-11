@@ -1,6 +1,8 @@
 import signalController from "../../controllers/signalController"
 import orderController from "../../controllers/orderController"
 import kucoinController from "../../controllers/kucoinController"
+import sendTelegramNotificationByUserExchange from "../telegram/sendTelegramNotificationByUserExchange"
+import telegramConstant from "../../constants/telegramConstant"
 
 function updateFuturesStopOrder({tpOrder, userExchange})
 {
@@ -42,8 +44,11 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                                         stopPrice: order.price,
                                     },
                                 })
+                                sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndStopUpdated({tpIndex: tpOrder.entry_or_tp_index + 1})})
                             })
                     }
+                    else sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndDone})
+
                 })
         })
 }

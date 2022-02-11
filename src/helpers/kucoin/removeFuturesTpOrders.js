@@ -1,6 +1,8 @@
 import orderController from "../../controllers/orderController"
 import signalController from "../../controllers/signalController"
 import kucoinController from "../../controllers/kucoinController"
+import sendTelegramNotificationByUserExchange from "../telegram/sendTelegramNotificationByUserExchange"
+import telegramConstant from "../../constants/telegramConstant"
 
 function removeFuturesTpOrders({stopOrder, userExchange})
 {
@@ -14,6 +16,7 @@ function removeFuturesTpOrders({stopOrder, userExchange})
                     {
                         kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
                     })
+                    sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.stopSignalAndTpOrdersRemoved})
                 })
         })
 }

@@ -3,6 +3,8 @@ import userExchangeConstant from "../../constants/userExchangeConstant"
 import kucoinController from "../../controllers/kucoinController"
 import pairToFuturesSymbol from "./pairToFuturesSymbol"
 import orderController from "../../controllers/orderController"
+import sendTelegramNotificationByUserExchange from "../telegram/sendTelegramNotificationByUserExchange"
+import telegramConstant from "../../constants/telegramConstant"
 
 function createFuturesEntryOrders({signal})
 {
@@ -53,6 +55,17 @@ function createFuturesEntryOrders({signal})
                                                     },
                                                 })
                                             })
+                                    })
+                                    sendTelegramNotificationByUserExchange({
+                                        userExchange,
+                                        text: telegramConstant.signalFoundAndOrdersCreated({ordersCount: signal.entry.length, isShort: signal.is_short}),
+                                    })
+                                }
+                                else
+                                {
+                                    sendTelegramNotificationByUserExchange({
+                                        userExchange,
+                                        text: telegramConstant.signalFoundButNoBalance,
                                     })
                                 }
                             })
