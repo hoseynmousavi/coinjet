@@ -48,7 +48,6 @@ function handlePvChat({message})
 
 function handleChannelChat({channel_post})
 {
-    console.log(channel_post)
     const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
     if (message_id && sender_chat && chat && date && text)
     {
