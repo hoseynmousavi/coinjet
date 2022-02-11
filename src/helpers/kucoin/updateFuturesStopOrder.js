@@ -16,13 +16,13 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                     if (stopOrder) kucoinController.cancelFutureOrder({userExchange, exchange_order_id: stopOrder.exchange_order_id})
 
                     const tpOrders = orders.filter(order => order.type === "tp")
-                    if (tpOrders.some(order => order.status !== "open"))
+                    if (tpOrder.entry_or_tp_index < signal.target.length - 1)
                     {
                         orderController.addOrder({
                             user_id: stopOrder.user_id,
                             signal_id: stopOrder.signal_id,
                             price: signal.entry[stopOrder.entry_fill_index],
-                            size: tpOrders.reduce((sum, order) => sum + (order.status === "open" ? order.size : 0), 0),
+                            size: tpOrders.reduce((sum, order) => sum + (order.entry_or_tp_index > tpOrder.entry_or_tp_index ? order.size : 0), 0),
                             lot: stopOrder.lot,
                             symbol: stopOrder.symbol,
                             type: stopOrder.type,
