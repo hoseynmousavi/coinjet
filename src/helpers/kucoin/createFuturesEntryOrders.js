@@ -17,7 +17,7 @@ function createFuturesEntryOrders({signal})
                     .then(overview =>
                     {
                         const {availableBalance} = overview || {}
-                        const usdtBalance = Math.floor(availableBalance * 0.1 * signal.leverage / signal.entry.length)
+                        const usdtBalance = Math.floor(availableBalance * (userExchange.usePercentOfBalance || 0.1) * signal.leverage / signal.entry.length)
                         kucoinController.getFuturesActiveContracts()
                             .then(contracts =>
                             {
