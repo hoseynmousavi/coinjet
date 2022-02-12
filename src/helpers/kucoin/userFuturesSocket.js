@@ -8,6 +8,8 @@ import createFuturesStopAndTpOrders from "./createFuturesStopAndTpOrders"
 import updateFuturesStopOrder from "./updateFuturesStopOrder"
 import removeTpOrders from "./removeTpOrders"
 
+let userExchangeSockets = {}
+
 function start()
 {
     userExchangeController.getUserExchanges({is_futures: true, progress_level: userExchangeConstant.progress_level.complete})
@@ -34,6 +36,7 @@ function startUserSocket({userExchange})
                 const socket = new WebSocket(`${endpoint}?token=${token}&[connectId=${id}]`)
                 socket.onopen = () =>
                 {
+                    userExchangeSockets[userExchange._id] = socket
                     setInterval(() => socket.send(JSON.stringify({id, type: "ping"})), pingInterval)
                     socket.send(JSON.stringify({id, type: "subscribe", topic: "/contractMarket/tradeOrders", privateChannel: true, response: true}))
                 }
@@ -70,15 +73,29 @@ function startUserSocket({userExchange})
                         }
                     }
                 }
-                socket.onclose = () => console.log("closed")
-                socket.onerror = item => console.log("error", item.data)
+                socket.onclose = () =>
+                {
+                    delete userExchangeSockets[userExchange._id]
+                    console.log("closed")
+                }
+                socket.onerror = item =>
+                {
+                    delete userExchangeSockets[userExchange._id]
+                    console.log("error", item.data)
+                }
             }
         })
+}
+
+function closeSocket({userExchangeId})
+{
+    userExchangeSockets[userExchangeId]?.close?.()
 }
 
 const userFuturesSocket = {
     start,
     startUserSocket,
+    closeSocket,
 }
 
 export default userFuturesSocket

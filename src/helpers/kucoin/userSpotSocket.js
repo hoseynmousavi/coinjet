@@ -8,6 +8,8 @@ import createSpotStopAndTpOrders from "./createSpotStopAndTpOrders"
 import removeTpOrders from "./removeTpOrders"
 import updateSpotStopOrder from "./updateSpotStopOrder"
 
+let userExchangeSockets = {}
+
 function start()
 {
     userExchangeController.getUserExchanges({is_futures: false, progress_level: userExchangeConstant.progress_level.complete})
@@ -34,6 +36,7 @@ function startUserSocket({userExchange})
                 const socket = new WebSocket(`${endpoint}?token=${token}&[connectId=${id}]`)
                 socket.onopen = () =>
                 {
+                    userExchangeSockets[userExchange._id] = socket
                     setInterval(() => socket.send(JSON.stringify({id, type: "ping"})), pingInterval)
                     socket.send(JSON.stringify({id, type: "subscribe", topic: "/spotMarket/tradeOrders", privateChannel: true, response: true}))
                 }
@@ -70,15 +73,29 @@ function startUserSocket({userExchange})
                         }
                     }
                 }
-                socket.onclose = () => console.log("closed")
-                socket.onerror = item => console.log("error", item.data)
+                socket.onclose = () =>
+                {
+                    delete userExchangeSockets[userExchange._id]
+                    console.log("closed")
+                }
+                socket.onerror = item =>
+                {
+                    delete userExchangeSockets[userExchange._id]
+                    console.log("error", item.data)
+                }
             }
         })
+}
+
+function closeSocket({userExchangeId})
+{
+    userExchangeSockets[userExchangeId]?.close?.()
 }
 
 const userSpotSocket = {
     start,
     startUserSocket,
+    closeSocket,
 }
 
 export default userSpotSocket
