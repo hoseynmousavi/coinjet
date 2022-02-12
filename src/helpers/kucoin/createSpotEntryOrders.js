@@ -20,10 +20,10 @@ function createSpotEntryOrders({signal})
                         const {available: availableBalance} = accounts[0] || {}
                         if (availableBalance)
                         {
-                            const balance = Math.floor(availableBalance * (userExchange.usePercentOfBalance || 0.1) / signal.entry.length)
+                            const balance = availableBalance * (userExchange.usePercentOfBalance || 0.1) / signal.entry.length
                             signal.entry.forEach((price, index) =>
                             {
-                                const size = Math.floor(balance / price)
+                                const size = balance / price
                                 orderController.addOrder({
                                     user_id: userExchange.user_id,
                                     signal_id: signal._id,
