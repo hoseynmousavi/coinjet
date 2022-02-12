@@ -24,7 +24,7 @@ function positionsExchangeTelegram({message_id, telegram_id, telegram_chat_id, t
                                 {
                                     sendTelegramMessage({telegram_chat_id, text: res})
                                 })
-                        } // TODO Hoseyn
+                        }
                     }
                     else sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.userExchange404})
                 })
