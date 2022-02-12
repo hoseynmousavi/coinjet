@@ -50,7 +50,7 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
                         user_id: userExchange.user_id,
                         signal_id: entryOrder.signal_id,
                         price,
-                        size: size,
+                        size,
                         lot: entryOrder.lot,
                         symbol: entryOrder.symbol,
                         type: "tp",

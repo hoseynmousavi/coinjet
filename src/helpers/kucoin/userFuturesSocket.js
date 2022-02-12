@@ -5,8 +5,8 @@ import userExchangeController from "../../controllers/userExchangeController"
 import userExchangeConstant from "../../constants/userExchangeConstant"
 import orderController from "../../controllers/orderController"
 import createFuturesStopAndTpOrders from "./createFuturesStopAndTpOrders"
-import removeFuturesTpOrders from "./removeFuturesTpOrders"
 import updateFuturesStopOrder from "./updateFuturesStopOrder"
+import removeTpOrders from "./removeTpOrders"
 
 function start()
 {
@@ -59,7 +59,7 @@ function startUserSocket({userExchange})
                                         }
                                         else if (updatedOrder.type === "stop")
                                         {
-                                            removeFuturesTpOrders({stopOrder: updatedOrder, userExchange})
+                                            removeTpOrders({isFutures: true, stopOrder: updatedOrder, userExchange})
                                         }
                                         else if (updatedOrder.type === "tp")
                                         {

@@ -3,6 +3,9 @@ const kucoinConstant = {
         getAccountOverview: ({currency, type}) => `/api/v1/accounts${currency && type ? `?currency=${currency}&type=${type}` : ""}`,
         getPrivateSocket: "/api/v1/bullet-private",
         order: "/api/v1/orders",
+        cancelOrder: exchange_order_id => `/api/v1/orders/${exchange_order_id}`,
+        stopOrder: "/api/v1/stop-order",
+        cancelStopOrder: exchange_order_id => `/api/v1/stop-order/${exchange_order_id}`,
     },
     future: {
         accountOverview: "/api/v1/account-overview?currency=USDT",

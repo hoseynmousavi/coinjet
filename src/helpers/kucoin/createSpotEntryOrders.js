@@ -44,7 +44,7 @@ function createSpotEntryOrders({signal})
                                             order: {
                                                 type: "limit",
                                                 clientOid: order._id,
-                                                side: signal.is_short ? "sell" : "buy",
+                                                side: "buy",
                                                 symbol: order.symbol,
                                                 price: order.price,
                                                 size: order.size,
@@ -54,7 +54,7 @@ function createSpotEntryOrders({signal})
                             })
                             sendTelegramNotificationByUserExchange({
                                 userExchange,
-                                text: telegramConstant.signalFoundAndOrdersCreated({ordersCount: signal.entry.length, isShort: signal.is_short}),
+                                text: telegramConstant.signalFoundAndOrdersCreated({ordersCount: signal.entry.length}),
                             })
                         }
                         else

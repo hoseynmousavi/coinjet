@@ -136,21 +136,20 @@ function getSpotAccountOverview({userExchange, currency, type})
 
 function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, stop, stopPrice, price, size}})
 {
-    console.log(size)
+    const isStop = stop && stopPrice
     request.post({
-        url: kucoinConstant.spot.order,
+        url: isStop ? kucoinConstant.spot.stopOrder : kucoinConstant.spot.order,
         isKuCoin: true,
         kuCoinUserExchange: userExchange,
         data: {
             remark: "coinjet bot added this",
-            ...(stop && stopPrice ? {stopPriceType: "TP", stop, stopPrice} : {}),
+            ...(stop && stopPrice ? {stop, stopPrice} : {}),
             ...(price ? {price} : {}),
             type, clientOid, side, symbol, size,
         },
     })
         .then(res =>
         {
-            console.log(res)
             if (res?.data?.orderId)
             {
                 orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
@@ -172,6 +171,26 @@ function startSpotWebsocket()
     userSpotSocket.start()
 }
 
+function cancelSpotOrder({userExchange, exchange_order_id, isStop})
+{
+    request.del({
+        url: isStop ? kucoinConstant.spot.cancelStopOrder(exchange_order_id) : kucoinConstant.spot.cancelOrder(exchange_order_id),
+        isKuCoin: true,
+        kuCoinUserExchange: userExchange,
+    })
+        .then(res =>
+        {
+            if (res?.data?.cancelledOrderIds?.length)
+            {
+                orderController.updateOrder({query: {exchange_order_id}, update: {status: "canceled"}})
+            }
+        })
+        .catch(err =>
+        {
+            console.error({err: err?.response?.data})
+        })
+}
+
 const kucoinController = {
     requestMiddleWareRes,
     getFutureAccountOverview,
@@ -184,6 +203,7 @@ const kucoinController = {
     getSpotAccountOverview,
     createSpotOrder,
     startSpotWebsocket,
+    cancelSpotOrder,
 }
 
 export default kucoinController
