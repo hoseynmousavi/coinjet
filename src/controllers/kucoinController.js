@@ -14,6 +14,7 @@ function requestMiddleWareRes(req, res)
             .then(userExchanges =>
             {
                 console.log(userExchanges.filter(item => item.is_futures === is_futures)[0])
+                console.log(is_futures)
                 request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKucoinFuture: !!is_futures, kuCoinUserExchange: userExchanges.filter(item => item.is_futures === is_futures)[0], data})
                     .then(result =>
                     {
