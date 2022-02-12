@@ -148,6 +148,7 @@ function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, s
     })
         .then(res =>
         {
+            console.log(res)
             if (res?.data?.orderId)
             {
                 orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
