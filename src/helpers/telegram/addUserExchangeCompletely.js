@@ -5,6 +5,7 @@ import telegramConstant from "../../constants/telegramConstant"
 import userExchangeConstant from "../../constants/userExchangeConstant"
 import userFuturesSocket from "../kucoin/userFuturesSocket"
 import kucoinController from "../../controllers/kucoinController"
+import userSpotSocket from "../kucoin/userSpotSocket"
 
 function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
 {
@@ -40,7 +41,20 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                                             {
                                                 sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + JSON.stringify(err?.response?.data ?? {})})
                                             })
-                                    } // TODO Hoseyn
+                                    }
+                                    else
+                                    {
+                                        kucoinController.getSpotAccountOverview({userExchange})
+                                            .then(res =>
+                                            {
+                                                sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed + JSON.stringify(res)})
+                                                userSpotSocket.startUserSocket({userExchange})
+                                            })
+                                            .catch(err =>
+                                            {
+                                                sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + JSON.stringify(err?.response?.data ?? {})})
+                                            })
+                                    }
                                 })
                         }
                         else
