@@ -135,6 +135,7 @@ function getSpotAccountOverview({userExchange, currency, type})
 
 function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, stop, stopPrice, price, size}})
 {
+    console.log(size)
     request.post({
         url: kucoinConstant.spot.order,
         isKuCoin: true,
