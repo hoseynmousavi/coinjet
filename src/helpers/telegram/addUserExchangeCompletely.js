@@ -28,16 +28,19 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                                 .then(userExchange =>
                                 {
                                     sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted})
-                                    kucoinController.getFutureAccountOverview({userExchange})
-                                        .then(res =>
-                                        {
-                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed + JSON.stringify(res)})
-                                            userFuturesSocket.startUserSocket({userExchange})
-                                        })
-                                        .catch(err =>
-                                        {
-                                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + JSON.stringify(err?.response?.data ?? {})})
-                                        })
+                                    if (userExchange.is_futures)
+                                    {
+                                        kucoinController.getFutureAccountOverview({userExchange})
+                                            .then(res =>
+                                            {
+                                                sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed + JSON.stringify(res)})
+                                                userFuturesSocket.startUserSocket({userExchange})
+                                            })
+                                            .catch(err =>
+                                            {
+                                                sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionFail + JSON.stringify(err?.response?.data ?? {})})
+                                            })
+                                    } // TODO Hoseyn
                                 })
                         }
                         else
