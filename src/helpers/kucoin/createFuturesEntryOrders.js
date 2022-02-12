@@ -58,7 +58,11 @@ function createFuturesEntryOrders({signal})
                                     })
                                     sendTelegramNotificationByUserExchange({
                                         userExchange,
-                                        text: telegramConstant.signalFoundAndOrdersCreated({ordersCount: signal.entry.length, isShort: signal.is_short}),
+                                        text: telegramConstant.signalFoundAndOrdersCreated({
+                                            isFutures: signal.is_futures,
+                                            ordersCount: signal.entry.length,
+                                            isShort: signal.is_short,
+                                        }),
                                     })
                                 }
                                 else

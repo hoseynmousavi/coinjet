@@ -18,7 +18,6 @@ function createSpotEntryOrders({signal})
                 kucoinController.getSpotAccountOverview({userExchange, currency: getCurrencyFromPair({index: 1, pair: signal.pair}), type: "trade"})
                     .then(accounts =>
                     {
-                        console.log(getCurrencyFromPair({index: 1, pair: signal.pair}))
                         const {available: availableBalance} = accounts[0] || {}
                         if (availableBalance)
                         {
@@ -54,7 +53,10 @@ function createSpotEntryOrders({signal})
                             })
                             sendTelegramNotificationByUserExchange({
                                 userExchange,
-                                text: telegramConstant.signalFoundAndOrdersCreated({ordersCount: signal.entry.length}),
+                                text: telegramConstant.signalFoundAndOrdersCreated({
+                                    isFutures: signal.is_futures,
+                                    ordersCount: signal.entry.length,
+                                }),
                             })
                         }
                         else

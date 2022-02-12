@@ -29,7 +29,7 @@ const telegramConstant = {
     connectionSucceed: "با موفقیت به اکانت شما متصل شدیم. موجودی شما:\n",
     connectionFail: "در اتصال به اکانت شما با خطا مواجه شدیم.\n",
     signalFoundButNoBalance: "سیگنال جدیدی دریافت شد، ولی موجودی حساب شما برای اردر کم بود.",
-    signalFoundAndOrdersCreated: ({ordersCount, isShort}) => `سیگنال جدیدی دریافت شد و ${ordersCount} اردر ${isShort ? "short" : "long"} گذاشته شد.`,
+    signalFoundAndOrdersCreated: ({isFutures, ordersCount, isShort}) => `سیگنال ${isFutures ? "فیوچرز" : "اسپات"} جدیدی دریافت شد و ${ordersCount} اردر${!isFutures ? "" : isShort ? " short" : " long"} گذاشته شد.`,
     entryOrderFilledAndOrdersAdded: ({entryIndex, tpCount}) => `انتری ${entryIndex}م سیگنال fill شد، اردر استاپ و ${tpCount} اردر tp گذاشته شد.`,
     stopSignalAndTpOrdersRemoved: "سیگنال متوقف شد، اردرهای tp پاک شدند.",
     tpFilledAndDone: "آخرین اردر tp فیل شد! اردرها با موفقیت تمام شدند.",
