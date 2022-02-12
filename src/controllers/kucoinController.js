@@ -20,6 +20,7 @@ function requestMiddleWareRes(req, res)
                     })
                     .catch(err =>
                     {
+                        console.log(err)
                         res.status(err?.response?.status || 500).send(err?.response?.data || {message: "we have err"})
                     })
             })
