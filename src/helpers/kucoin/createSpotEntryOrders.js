@@ -5,6 +5,8 @@ import orderController from "../../controllers/orderController"
 import sendTelegramNotificationByUserExchange from "../telegram/sendTelegramNotificationByUserExchange"
 import telegramConstant from "../../constants/telegramConstant"
 import getCurrencyFromPair from "../getCurrencyFromPair"
+import pairToFuturesSymbol from "./pairToFuturesSymbol"
+import pairToSpotSymbol from "./pairToSpotSymbol"
 
 function createSpotEntryOrders({signal})
 {
@@ -24,12 +26,13 @@ function createSpotEntryOrders({signal})
                             signal.entry.forEach((price, index) =>
                             {
                                 const size = balance / price
+                                const symbol = pairToSpotSymbol({pair: signal.pair})
                                 orderController.addOrder({
                                     user_id: userExchange.user_id,
                                     signal_id: signal._id,
                                     price,
                                     size,
-                                    symbol: signal.pair,
+                                    symbol,
                                     type: "entry",
                                     entry_or_tp_index: index,
                                     status: "open",
