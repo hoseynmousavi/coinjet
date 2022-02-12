@@ -9,7 +9,7 @@ function sendTelegramMessage({telegram_chat_id, text, reply_buttons, reply_to_me
         data: {
             chat_id: telegram_chat_id,
             text,
-            reply_markup: reply_buttons?.length ? {keyboard: [reply_buttons], one_time_keyboard: true, resize_keyboard: true} : undefined,
+            reply_markup: reply_buttons?.length ? {keyboard: [reply_buttons], one_time_keyboard: true, resize_keyboard: true} : {remove_keyboard: true},
             reply_to_message_id,
             allow_sending_without_reply: true,
         },
