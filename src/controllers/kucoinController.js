@@ -4,6 +4,7 @@ import userFuturesSocket from "../helpers/kucoin/userFuturesSocket"
 import userExchangeController from "./userExchangeController"
 import userExchangeConstant from "../constants/userExchangeConstant"
 import orderController from "./orderController"
+import userSpotSocket from "../helpers/kucoin/userSpotSocket"
 
 function requestMiddleWareRes(req, res)
 {
@@ -168,7 +169,7 @@ function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, s
 
 function startSpotWebsocket()
 {
-    // userSpotSocket.start()
+    userSpotSocket.start()
 }
 
 const kucoinController = {
