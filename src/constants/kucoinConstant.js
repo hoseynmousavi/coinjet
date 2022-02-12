@@ -1,11 +1,11 @@
 const kucoinConstant = {
     spot: {
-        getAccounts: "/api/v1/accounts",
-        getPublicSocket: "/api/v1/bullet-public",
+        getAccountOverview: currency => `/api/v1/accounts?currency=${currency}`,
         getPrivateSocket: "/api/v1/bullet-private",
     },
     future: {
         accountOverview: "/api/v1/account-overview?currency=USDT",
+        getPrivateSocket: "/api/v1/bullet-private",
         order: "/api/v1/orders",
         positions: "/api/v1/positions",
         orders: "/api/v1/orders?status=active",

@@ -20,7 +20,7 @@ function start()
 function startUserSocket({userExchange})
 {
     request.post({
-        url: kucoinConstant.spot.getPrivateSocket,
+        url: kucoinConstant.future.getPrivateSocket,
         isKucoinFuture: true,
         kuCoinUserExchange: userExchange,
     })

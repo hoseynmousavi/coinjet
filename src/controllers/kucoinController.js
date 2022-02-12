@@ -7,13 +7,13 @@ import orderController from "./orderController"
 
 function requestMiddleWareRes(req, res)
 {
-    const {user_id, url, method, data} = req.body || {}
+    const {is_futures, user_id, url, method, data} = req.body || {}
     if (user_id && url && method)
     {
         userExchangeController.getUserExchangesByUserId({user_id, progress_level: userExchangeConstant.progress_level.complete})
             .then(userExchanges =>
             {
-                request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKucoinFuture: true, kuCoinUserExchange: userExchanges[0], data})
+                request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKucoinFuture: !!is_futures, kuCoinUserExchange: userExchanges[0], data})
                     .then(result =>
                     {
                         res.send(result)
@@ -122,6 +122,16 @@ function startWebsocket()
     userFuturesSocket.start()
 }
 
+function getSpotAccountOverview({userExchange, currency})
+{
+    return request.get({
+        url: kucoinConstant.spot.getAccountOverview(currency),
+        isKuCoin: true,
+        kuCoinUserExchange: userExchange,
+    })
+        .then(res => res.data)
+}
+
 const kucoinController = {
     requestMiddleWareRes,
     getFutureAccountOverview,
@@ -131,6 +141,7 @@ const kucoinController = {
     startWebsocket,
     cancelFutureOrder,
     getFuturesActiveContracts,
+    getSpotAccountOverview,
 }
 
 export default kucoinController
