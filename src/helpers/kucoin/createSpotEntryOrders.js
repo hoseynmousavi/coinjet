@@ -25,7 +25,7 @@ function createSpotEntryOrders({signal})
                             const balance = availableBalance * (userExchange.usePercentOfBalance || 0.1) / signal.entry.length
                             signal.entry.forEach((price, index) =>
                             {
-                                const size = balance / price
+                                const size = (balance / price).toFixed(8)
                                 const symbol = pairToSpotSymbol({pair: signal.pair})
                                 orderController.addOrder({
                                     user_id: userExchange.user_id,
