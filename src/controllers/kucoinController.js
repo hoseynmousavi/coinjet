@@ -13,8 +13,7 @@ function requestMiddleWareRes(req, res)
         userExchangeController.getUserExchangesByUserId({user_id, progress_level: userExchangeConstant.progress_level.complete})
             .then(userExchanges =>
             {
-                console.log(userExchanges[0])
-                request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKucoinFuture: !!is_futures, kuCoinUserExchange: userExchanges[0], data})
+                request[method.toLowerCase() === "get" ? "get" : "post"]({url, isKucoinFuture: !!is_futures, kuCoinUserExchange: userExchanges.filter(item => item.is_futures === is_futures)[0], data})
                     .then(result =>
                     {
                         res.send(result)

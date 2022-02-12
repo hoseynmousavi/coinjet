@@ -14,14 +14,17 @@ function positionsExchangeTelegram({message_id, telegram_id, telegram_chat_id, t
             userExchangeController.getUserExchangesByUserId({user_id: user._id, progress_level: userExchangeConstant.progress_level.complete})
                 .then(userExchanges =>
                 {
-                    const item = userExchanges.filter(item => item.name === data)[0]
-                    if (item)
+                    const userExchange = userExchanges.filter(item => item.name === data)[0]
+                    if (userExchange)
                     {
-                        kucoinController.getFuturePositions({userExchange: item})
-                            .then(res =>
-                            {
-                                sendTelegramMessage({telegram_chat_id, text: res})
-                            })
+                        if (userExchange.is_futures)
+                        {
+                            kucoinController.getFuturePositions({userExchange})
+                                .then(res =>
+                                {
+                                    sendTelegramMessage({telegram_chat_id, text: res})
+                                })
+                        } // TODO Hoseyn
                     }
                     else sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.userExchange404})
                 })
