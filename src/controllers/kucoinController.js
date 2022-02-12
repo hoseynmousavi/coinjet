@@ -118,19 +118,55 @@ function getFuturesActiveContracts()
         .then(res => res.data)
 }
 
-function startWebsocket()
+function startFuturesWebsocket()
 {
     userFuturesSocket.start()
 }
 
-function getSpotAccountOverview({userExchange, currency})
+function getSpotAccountOverview({userExchange, currency, type})
 {
     return request.get({
-        url: kucoinConstant.spot.getAccountOverview(currency),
+        url: kucoinConstant.spot.getAccountOverview({currency, type}),
         isKuCoin: true,
         kuCoinUserExchange: userExchange,
     })
         .then(res => res.data)
+}
+
+function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, stop, stopPrice, price, size}})
+{
+    request.post({
+        url: kucoinConstant.spot.order,
+        isKuCoin: true,
+        kuCoinUserExchange: userExchange,
+        data: {
+            remark: "coinjet bot added this",
+            ...(stop && stopPrice ? {stopPriceType: "TP", stop, stopPrice} : {}),
+            ...(price ? {price} : {}),
+            type, clientOid, side, symbol, size,
+        },
+    })
+        .then(res =>
+        {
+            if (res?.data?.orderId)
+            {
+                orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
+            }
+            else
+            {
+                orderController.removeOrder({order_id: clientOid})
+            }
+        })
+        .catch(err =>
+        {
+            console.error({err: err?.response?.data})
+            orderController.removeOrder({order_id: clientOid})
+        })
+}
+
+function startSpotWebsocket()
+{
+    // userSpotSocket.start()
 }
 
 const kucoinController = {
@@ -139,10 +175,12 @@ const kucoinController = {
     getFuturePositions,
     getFutureActiveOrders,
     createFutureOrder,
-    startWebsocket,
+    startFuturesWebsocket,
     cancelFutureOrder,
     getFuturesActiveContracts,
     getSpotAccountOverview,
+    createSpotOrder,
+    startSpotWebsocket,
 }
 
 export default kucoinController

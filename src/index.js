@@ -19,6 +19,7 @@ exchangeRouter(app)
 telegramRouter(app)
 kucoinRouter(app)
 
-kucoinController.startWebsocket()
+kucoinController.startFuturesWebsocket()
+kucoinController.startSpotWebsocket()
 
 app.listen(data.port, () => console.log(`coinjet is Now Running on Port ${data.port}`))
