@@ -95,7 +95,7 @@ function handleChannelChat({channel_post})
 function checkSubscription({user_id})
 {
     const chat_id = -1001691391431
-    request.post({
+    return request.post({
         isTelegram: true,
         url: telegramEndpoints.getChatMember,
         data: {
@@ -103,8 +103,7 @@ function checkSubscription({user_id})
             user_id,
         },
     })
-        .then(res => console.log(res))
-        .catch(err => console.log({err: err?.response?.data}))
+        .then(res => !!(res.ok && res.result.status !== "left"))
 }
 
 const telegramController = {
