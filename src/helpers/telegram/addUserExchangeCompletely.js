@@ -28,6 +28,7 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                             userExchangeController.getUserExchangeByExchangeId({userExchangeId: inProgressExchanges[0]._id})
                                 .then(userExchange =>
                                 {
+                                    console.log(userExchange)
                                     if (userExchange.is_futures)
                                     {
                                         kucoinController.getFutureAccountOverview({userExchange})
