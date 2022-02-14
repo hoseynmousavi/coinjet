@@ -8,6 +8,11 @@ function getUserExchanges({is_futures, progress_level})
     return userExchangeTb.find({is_futures, progress_level})
 }
 
+function getUserExchangeByExchangeId({userExchangeId})
+{
+    return userExchangeTb.findOne({_id: userExchangeId})
+}
+
 function addUserExchange(userExchange)
 {
     return new userExchangeTb(userExchange).save()
@@ -35,6 +40,7 @@ function removeUserExchangeByProgressLevel({progress_level, user_id})
 
 const userExchangeController = {
     getUserExchanges,
+    getUserExchangeByExchangeId,
     addUserExchange,
     getUserExchangesByUserId,
     updateUserExchange,
