@@ -2,6 +2,8 @@ import mongoose from "mongoose"
 import signalModel from "../models/signalModel"
 import createFuturesEntryOrders from "../helpers/kucoin/createFuturesEntryOrders"
 import createSpotEntryOrders from "../helpers/kucoin/createSpotEntryOrders"
+import userExchangeController from "./userExchangeController"
+import userExchangeConstant from "../constants/userExchangeConstant"
 
 const signalTb = mongoose.model("signal", signalModel)
 
@@ -10,14 +12,18 @@ function addSignal(signal)
     return new signalTb(signal).save()
         .then(addedSignal =>
         {
-            if (addedSignal.is_futures)
-            {
-                createFuturesEntryOrders({signal: addedSignal})
-            }
-            else
-            {
-                createSpotEntryOrders({signal: addedSignal})
-            }
+            userExchangeController.getUserExchanges({is_futures: addedSignal.is_futures, progress_level: userExchangeConstant.progress_level.complete})
+                .then(userExchanges =>
+                {
+                    if (addedSignal.is_futures)
+                    {
+                        createFuturesEntryOrders({userExchanges, signal: addedSignal})
+                    }
+                    else
+                    {
+                        createSpotEntryOrders({userExchanges, signal: addedSignal})
+                    }
+                })
         })
 }
 

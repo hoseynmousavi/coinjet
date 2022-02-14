@@ -13,10 +13,11 @@ import overviewExchangeTelegram from "../helpers/telegram/overviewExchangeTelegr
 import signalController from "./signalController"
 import positionsExchangeTelegram from "../helpers/telegram/positionsExchangeTelegram"
 import ordersExchangeTelegram from "../helpers/telegram/ordersExchangeTelegram"
+import request from "../request/request"
+import telegramEndpoints from "../constants/telegramEndpoints"
 
 function getMessage(req, res)
 {
-    console.log(req?.body)
     const {message, channel_post} = req.body || {}
     if (message) handlePvChat({message})
     else if (channel_post) handleChannelChat({channel_post})
@@ -91,8 +92,24 @@ function handleChannelChat({channel_post})
     }
 }
 
+function checkSubscription({user_id})
+{
+    const chat_id = -1001691391431
+    request.post({
+        isTelegram: true,
+        url: telegramEndpoints.getChatMember,
+        data: {
+            chat_id,
+            user_id,
+        },
+    })
+        .then(res => console.log(res))
+        .catch(err => console.log({err: err?.response?.data}))
+}
+
 const telegramController = {
     getMessage,
+    checkSubscription,
 }
 
 export default telegramController
