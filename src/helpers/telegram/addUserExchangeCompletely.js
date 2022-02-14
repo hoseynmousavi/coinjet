@@ -25,21 +25,17 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                         const user_passphrase = data[3]
                         if (!userExchanges.some(item => item.name === name))
                         {
-                            userExchangeController.getUserExchangeByExchangeId({userExchangeId: inProgressExchanges[0]._id})
+                            userExchangeController.updateUserExchange({userExchangeId: inProgressExchanges[0]._id, update: {name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete}})
                                 .then(userExchange =>
                                 {
-                                    console.log(userExchange)
+                                    sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted})
                                     if (userExchange.is_futures)
                                     {
                                         kucoinController.getFutureAccountOverview({userExchange})
-                                            .then(() =>
+                                            .then(res =>
                                             {
-                                                userExchangeController.updateUserExchange({userExchangeId: userExchange._id, update: {name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete}})
-                                                    .then(userExchange =>
-                                                    {
-                                                        sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted})
-                                                        userFuturesSocket.startUserSocket({userExchange})
-                                                    })
+                                                sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed})
+                                                userFuturesSocket.startUserSocket({userExchange})
                                             })
                                             .catch(err =>
                                             {
@@ -49,14 +45,10 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                                     else
                                     {
                                         kucoinController.getSpotAccountOverview({userExchange})
-                                            .then(() =>
+                                            .then(res =>
                                             {
-                                                userExchangeController.updateUserExchange({userExchangeId: userExchange._id, update: {name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete}})
-                                                    .then(userExchange =>
-                                                    {
-                                                        sendTelegramMessage({telegram_chat_id, reply_to_message_id: message_id, text: telegramConstant.exchangeCompleted})
-                                                        userSpotSocket.startUserSocket({userExchange})
-                                                    })
+                                                sendTelegramMessage({telegram_chat_id, text: telegramConstant.connectionSucceed})
+                                                userSpotSocket.startUserSocket({userExchange})
                                             })
                                             .catch(err =>
                                             {

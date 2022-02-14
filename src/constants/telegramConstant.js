@@ -26,6 +26,7 @@ const telegramConstant = {
     ordersExchange: "My Orders: ",
     userExchangeSpot: " (spot)",
     userExchangeFutures: " (futures)",
+    connectionSucceed: "با موفقیت به اکانت شما متصل شدیم.",
     connectionFail: "در اتصال به اکانت شما با خطا مواجه شدیم.\n",
     signalFoundButNoBalance: "سیگنال جدیدی دریافت شد، ولی موجودی حساب شما برای اردر کم بود.",
     signalFoundAndOrdersCreated: ({isFutures, ordersCount, isShort}) => `سیگنال ${isFutures ? "فیوچرز" : "اسپات"} جدیدی دریافت شد و ${ordersCount} اردر${!isFutures ? "" : isShort ? " short" : " long"} گذاشته شد.`,

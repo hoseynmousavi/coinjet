@@ -10,7 +10,6 @@ function getUserExchanges({is_futures, progress_level})
 
 function getUserExchangeByExchangeId({userExchangeId})
 {
-    console.log(userExchangeId)
     return userExchangeTb.findOne({_id: userExchangeId})
 }
 
