@@ -18,11 +18,9 @@ const userModel = new schema({
     username: {
         unique: true,
         type: String,
-        required: "enter username!",
     },
     telegram_username: {
         type: String,
-        required: "enter telegram_username!",
     },
     telegram_chat_id: {
         unique: true,
