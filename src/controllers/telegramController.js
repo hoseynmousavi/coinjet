@@ -16,6 +16,7 @@ import ordersExchangeTelegram from "../helpers/telegram/ordersExchangeTelegram"
 
 function getMessage(req, res)
 {
+    console.log(req?.body)
     const {message, channel_post} = req.body || {}
     if (message) handlePvChat({message})
     else if (channel_post) handleChannelChat({channel_post})
