@@ -10,12 +10,12 @@ import userController from "../../controllers/userController"
 
 function createFuturesEntryOrders({userExchanges, signal})
 {
+    console.log(userExchanges)
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
             .then(user =>
             {
-                console.log(user)
                 telegramController.checkSubscription({user_id: user.telegram_id})
                 // kucoinController.getFutureAccountOverview({userExchange})
                 //     .then(overview =>
