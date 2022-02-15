@@ -22,8 +22,8 @@ function createSpotEntryOrders({userExchanges, signal})
                             kucoinController.getSpotAccountOverview({userExchange, currency: getCurrencyFromPair({index: 1, pair: signal.pair}), type: "trade"})
                                 .then(accounts =>
                                 {
-                                    console.log({accounts})
-                                    const {available: availableBalance} = accounts[0] || {}
+                                    const {available} = accounts[0] || {}
+                                    const availableBalance = +available
                                     if (availableBalance)
                                     {
                                         const balance = availableBalance * (userExchange.usePercentOfBalance || 0.1) / signal.entry.length
