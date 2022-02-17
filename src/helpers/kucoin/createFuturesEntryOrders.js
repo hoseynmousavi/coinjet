@@ -30,6 +30,7 @@ function createFuturesEntryOrders({userExchanges, signal})
                                             const symbol = pairToFuturesSymbol({pair: signal.pair})
                                             const contract = contracts.filter(item => item.symbol === symbol)?.[0]
                                             const enoughUsdtAndContract = signal.entry.every(price => contract && usdtBalance / price >= contract.multiplier)
+                                            console.log({contract: contract.multiplier})
                                             if (enoughUsdtAndContract)
                                             {
                                                 signal.entry.forEach((price, index) =>
