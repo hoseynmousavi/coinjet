@@ -22,6 +22,7 @@ function createFuturesEntryOrders({userExchanges, signal})
                                 .then(overview =>
                                 {
                                     const {availableBalance} = overview || {}
+                                    console.log({availableBalance})
                                     const usdtBalance = Math.floor(availableBalance * (userExchange.usePercentOfBalance || 0.1) * signal.leverage / signal.entry.length)
                                     kucoinController.getFuturesActiveContracts()
                                         .then(contracts =>
@@ -34,6 +35,7 @@ function createFuturesEntryOrders({userExchanges, signal})
                                                 signal.entry.forEach((price, index) =>
                                                 {
                                                     const size = Math.floor((usdtBalance / price) / contract.multiplier)
+                                                    console.log({size})
                                                     orderController.addOrder({
                                                         user_id: userExchange.user_id,
                                                         signal_id: signal._id,
