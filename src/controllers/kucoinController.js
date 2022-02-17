@@ -74,7 +74,6 @@ function createFutureOrder({userExchange, order: {type, clientOid, side, symbol,
     })
         .then(res =>
         {
-            console.log({res})
             if (res?.data?.orderId)
             {
                 orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
