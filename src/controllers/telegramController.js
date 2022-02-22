@@ -49,7 +49,7 @@ function handlePvChat({message})
                 if (signal)
                 {
                     const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
-                    signalController.addSignal({message, pair, stop, entry, target, is_futures, is_short, leverage})
+                    signalController.addSignal({message, telegram_chat_id, title: (first_name + " " + last_name).trim(), pair, stop, entry, target, is_futures, is_short, leverage})
                 }
                 else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
             }
@@ -61,18 +61,17 @@ function handlePvChat({message})
 
 function handleChannelChat({channel_post})
 {
-    console.log(channel_post)
     const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
     if (message_id && sender_chat && chat && date && text)
     {
-        const {type, id: telegram_chat_id} = chat
+        const {type, id: telegram_chat_id, title} = chat
         if (type === "channel")
         {
             const signal = checkIfSignal({text})
             if (signal)
             {
                 const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
-                signalController.addSignal({message, pair, stop, entry, target, is_futures, is_short, leverage})
+                signalController.addSignal({message, telegram_chat_id, title, pair, stop, entry, target, is_futures, is_short, leverage})
             }
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
@@ -81,16 +80,20 @@ function handleChannelChat({channel_post})
 
 function checkSubscription({user_id})
 {
-    const chat_id = -1001691391431
-    return request.post({
-        isTelegram: true,
-        url: telegramEndpoints.getChatMember,
-        data: {
-            chat_id,
-            user_id,
-        },
-    })
-        .then(res => !!(res.ok && res.result.status !== "left"))
+    if (user_id === "620fe5dccefb6630747d77bf") return new Promise(resolve => resolve(true)) // TODO make it by db
+    else
+    {
+        const chat_id = -1001691391431
+        return request.post({
+            isTelegram: true,
+            url: telegramEndpoints.getChatMember,
+            data: {
+                chat_id,
+                user_id,
+            },
+        })
+            .then(res => !!(res.ok && res.result.status !== "left"))
+    }
 }
 
 const telegramController = {

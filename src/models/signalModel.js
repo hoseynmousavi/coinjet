@@ -7,6 +7,14 @@ const signalModel = new schema({
         type: String,
         required: "enter text!",
     },
+    telegram_chat_id: {
+        type: Number,
+        required: "enter telegram_chat_id!",
+    },
+    title: {
+        type: String,
+        required: "enter title!",
+    },
     pair: {
         type: String,
         required: "enter pair!",
