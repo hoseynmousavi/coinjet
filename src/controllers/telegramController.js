@@ -15,6 +15,7 @@ import positionsExchangeTelegram from "../helpers/telegram/positionsExchangeTele
 import ordersExchangeTelegram from "../helpers/telegram/ordersExchangeTelegram"
 import request from "../request/request"
 import telegramEndpoints from "../constants/telegramEndpoints"
+import checkIfSignal from "../helpers/checkIfSignal"
 
 function getMessage(req, res)
 {
@@ -42,6 +43,16 @@ function handlePvChat({message})
             else if (text.includes(telegramConstant.overviewExchange)) overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.positionsExchange)) positionsExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.ordersExchange)) ordersExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
+            else if (telegram_id === 531523817) // TODO make it by db
+            {
+                const signal = checkIfSignal({text})
+                if (signal)
+                {
+                    const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
+                    signalController.addSignal({message, pair, stop, entry, target, is_futures, is_short, leverage})
+                }
+                else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
+            }
             else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
@@ -50,42 +61,18 @@ function handlePvChat({message})
 
 function handleChannelChat({channel_post})
 {
+    console.log(channel_post)
     const {message_id, sender_chat, author_signature, chat, date, text} = channel_post
     if (message_id && sender_chat && chat && date && text)
     {
         const {type, id: telegram_chat_id} = chat
         if (type === "channel")
         {
-            const message = text.toLowerCase()
-                .replaceAll(regexConstant.emoji, "")
-                .replaceAll("#", "")
-                .replaceAll(" ", "")
-                .replaceAll("\n", " ")
-            let is_short, is_futures, pair, leverage, entry, target, stop = null
-            if (message.includes("short") || message.includes("long")) is_short = message.includes("short")
-            if (message.includes("spot") || message.includes("futures")) is_futures = message.includes("futures")
-            pair = message.match(regexConstant.pair)?.[0]?.replace("pair:", "")?.toUpperCase()
-            leverage = message.match(regexConstant.leverage)?.[0]?.replace("leverage:", "")
-            entry = message.match(regexConstant.entry)?.[0]?.replace("entry:", "").split("-")
-            target = message.match(regexConstant.target)?.[0]?.replace("target:", "").split("-")
-            stop = message.match(regexConstant.stop)?.[0]?.replace("stop:", "")
-
-            if ((is_futures === false || (is_futures === true && is_short !== null && leverage)) && pair && entry && target && stop)
+            const signal = checkIfSignal({text})
+            if (signal)
             {
+                const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
                 signalController.addSignal({message, pair, stop, entry, target, is_futures, is_short, leverage})
-
-                sendTelegramMessage({
-                    telegram_chat_id,
-                    reply_to_message_id: message_id,
-                    text: JSON.stringify({
-                        is_futures,
-                        pair,
-                        leverage,
-                        entry,
-                        target,
-                        stop,
-                    }),
-                })
             }
         }
         else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
