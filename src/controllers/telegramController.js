@@ -80,7 +80,7 @@ function handleChannelChat({channel_post})
 
 function checkSubscription({user_id})
 {
-    if (user_id === "620fe5dccefb6630747d77bf") return new Promise(resolve => resolve(true)) // TODO make it by db
+    if (user_id === 531523817) return new Promise(resolve => resolve(true)) // TODO make it by db
     else
     {
         const chat_id = -1001691391431
