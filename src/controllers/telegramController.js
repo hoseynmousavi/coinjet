@@ -8,7 +8,6 @@ import promptRemoveExchangeTelegram from "../helpers/telegram/promptRemoveExchan
 import addUserExchangeInProgress from "../helpers/telegram/addUserExchangeInProgress"
 import addUserExchangeCompletely from "../helpers/telegram/addUserExchangeCompletely"
 import removeExchangeTelegram from "../helpers/telegram/removeExchangeTelegram"
-import regexConstant from "../constants/regexConstant"
 import overviewExchangeTelegram from "../helpers/telegram/overviewExchangeTelegram"
 import signalController from "./signalController"
 import positionsExchangeTelegram from "../helpers/telegram/positionsExchangeTelegram"
@@ -16,6 +15,7 @@ import ordersExchangeTelegram from "../helpers/telegram/ordersExchangeTelegram"
 import request from "../request/request"
 import telegramEndpoints from "../constants/telegramEndpoints"
 import checkIfSignal from "../helpers/checkIfSignal"
+import chatConstant from "../constants/chatConstant"
 
 function getMessage(req, res)
 {
@@ -43,7 +43,7 @@ function handlePvChat({message})
             else if (text.includes(telegramConstant.overviewExchange)) overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.positionsExchange)) positionsExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.ordersExchange)) ordersExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
-            else if (telegram_id === 531523817) // TODO make it by db
+            else if (telegram_id === chatConstant.sajjad_chat_id) // TODO make it by db
             {
                 const signal = checkIfSignal({text})
                 if (signal)
@@ -78,17 +78,16 @@ function handleChannelChat({channel_post})
     }
 }
 
-function checkSubscription({user_id})
+function checkSubscription({telegram_chat_id, user_id})
 {
-    if (user_id === 531523817) return new Promise(resolve => resolve(true)) // TODO make it by db
-    else
+    if (telegram_chat_id === chatConstant.sajjad_chat_id && user_id === chatConstant.sajjad_chat_id) return new Promise(resolve => resolve(true)) // TODO make it by db
+    else if (telegram_chat_id === chatConstant.channel_chat_id)
     {
-        const chat_id = -1001691391431
         return request.post({
             isTelegram: true,
             url: telegramEndpoints.getChatMember,
             data: {
-                chat_id,
+                chat_id: chatConstant.channel_chat_id,
                 user_id,
             },
         })

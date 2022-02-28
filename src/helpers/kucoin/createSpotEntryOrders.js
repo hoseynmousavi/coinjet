@@ -14,7 +14,7 @@ function createSpotEntryOrders({userExchanges, signal})
         userController.getUserById({_id: userExchange.user_id})
             .then(user =>
             {
-                telegramController.checkSubscription({user_id: user.telegram_id})
+                telegramController.checkSubscription({telegram_chat_id: signal.telegram_chat_id, user_id: user.telegram_id})
                     .then(isSubscribed =>
                     {
                         if (isSubscribed)
