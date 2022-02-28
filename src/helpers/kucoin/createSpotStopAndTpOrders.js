@@ -10,7 +10,7 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
         .then(signal =>
         {
             orderController.addOrder({
-                user_id: userExchange.user_id,
+                user_exchange_id: userExchange._id,
                 signal_id: entryOrder.signal_id,
                 price: signal.stop,
                 size: entryOrder.size,
@@ -39,7 +39,7 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
             {
                 const size = entryOrder.size / signal.target.length
                 orderController.addOrder({
-                    user_id: userExchange.user_id,
+                    user_exchange_id: userExchange._id,
                     signal_id: entryOrder.signal_id,
                     price,
                     size,

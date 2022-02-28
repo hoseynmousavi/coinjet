@@ -35,7 +35,7 @@ function createFuturesEntryOrders({userExchanges, signal})
                                                 {
                                                     const size = Math.floor((usdtBalance / price) / contract.multiplier)
                                                     orderController.addOrder({
-                                                        user_id: userExchange.user_id,
+                                                        user_exchange_id: userExchange._id,
                                                         signal_id: signal._id,
                                                         price,
                                                         size,

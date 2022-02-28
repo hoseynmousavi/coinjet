@@ -3,10 +3,10 @@ import mongoose from "mongoose"
 const schema = mongoose.Schema
 
 const orderModel = new schema({
-    user_id: {
+    user_exchange_id: {
         index: true,
         type: schema.Types.ObjectId,
-        required: "enter user_id!",
+        required: "enter user_exchange_id!",
     },
     signal_id: {
         index: true,

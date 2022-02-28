@@ -32,7 +32,7 @@ function createSpotEntryOrders({userExchanges, signal})
                                             const size = (balance / price).toFixed(8)
                                             const symbol = pairToSpotSymbol({pair: signal.pair})
                                             orderController.addOrder({
-                                                user_id: userExchange.user_id,
+                                                user_exchange_id: userExchange._id,
                                                 signal_id: signal._id,
                                                 price,
                                                 size,

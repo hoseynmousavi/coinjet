@@ -20,7 +20,7 @@ function updateSpotStopOrder({tpOrder, userExchange})
                     if (tpOrder.entry_or_tp_index < signal.target.length - 1)
                     {
                         orderController.addOrder({
-                            user_id: stopOrder.user_id,
+                            user_exchange_id: stopOrder.user_exchange_id,
                             signal_id: stopOrder.signal_id,
                             price: signal.entry[stopOrder.entry_fill_index],
                             size: tpOrders.reduce((sum, order) => sum + (order.entry_or_tp_index > tpOrder.entry_or_tp_index ? order.size : 0), 0),
