@@ -93,6 +93,7 @@ function checkSubscription({telegram_chat_id, user_id})
         })
             .then(res => !!(res.ok && res.result.status !== "left"))
     }
+    else return new Promise(resolve => resolve(false))
 }
 
 const telegramController = {
