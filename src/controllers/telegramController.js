@@ -45,9 +45,11 @@ function handlePvChat({message})
             else if (text.includes(telegramConstant.ordersExchange)) ordersExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (telegram_id === chatConstant.sajjad_chat_id) // TODO make it by db
             {
+                console.log("sajjad!")
                 const signal = checkIfSignal({text})
                 if (signal)
                 {
+                    console.log("SIGNAL!")
                     const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
                     signalController.addSignal({message, telegram_chat_id, title: (first_name + " " + last_name).trim(), pair, stop, entry, target, is_futures, is_short, leverage})
                 }
@@ -80,6 +82,7 @@ function handleChannelChat({channel_post})
 
 function checkSubscription({telegram_chat_id, user_id})
 {
+    console.log({telegram_chat_id, user_id})
     if (telegram_chat_id === chatConstant.sajjad_chat_id && user_id === chatConstant.sajjad_chat_id) return new Promise(resolve => resolve(true)) // TODO make it by db
     else if (telegram_chat_id === chatConstant.channel_chat_id)
     {
