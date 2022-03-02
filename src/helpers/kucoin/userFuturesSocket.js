@@ -75,13 +75,13 @@ function startUserSocket({userExchange})
                 }
                 socket.onclose = () =>
                 {
-                    delete userExchangeSockets[userExchange._id]
                     console.log("closed")
+                    if (userExchangeSockets[userExchange._id]) startUserSocket({userExchange})
                 }
                 socket.onerror = item =>
                 {
-                    delete userExchangeSockets[userExchange._id]
                     console.log("error", item.data)
+                    if (userExchangeSockets[userExchange._id]) startUserSocket({userExchange})
                 }
             }
         })
@@ -89,6 +89,7 @@ function startUserSocket({userExchange})
 
 function closeSocket({userExchangeId})
 {
+    delete userExchangeSockets[userExchangeId]
     userExchangeSockets[userExchangeId]?.close?.()
 }
 
