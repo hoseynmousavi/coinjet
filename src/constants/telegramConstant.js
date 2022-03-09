@@ -31,6 +31,7 @@ const telegramConstant = {
     connectionSucceed: "با موفقیت به اکانت شما متصل شدیم.",
     connectionFail: "در اتصال به اکانت شما با خطا مواجه شدیم.\n",
     signalFoundButNoBalance: "سیگنال جدیدی دریافت شد اما به دلیل کمبود موجودی حسابتان، سفارشی ثبت نشد.",
+    signalFoundButNoCoinSupport: "سیگنال جدیدی دریافت شد اما صرافی کوکوین آن را ساپورت نمی‌کند.",
     signalFoundAndOrdersCreated: ({isFutures, ordersCount, isShort}) => `سیگنال ${isFutures ? "فیوچرز" : "اسپات"} جدیدی دریافت شد و ${ordersCount} اردر${!isFutures ? "" : isShort ? " short" : " long"} گذاشته شد.`,
     entryOrderFilledAndOrdersAdded: ({entryIndex, tpCount}) => `انتری ${entryIndex}م سیگنال fill شد، اردر استاپ و ${tpCount} اردر tp گذاشته شد.`,
     stopSignalAndTpOrdersRemoved: "سیگنال متوقف شد، اردرهای tp پاک شدند.",
