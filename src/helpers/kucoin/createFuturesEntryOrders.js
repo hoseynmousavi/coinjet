@@ -77,12 +77,11 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
     })
 }
 
-async function submitOrders({signal, usdtBalance, multiplier, symbol, userExchange})
+async function submitOrders({signal, usdtBalance, multiplier, symbol})
 {
     for (let index = 0; index < signal.entry.length; index++)
     {
         const price = signal.entry[index]
-        console.log({price})
         const size = Math.floor((usdtBalance / price) / multiplier)
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
@@ -95,7 +94,6 @@ async function submitOrders({signal, usdtBalance, multiplier, symbol, userExchan
             entry_or_tp_index: index,
             status: "open",
         })
-        console.log({order})
         await kucoinController.createFutureOrder({
             userExchange,
             order: {
