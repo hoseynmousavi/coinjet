@@ -111,8 +111,9 @@ async function submitOrders({signal, usdtBalance, multiplier, symbol})
                 },
             })
         }
-        catch (_)
+        catch (e)
         {
+            console.log(e)
             break
         }
     }
