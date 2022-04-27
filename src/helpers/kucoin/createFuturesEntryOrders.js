@@ -77,7 +77,7 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
     })
 }
 
-async function submitOrders({signal, usdtBalance, multiplier, symbol})
+async function submitOrders({signal, usdtBalance, multiplier, symbol, userExchange})
 {
     for (let index = 0; index < signal.entry.length; index++)
     {
