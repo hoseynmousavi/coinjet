@@ -17,8 +17,17 @@ function removeTpOrders({isFutures, stopOrder, userExchange})
                         if (isFutures) kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
                         else kucoinController.cancelSpotOrder({isStop: true, userExchange, exchange_order_id: order.exchange_order_id})
                     })
-                    sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.stopSignalAndTpOrdersRemoved})
                 })
+            orderController.findOrders({query: {user_id: userExchange.user_id, type: "entry", status: "open", signal_id: signal._id}})
+                .then(orders =>
+                {
+                    orders.forEach(order =>
+                    {
+                        if (isFutures) kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
+                        else kucoinController.cancelSpotOrder({isStop: true, userExchange, exchange_order_id: order.exchange_order_id})
+                    })
+                })
+            sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.stopSignalAndTpOrdersRemoved})
         })
 }
 

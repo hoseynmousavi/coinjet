@@ -27,42 +27,25 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                     if (availableBalance)
                                     {
                                         const balance = availableBalance * (userExchange.usePercentOfBalance || 0.1) / signal.entry.length
-                                        signal.entry.forEach((price, index) =>
-                                        {
-                                            const size = (balance / price).toFixed(8)
-                                            const symbol = pairToSpotSymbol({pair: signal.pair})
-                                            orderController.addOrder({
-                                                user_exchange_id: userExchange._id,
-                                                signal_id: signal._id,
-                                                price,
-                                                size,
-                                                symbol,
-                                                type: "entry",
-                                                entry_or_tp_index: index,
-                                                status: "open",
-                                            })
-                                                .then(order =>
-                                                {
-                                                    kucoinController.createSpotOrder({
-                                                        userExchange,
-                                                        order: {
-                                                            type: "limit",
-                                                            clientOid: order._id,
-                                                            side: "buy",
-                                                            symbol: order.symbol,
-                                                            price: order.price,
-                                                            size: order.size,
-                                                        },
-                                                    })
+                                        const symbol = pairToSpotSymbol({pair: signal.pair})
+                                        submitOrders({signal, balance, symbol, userExchange})
+                                            .then(() =>
+                                            {
+                                                sendTelegramNotificationByUserExchange({
+                                                    userExchange,
+                                                    text: telegramConstant.signalFoundAndOrdersCreated({
+                                                        isFutures: signal.is_futures,
+                                                        ordersCount: signal.entry.length,
+                                                    }),
                                                 })
-                                        })
-                                        sendTelegramNotificationByUserExchange({
-                                            userExchange,
-                                            text: telegramConstant.signalFoundAndOrdersCreated({
-                                                isFutures: signal.is_futures,
-                                                ordersCount: signal.entry.length,
-                                            }),
-                                        })
+                                            })
+                                            .catch(() =>
+                                            {
+                                                sendTelegramNotificationByUserExchange({
+                                                    userExchange,
+                                                    text: telegramConstant.signalFoundButErr,
+                                                })
+                                            })
                                     }
                                     else
                                     {
@@ -76,6 +59,36 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                     })
             })
     })
+}
+
+async function submitOrders({signal, balance, symbol, userExchange})
+{
+    for (let index = 0; index < signal.entry.length; index++)
+    {
+        const price = signal.entry[index]
+        const size = (balance / price).toFixed(8)
+        const order = await orderController.addOrder({
+            user_exchange_id: userExchange._id,
+            signal_id: signal._id,
+            price,
+            size,
+            symbol,
+            type: "entry",
+            entry_or_tp_index: index,
+            status: "open",
+        })
+        await kucoinController.createSpotOrder({
+            userExchange,
+            order: {
+                type: "limit",
+                clientOid: order._id,
+                side: "buy",
+                symbol: order.symbol,
+                price: order.price,
+                size: order.size,
+            },
+        })
+    }
 }
 
 export default createSpotEntryOrders

@@ -149,34 +149,47 @@ function getSpotAccountOverview({userExchange, currency, type})
 
 function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, stop, stopPrice, price, size}})
 {
-    const isStop = stop && stopPrice
-    request.post({
-        url: isStop ? kucoinConstant.spot.stopOrder : kucoinConstant.spot.order,
-        isKuCoin: true,
-        kuCoinUserExchange: userExchange,
-        data: {
-            remark: "coinjet bot added this",
-            ...(stop && stopPrice ? {stop, stopPrice} : {}),
-            ...(price ? {price} : {}),
-            type, clientOid, side, symbol, size,
-        },
+    return new Promise((resolve, reject) =>
+    {
+        const isStop = stop && stopPrice
+        request.post({
+            url: isStop ? kucoinConstant.spot.stopOrder : kucoinConstant.spot.order,
+            isKuCoin: true,
+            kuCoinUserExchange: userExchange,
+            data: {
+                remark: "coinjet bot added this",
+                ...(stop && stopPrice ? {stop, stopPrice} : {}),
+                ...(price ? {price} : {}),
+                type, clientOid, side, symbol, size,
+            },
+        })
+            .then(res =>
+            {
+                if (res?.data?.orderId)
+                {
+                    orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
+                    resolve()
+                }
+                else
+                {
+                    const error = res
+                    console.error({error})
+                    reject("ارور سرور")
+                    orderController.removeOrder({order_id: clientOid})
+                }
+            })
+            .catch(err =>
+            {
+                const error = err?.response
+                console.error({error})
+                if (+error.code === 429000) setTimeout(() => createSpotOrder(arguments[0]), 100)
+                else
+                {
+                    reject(error.msg)
+                    orderController.removeOrder({order_id: clientOid})
+                }
+            })
     })
-        .then(res =>
-        {
-            if (res?.data?.orderId)
-            {
-                orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
-            }
-            else
-            {
-                orderController.removeOrder({order_id: clientOid})
-            }
-        })
-        .catch(err =>
-        {
-            console.error({err: err?.response?.data})
-            orderController.removeOrder({order_id: clientOid})
-        })
 }
 
 function startSpotWebsocket()
