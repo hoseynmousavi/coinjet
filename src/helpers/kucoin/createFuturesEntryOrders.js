@@ -34,7 +34,7 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
                                                 const enoughUsdtAndContract = signal.entry.every(price => usdtBalance / price >= multiplier)
                                                 if (enoughUsdtAndContract)
                                                 {
-                                                    submitOrders({signal, usdtBalance, multiplier, symbol})
+                                                    submitOrders({signal, usdtBalance, multiplier, symbol, userExchange})
                                                         .then(() =>
                                                         {
                                                             sendTelegramNotificationByUserExchange({
@@ -77,45 +77,37 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
     })
 }
 
-async function submitOrders({signal, usdtBalance, multiplier, symbol})
+async function submitOrders({signal, usdtBalance, multiplier, symbol, userExchange})
 {
     for (let index = 0; index < signal.entry.length; index++)
     {
-        try
-        {
-            const price = signal.entry[index]
-            console.log({price})
-            const size = Math.floor((usdtBalance / price) / multiplier)
-            const order = await orderController.addOrder({
-                user_exchange_id: userExchange._id,
-                signal_id: signal._id,
-                price,
-                size,
-                lot: multiplier,
-                symbol,
-                type: "entry",
-                entry_or_tp_index: index,
-                status: "open",
-            })
-            console.log({order})
-            await kucoinController.createFutureOrder({
-                userExchange,
-                order: {
-                    type: "limit",
-                    clientOid: order._id,
-                    side: signal.is_short ? "sell" : "buy",
-                    symbol: order.symbol,
-                    leverage: signal.leverage,
-                    price: order.price,
-                    size: order.size,
-                },
-            })
-        }
-        catch (e)
-        {
-            console.log(e)
-            break
-        }
+        const price = signal.entry[index]
+        console.log({price})
+        const size = Math.floor((usdtBalance / price) / multiplier)
+        const order = await orderController.addOrder({
+            user_exchange_id: userExchange._id,
+            signal_id: signal._id,
+            price,
+            size,
+            lot: multiplier,
+            symbol,
+            type: "entry",
+            entry_or_tp_index: index,
+            status: "open",
+        })
+        console.log({order})
+        await kucoinController.createFutureOrder({
+            userExchange,
+            order: {
+                type: "limit",
+                clientOid: order._id,
+                side: signal.is_short ? "sell" : "buy",
+                symbol: order.symbol,
+                leverage: signal.leverage,
+                price: order.price,
+                size: order.size,
+            },
+        })
     }
 }
 
