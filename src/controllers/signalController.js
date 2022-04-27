@@ -18,7 +18,6 @@ function addSignal({telegram_id, signal})
                 userController.getUserByTelegramId({telegram_id})
                     .then(user =>
                     {
-                        console.log({user})
                         submitEntryOrders({addedSignal, user})
                     })
             }
@@ -34,7 +33,6 @@ function submitEntryOrders({addedSignal, user})
     userExchangeController.getUserExchanges({query: {...(user ? {user_id: user._id} : {}), is_futures: addedSignal.is_futures, progress_level: userExchangeConstant.progress_level.complete}})
         .then(userExchanges =>
         {
-            console.log({userExchanges})
             if (addedSignal.is_futures)
             {
                 createFuturesEntryOrders({userExchanges, signal: addedSignal})

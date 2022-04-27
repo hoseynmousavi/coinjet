@@ -84,6 +84,7 @@ async function submitOrders({signal, usdtBalance, multiplier, symbol})
         try
         {
             const price = signal.entry[index]
+            console.log("HERE", price)
             const size = Math.floor((usdtBalance / price) / multiplier)
             const order = await orderController.addOrder({
                 user_exchange_id: userExchange._id,
@@ -96,6 +97,7 @@ async function submitOrders({signal, usdtBalance, multiplier, symbol})
                 entry_or_tp_index: index,
                 status: "open",
             })
+            console.log("ORDER YES")
             await kucoinController.createFutureOrder({
                 userExchange,
                 order: {
