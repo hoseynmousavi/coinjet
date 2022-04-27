@@ -3,9 +3,9 @@ import userExchangeModel from "../models/userExchangeModel"
 
 const userExchangeTb = mongoose.model("user-exchange", userExchangeModel)
 
-function getUserExchanges({is_futures, progress_level})
+function getUserExchanges({query})
 {
-    return userExchangeTb.find({is_futures, progress_level})
+    return userExchangeTb.find(query)
 }
 
 function addUserExchange(userExchange)

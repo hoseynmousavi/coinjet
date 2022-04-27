@@ -12,7 +12,7 @@ let userExchangeSockets = {}
 
 function start()
 {
-    userExchangeController.getUserExchanges({is_futures: false, progress_level: userExchangeConstant.progress_level.complete})
+    userExchangeController.getUserExchanges({query: {is_futures: false, progress_level: userExchangeConstant.progress_level.complete}})
         .then(userExchanges =>
         {
             userExchanges.forEach(userExchange => startUserSocket({userExchange}))

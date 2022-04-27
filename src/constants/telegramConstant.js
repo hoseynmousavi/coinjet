@@ -21,7 +21,6 @@ const telegramConstant = {
     repeatedUserExchangeName: "نامی که انتخاب کردید تکراری است. نام دیگری انتخاب کنید.",
     falsePercentUserExchange: "درصدی که تعیین کردید اشتباه است، باید عددی بین 0 و 100 انتخاب کنید.",
     notOk: "مفهوم پیام شما نامشخص است!",
-    unsupportedWay: "پیام شما در محیطی است که ما فعلا ساپورت نمیکنیم.",
     removeExchange: "Remove: ",
     overviewExchange: "Overview: ",
     positionsExchange: "My Positions: ",

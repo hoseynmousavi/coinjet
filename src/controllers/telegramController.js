@@ -43,19 +43,17 @@ function handlePvChat({message})
             else if (text.includes(telegramConstant.overviewExchange)) overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.positionsExchange)) positionsExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.ordersExchange)) ordersExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
-            else if (telegram_id === chatConstant.sajjad_chat_id) // TODO make it by db
+            else
             {
                 const signal = checkIfSignal({text})
                 if (signal)
                 {
                     const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
-                    signalController.addSignal({message, telegram_chat_id, title: (first_name + " " + last_name).trim(), pair, stop, entry, target, is_futures, is_short, leverage})
+                    signalController.addSignal({telegram_id, signal: {message, telegram_chat_id, title: (first_name + " " + last_name).trim(), pair, stop, entry, target, is_futures, is_short, leverage}})
                 }
                 else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
             }
-            else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
         }
-        else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
     }
 }
 
@@ -71,10 +69,9 @@ function handleChannelChat({channel_post})
             if (signal)
             {
                 const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
-                signalController.addSignal({message, telegram_chat_id, title, pair, stop, entry, target, is_futures, is_short, leverage})
+                signalController.addSignal({signal: {message, telegram_chat_id, title, pair, stop, entry, target, is_futures, is_short, leverage}})
             }
         }
-        else sendTelegramMessage({telegram_chat_id, text: telegramConstant.unsupportedWay, reply_to_message_id: message_id})
     }
 }
 
