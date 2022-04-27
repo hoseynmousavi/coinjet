@@ -16,7 +16,11 @@ function addSignal({telegram_id, signal})
             if (telegram_id)
             {
                 userController.getUserByTelegramId({telegram_id})
-                    .then(user => submitEntryOrders({addedSignal, user}))
+                    .then(user =>
+                    {
+                        console.log({user})
+                        submitEntryOrders({addedSignal, user})
+                    })
             }
             else
             {
