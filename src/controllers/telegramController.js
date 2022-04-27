@@ -80,8 +80,7 @@ function handleChannelChat({channel_post})
 
 function checkSubscription({telegram_chat_id, user_id})
 {
-    if (telegram_chat_id === chatConstant.sajjad_chat_id) return new Promise(resolve => resolve(true)) // TODO make it by db
-    else if (telegram_chat_id === chatConstant.channel_chat_id)
+    if (telegram_chat_id === chatConstant.channel_chat_id)
     {
         return request.post({
             isTelegram: true,

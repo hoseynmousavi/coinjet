@@ -61,33 +61,46 @@ function getFutureActiveOrders({userExchange})
 
 function createFutureOrder({userExchange, order: {type, clientOid, side, symbol, leverage, stop, stopPrice, price, size}})
 {
-    request.post({
-        url: kucoinConstant.future.order,
-        isKucoinFuture: true,
-        kuCoinUserExchange: userExchange,
-        data: {
-            remark: "coinjet bot added this",
-            ...(stop && stopPrice ? {stopPriceType: "TP", stop, stopPrice} : {}),
-            ...(price ? {price} : {}),
-            type, clientOid, side, symbol, leverage, size,
-        },
+    return new Promise((resolve, reject) =>
+    {
+        request.post({
+            url: kucoinConstant.future.order,
+            isKucoinFuture: true,
+            kuCoinUserExchange: userExchange,
+            data: {
+                remark: "coinjet bot added this",
+                ...(stop && stopPrice ? {stopPriceType: "TP", stop, stopPrice} : {}),
+                ...(price ? {price} : {}),
+                type, clientOid, side, symbol, leverage, size,
+            },
+        })
+            .then(res =>
+            {
+                if (res?.data?.orderId)
+                {
+                    orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
+                    resolve()
+                }
+                else
+                {
+                    const error = res?.data
+                    console.error({error})
+                    reject("ارور سرور")
+                    orderController.removeOrder({order_id: clientOid})
+                }
+            })
+            .catch(err =>
+            {
+                const error = err?.response?.data
+                console.error({error})
+                if (+error.code === 429000) setTimeout(() => createFutureOrder(arguments[0]), 100)
+                else
+                {
+                    reject(error.msg)
+                    orderController.removeOrder({order_id: clientOid})
+                }
+            })
     })
-        .then(res =>
-        {
-            if (res?.data?.orderId)
-            {
-                orderController.updateOrder({query: {_id: clientOid}, update: {exchange_order_id: res.data.orderId}})
-            }
-            else
-            {
-                orderController.removeOrder({order_id: clientOid})
-            }
-        })
-        .catch(err =>
-        {
-            console.error({err: err?.response?.data})
-            orderController.removeOrder({order_id: clientOid})
-        })
 }
 
 function cancelFutureOrder({userExchange, exchange_order_id})
