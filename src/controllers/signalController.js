@@ -35,11 +35,11 @@ function submitEntryOrders({addedSignal, user})
         {
             if (addedSignal.is_futures)
             {
-                createFuturesEntryOrders({userExchanges, signal: addedSignal})
+                createFuturesEntryOrders({isBroadcast: !user, userExchanges, signal: addedSignal})
             }
             else
             {
-                createSpotEntryOrders({userExchanges, signal: addedSignal})
+                createSpotEntryOrders({isBroadcast: !user, userExchanges, signal: addedSignal})
             }
         })
 }

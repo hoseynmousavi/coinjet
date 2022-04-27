@@ -75,21 +75,25 @@ function handleChannelChat({channel_post})
     }
 }
 
-function checkSubscription({telegram_chat_id, user_id})
+function checkSubscription({isBroadcast, telegram_chat_id, user_id})
 {
-    if (telegram_chat_id === chatConstant.channel_chat_id)
+    if (isBroadcast)
     {
-        return request.post({
-            isTelegram: true,
-            url: telegramEndpoints.getChatMember,
-            data: {
-                chat_id: chatConstant.channel_chat_id,
-                user_id,
-            },
-        })
-            .then(res => !!(res.ok && res.result.status !== "left"))
+        if (telegram_chat_id === chatConstant.channel_chat_id)
+        {
+            return request.post({
+                isTelegram: true,
+                url: telegramEndpoints.getChatMember,
+                data: {
+                    chat_id: chatConstant.channel_chat_id,
+                    user_id,
+                },
+            })
+                .then(res => !!(res.ok && res.result.status !== "left"))
+        }
+        else return new Promise(resolve => resolve(false))
     }
-    else return new Promise(resolve => resolve(false))
+    else return new Promise(resolve => resolve(true))
 }
 
 const telegramController = {

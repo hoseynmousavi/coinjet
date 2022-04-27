@@ -7,14 +7,14 @@ import pairToSpotSymbol from "./pairToSpotSymbol"
 import userController from "../../controllers/userController"
 import telegramController from "../../controllers/telegramController"
 
-function createSpotEntryOrders({userExchanges, signal})
+function createSpotEntryOrders({isBroadcast, userExchanges, signal})
 {
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
             .then(user =>
             {
-                telegramController.checkSubscription({telegram_chat_id: signal.telegram_chat_id, user_id: user.telegram_id})
+                telegramController.checkSubscription({isBroadcast, telegram_chat_id: signal.telegram_chat_id, user_id: user.telegram_id})
                     .then(isSubscribed =>
                     {
                         if (isSubscribed)
