@@ -83,7 +83,7 @@ function createFutureOrder({userExchange, order: {type, clientOid, side, symbol,
                 }
                 else
                 {
-                    const error = res?.data
+                    const error = res
                     console.error({error})
                     reject("ارور سرور")
                     orderController.removeOrder({order_id: clientOid})
@@ -91,7 +91,7 @@ function createFutureOrder({userExchange, order: {type, clientOid, side, symbol,
             })
             .catch(err =>
             {
-                const error = err?.response?.data
+                const error = err?.response
                 console.error({error})
                 if (+error.code === 429000) setTimeout(() => createFutureOrder(arguments[0]), 100)
                 else
