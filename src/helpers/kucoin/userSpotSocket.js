@@ -45,7 +45,7 @@ function startUserSocket({userExchange})
                     const event = JSON.parse(item.data)
                     if (event.type !== "pong")
                     {
-                        console.log("message", event)
+                        // console.log("message", event)
                         if (event.topic === "/spotMarket/tradeOrders" && event.data?.status === "done" && (event.data?.type === "filled" || event.data?.type === "canceled"))
                         {
                             try
