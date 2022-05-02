@@ -8,10 +8,10 @@ import userController from "./userController"
 
 const signalTb = mongoose.model("signal", signalModel)
 
-function addSignal({telegram_id, signal: {pair, is_futures, is_short, risk, entries, targets, stop}})
+function addSignal({telegram_id, signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
 {
     const leverage = Math.floor(1 / (Math.abs(entries[0].price - stop) / entries[0].price))
-    new signalTb({pair, is_futures, is_short, risk, entries, targets, stop, leverage}).save()
+    new signalTb({text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop, leverage}).save()
         .then(addedSignal =>
         {
             if (telegram_id)
