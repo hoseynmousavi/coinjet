@@ -10,7 +10,7 @@ const signalTb = mongoose.model("signal", signalModel)
 
 function addSignal({telegram_id, signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
 {
-    const leverage = Math.floor(1 / (Math.abs(entries[0].price - stop) / entries[0].price))
+    const leverage = Math.min(Math.floor(1 / (Math.abs(entries[0].price - stop) / entries[0].price)), 20)
     new signalTb({text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop, leverage}).save()
         .then(addedSignal =>
         {
