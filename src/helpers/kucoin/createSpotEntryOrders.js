@@ -9,51 +9,69 @@ import telegramController from "../../controllers/telegramController"
 
 function createSpotEntryOrders({isBroadcast, userExchanges, signal})
 {
+    const {_id: signal_id, telegram_chat_id, leverage, entries, pair, risk, is_futures} = signal
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
             .then(user =>
             {
-                telegramController.checkSubscription({isBroadcast, telegram_chat_id: signal.telegram_chat_id, user_id: user.telegram_id})
+                telegramController.checkSubscription({isBroadcast, telegram_chat_id, user_id: user.telegram_id})
                     .then(isSubscribed =>
                     {
                         if (isSubscribed)
                         {
-                            kucoinController.getSpotAccountOverview({userExchange, currency: getCurrencyFromPair({index: 1, pair: signal.pair}), type: "trade"})
+                            kucoinController.getSpotAccountOverview({userExchange, currency: getCurrencyFromPair({index: 1, pair}), type: "trade"})
                                 .then(accounts =>
                                 {
                                     const {available} = accounts[0] || {}
                                     const availableBalance = +available
-                                    if (availableBalance)
-                                    {
-                                        const balance = availableBalance * (userExchange.usePercentOfBalance || 0.1) / signal.entry.length
-                                        const symbol = pairToSpotSymbol({pair: signal.pair})
-                                        submitOrders({signal, balance, symbol, userExchange})
-                                            .then(() =>
+                                    const balance = (Math.min(100, risk * leverage) / 100) * availableBalance
+                                    kucoinController.getSpotSymbols()
+                                        .then(symbols =>
+                                        {
+                                            const symbol = pairToSpotSymbol({pair})
+                                            const contract = symbols.filter(item => item.symbol === symbol)?.[0]
+                                            if (contract)
+                                            {
+                                                const {baseMinSize} = contract
+                                                const enoughBalanceAndContract = entries.every(({price, percent}) => (percent / 100) * balance / price >= +baseMinSize)
+                                                if (enoughBalanceAndContract)
+                                                {
+                                                    submitOrders({signal_id, entries, balance, symbol, userExchange})
+                                                        .then(() =>
+                                                        {
+                                                            sendTelegramNotificationByUserExchange({
+                                                                userExchange,
+                                                                text: telegramConstant.signalFoundAndOrdersCreated({
+                                                                    isFutures: is_futures,
+                                                                    ordersCount: entries.length,
+                                                                }),
+                                                            })
+                                                        })
+                                                        .catch(() =>
+                                                        {
+                                                            sendTelegramNotificationByUserExchange({
+                                                                userExchange,
+                                                                text: telegramConstant.signalFoundButErr,
+                                                            })
+                                                        })
+                                                }
+                                                else
+                                                {
+                                                    sendTelegramNotificationByUserExchange({
+                                                        userExchange,
+                                                        text: telegramConstant.signalFoundButNoBalance,
+                                                    })
+                                                }
+                                            }
+                                            else
                                             {
                                                 sendTelegramNotificationByUserExchange({
                                                     userExchange,
-                                                    text: telegramConstant.signalFoundAndOrdersCreated({
-                                                        isFutures: signal.is_futures,
-                                                        ordersCount: signal.entry.length,
-                                                    }),
+                                                    text: telegramConstant.signalFoundButNoCoinSupport,
                                                 })
-                                            })
-                                            .catch(() =>
-                                            {
-                                                sendTelegramNotificationByUserExchange({
-                                                    userExchange,
-                                                    text: telegramConstant.signalFoundButErr,
-                                                })
-                                            })
-                                    }
-                                    else
-                                    {
-                                        sendTelegramNotificationByUserExchange({
-                                            userExchange,
-                                            text: telegramConstant.signalFoundButNoBalance,
+                                            }
                                         })
-                                    }
                                 })
                         }
                     })
@@ -61,15 +79,15 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
     })
 }
 
-async function submitOrders({signal, balance, symbol, userExchange})
+async function submitOrders({signal_id, entries, balance, symbol, userExchange})
 {
-    for (let index = 0; index < signal.entry.length; index++)
+    for (let index = 0; index < entries.length; index++)
     {
-        const price = signal.entry[index]
-        const size = (balance / price).toFixed(8)
+        const {percent, price} = entries[index]
+        const size = ((percent / 100) * balance / price).toFixed(8)
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
-            signal_id: signal._id,
+            signal_id,
             price,
             size,
             symbol,

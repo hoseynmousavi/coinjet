@@ -6,71 +6,104 @@ import telegramConstant from "../../constants/telegramConstant"
 
 function createSpotStopAndTpOrders({entryOrder, userExchange})
 {
-    signalController.getSignalById({signal_id: entryOrder.signal_id})
+    const {signal_id, size, symbol, entry_or_tp_index} = entryOrder
+    const {_id: userExchangeId} = userExchange
+
+    signalController.getSignalById({signal_id})
         .then(signal =>
         {
+            const {stop, targets} = signal
             orderController.addOrder({
-                user_exchange_id: userExchange._id,
-                signal_id: entryOrder.signal_id,
-                price: signal.stop,
-                size: entryOrder.size,
-                symbol: entryOrder.symbol,
+                user_exchange_id: userExchangeId,
+                signal_id,
+                price: stop,
+                size,
+                symbol,
                 type: "stop",
-                entry_fill_index: entryOrder.entry_or_tp_index,
+                entry_fill_index: entry_or_tp_index,
                 status: "open",
             })
                 .then(order =>
                 {
+                    const {_id: orderId, symbol, size, price} = order
                     kucoinController.createSpotOrder({
                         userExchange,
                         order: {
                             type: "market",
-                            clientOid: order._id,
+                            clientOid: orderId,
                             side: "sell",
-                            symbol: order.symbol,
-                            size: order.size,
+                            symbol,
+                            size,
                             stop: "loss",
-                            stopPrice: order.price,
+                            stopPrice: price,
                         },
                     })
-                })
-
-            signal.target.forEach((price, index) =>
-            {
-                const size = entryOrder.size / signal.target.length
-                orderController.addOrder({
-                    user_exchange_id: userExchange._id,
-                    signal_id: entryOrder.signal_id,
-                    price,
-                    size,
-                    symbol: entryOrder.symbol,
-                    type: "tp",
-                    entry_fill_index: entryOrder.entry_or_tp_index,
-                    entry_or_tp_index: index,
-                    status: "open",
-                })
-                    .then(order =>
-                    {
-                        kucoinController.createSpotOrder({
-                            userExchange,
-                            order: {
-                                type: "market",
-                                clientOid: order._id,
-                                side: "sell",
-                                symbol: order.symbol,
-                                size: order.size,
-                                stop: "entry",
-                                stopPrice: price,
-                            },
+                        .then(() =>
+                        {
+                            sendTelegramNotificationByUserExchange({
+                                userExchange,
+                                text: telegramConstant.entryOrderFilledAndStopAdded({entryIndex: entry_or_tp_index + 1}),
+                            })
                         })
-                    })
-            })
+                        .catch(() =>
+                        {
+                            sendTelegramNotificationByUserExchange({
+                                userExchange,
+                                text: telegramConstant.entryOrderFilledAndStopFailed({entryIndex: entry_or_tp_index + 1}),
+                            })
+                        })
+                })
 
-            sendTelegramNotificationByUserExchange({
-                userExchange,
-                text: telegramConstant.entryOrderFilledAndOrdersAdded({tpCount: signal.target.length, entryIndex: entryOrder.entry_or_tp_index + 1}),
-            })
+
+            submitOrders({targets, userExchangeId, signal_id, size, symbol, entry_or_tp_index})
+                .then(() =>
+                {
+                    sendTelegramNotificationByUserExchange({
+                        userExchange,
+                        text: telegramConstant.entryOrderFilledAndTPsAdded({tpCount: targets.length, entryIndex: entry_or_tp_index + 1}),
+                    })
+                })
+                .catch(() =>
+                {
+                    sendTelegramNotificationByUserExchange({
+                        userExchange,
+                        text: telegramConstant.entryOrderFilledAndTPsFailed({entryIndex: entry_or_tp_index + 1}),
+                    })
+                })
         })
+}
+
+async function submitOrders({targets, userExchangeId, signal_id, size, symbol, entry_or_tp_index})
+{
+    for (let index = 0; index < targets.length; index++)
+    {
+        const {percent, price} = targets[index]
+        const sizeTemp = percent / 100 * size
+        const order = await orderController.addOrder({
+            user_exchange_id: userExchangeId,
+            signal_id,
+            price,
+            size: sizeTemp,
+            symbol,
+            type: "tp",
+            entry_fill_index: entry_or_tp_index,
+            entry_or_tp_index: index,
+            status: "open",
+        })
+        const {_id: orderId, symbol, size} = order
+        await kucoinController.createSpotOrder({
+            userExchange,
+            order: {
+                type: "market",
+                clientOid: orderId,
+                side: "sell",
+                symbol,
+                size,
+                stop: "entry",
+                stopPrice: price,
+            },
+        })
+    }
 }
 
 export default createSpotStopAndTpOrders

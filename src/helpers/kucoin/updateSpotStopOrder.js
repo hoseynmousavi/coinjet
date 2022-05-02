@@ -6,10 +6,14 @@ import telegramConstant from "../../constants/telegramConstant"
 
 function updateSpotStopOrder({tpOrder, userExchange})
 {
-    signalController.getSignalById({signal_id: tpOrder.signal_id})
+    const {signal_id, entry_fill_index, entry_or_tp_index} = tpOrder
+    const {user_id} = userExchange
+
+    signalController.getSignalById({signal_id})
         .then(signal =>
         {
-            orderController.findOrders({query: {user_id: userExchange.user_id, entry_fill_index: tpOrder.entry_fill_index, signal_id: signal._id}})
+            const {targets, entries} = signal
+            orderController.findOrders({query: {user_id, entry_fill_index: entry_fill_index, signal_id}})
                 .then(orders =>
                 {
                     const stopOrders = orders.filter(order => order.type === "stop")
@@ -17,13 +21,13 @@ function updateSpotStopOrder({tpOrder, userExchange})
                     kucoinController.cancelSpotOrder({isStop: true, userExchange, exchange_order_id: stopOrder.exchange_order_id})
 
                     const tpOrders = orders.filter(order => order.type === "tp")
-                    if (tpOrder.entry_or_tp_index < signal.target.length - 1)
+                    if (entry_or_tp_index < targets.length - 1)
                     {
                         orderController.addOrder({
                             user_exchange_id: stopOrder.user_exchange_id,
                             signal_id: stopOrder.signal_id,
-                            price: signal.entry[stopOrder.entry_fill_index],
-                            size: tpOrders.reduce((sum, order) => sum + (order.entry_or_tp_index > tpOrder.entry_or_tp_index ? order.size : 0), 0),
+                            price: entries[stopOrder.entry_fill_index].price,
+                            size: tpOrders.reduce((sum, order) => sum + (order.entry_or_tp_index > entry_or_tp_index ? order.size : 0), 0),
                             symbol: stopOrder.symbol,
                             type: stopOrder.type,
                             entry_fill_index: stopOrder.entry_fill_index,
@@ -43,7 +47,14 @@ function updateSpotStopOrder({tpOrder, userExchange})
                                         stopPrice: order.price,
                                     },
                                 })
-                                sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndStopUpdated({tpIndex: tpOrder.entry_or_tp_index + 1})})
+                                    .then(() =>
+                                    {
+                                        sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndStopUpdated({tpIndex: entry_or_tp_index + 1})})
+                                    })
+                                    .catch(() =>
+                                    {
+                                        sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndStopFailed({tpIndex: entry_or_tp_index + 1})})
+                                    })
                             })
                     }
                     else sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndDone})

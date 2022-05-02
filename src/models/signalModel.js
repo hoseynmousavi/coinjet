@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const schema = mongoose.Schema
 
 const signalModel = new schema({
-    message: {
+    text: {
         type: String,
         required: "enter text!",
     },
@@ -23,13 +23,13 @@ const signalModel = new schema({
         type: Number,
         required: "enter stop!",
     },
-    entry: {
+    entries: {
         type: Array,
-        required: "enter entry!",
+        required: "enter entries!",
     },
-    target: {
+    targets: {
         type: Array,
-        required: "enter target!",
+        required: "enter targets!",
     },
     is_futures: {
         type: Boolean,
@@ -45,15 +45,13 @@ const signalModel = new schema({
             "is_short is required if is_futures is specified",
         ],
     },
+    risk: {
+        type: Number,
+        required: "enter risk!",
+    },
     leverage: {
         type: Number,
-        required: [
-            function ()
-            {
-                this.is_futures
-            },
-            "leverage is required if is_futures is specified",
-        ],
+        required: "leverage is required if is_futures is specified",
     },
     created_date: {
         type: Date,

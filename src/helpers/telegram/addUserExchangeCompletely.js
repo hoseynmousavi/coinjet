@@ -20,17 +20,15 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                     if (inProgressExchanges?.length === 1)
                     {
                         const name = data[0]
-                        const usePercentOfBalance = data[1]
-                        const user_key = data[2]
-                        const user_secret = data[3]
-                        const user_passphrase = data[4]
-                        const isPercentRight = !isNaN(usePercentOfBalance) && +usePercentOfBalance > 0 && +usePercentOfBalance <= 100
-                        if (!userExchanges.some(item => item.name === name) && isPercentRight)
+                        const user_key = data[1]
+                        const user_secret = data[2]
+                        const user_passphrase = data[3]
+                        if (!userExchanges.some(item => item.name === name))
                         {
                             userExchangeController.updateUserExchange({
                                 userExchangeId: inProgressExchanges[0]._id,
                                 update: {
-                                    usePercentOfBalance: +usePercentOfBalance / 100, name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete,
+                                    name, user_key, user_passphrase, user_secret, progress_level: userExchangeConstant.progress_level.complete,
                                 },
                             })
                                 .then(userExchange =>
@@ -64,13 +62,9 @@ function addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, t
                                     }
                                 })
                         }
-                        else if (!isPercentRight)
-                        {
-                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.repeatedUserExchangeName, reply_to_message_id: message_id})
-                        }
                         else
                         {
-                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.falsePercentUserExchange, reply_to_message_id: message_id})
+                            sendTelegramMessage({telegram_chat_id, text: telegramConstant.repeatedUserExchangeName, reply_to_message_id: message_id})
                         }
                     }
                     else

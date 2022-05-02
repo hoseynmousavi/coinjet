@@ -14,10 +14,6 @@ const userExchangeModel = new schema({
         type: schema.Types.ObjectId,
         required: "enter exchange_id!",
     },
-    usePercentOfBalance: {
-        type: Number,
-        default: 0.1,
-    },
     is_futures: {
         type: Boolean,
         required: "enter is_futures!",

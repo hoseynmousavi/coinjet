@@ -132,6 +132,15 @@ function getFuturesActiveContracts()
         .then(res => res.data)
 }
 
+function getSpotSymbols()
+{
+    return request.get({
+        url: kucoinConstant.spot.symbols,
+        isKuCoin: true,
+    })
+        .then(res => res.data)
+}
+
 function startFuturesWebsocket()
 {
     userFuturesSocket.start()
@@ -226,6 +235,7 @@ const kucoinController = {
     startFuturesWebsocket,
     cancelFutureOrder,
     getFuturesActiveContracts,
+    getSpotSymbols,
     getSpotAccountOverview,
     createSpotOrder,
     startSpotWebsocket,

@@ -37,7 +37,7 @@ function handlePvChat({message})
             if (text === telegramCommands.start) startChatPv({first_name, last_name, telegram_username, telegram_id, telegram_chat_id})
             else if (text === telegramCommands.addExchange) promptAddExchangeTelegram({message_id, telegram_chat_id})
             else if (exchangeController.getExchangesInstantly().some(item => item.name + telegramConstant.userExchangeSpot === text || item.name + telegramConstant.userExchangeFutures === text)) addUserExchangeInProgress({message_id, telegram_id, telegram_chat_id, text})
-            else if (text.split(",").length === 5) addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
+            else if (text.split(",").length === 4) addUserExchangeCompletely({message_id, telegram_id, telegram_chat_id, text})
             else if (text === telegramCommands.removeExchange) promptRemoveExchangeTelegram({message_id, telegram_id, telegram_chat_id})
             else if (text.includes(telegramConstant.removeExchange)) removeExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
             else if (text.includes(telegramConstant.overviewExchange)) overviewExchangeTelegram({message_id, telegram_id, telegram_chat_id, text})
@@ -48,8 +48,8 @@ function handlePvChat({message})
                 const signal = checkIfSignal({text})
                 if (signal)
                 {
-                    const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
-                    signalController.addSignal({telegram_id, signal: {message, telegram_chat_id, title: (first_name + " " + last_name).trim(), pair, stop, entry, target, is_futures, is_short, leverage}})
+                    const {pair, is_futures, is_short, risk, entries, targets, stop} = signal
+                    signalController.addSignal({telegram_id, signal: {text, telegram_chat_id, title: ((first_name || "") + " " + (last_name || "")).trim(), pair, is_futures, is_short, risk, entries, targets, stop}})
                 }
                 else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
             }
@@ -68,8 +68,8 @@ function handleChannelChat({channel_post})
             const signal = checkIfSignal({text})
             if (signal)
             {
-                const {message, pair, stop, entry, target, is_futures, is_short, leverage} = signal
-                signalController.addSignal({signal: {message, telegram_chat_id, title, pair, stop, entry, target, is_futures, is_short, leverage}})
+                const {pair, is_futures, is_short, risk, entries, targets, stop} = signal
+                signalController.addSignal({signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
             }
         }
     }
@@ -77,23 +77,27 @@ function handleChannelChat({channel_post})
 
 function checkSubscription({isBroadcast, telegram_chat_id, user_id})
 {
-    if (isBroadcast)
+    return new Promise(resolve =>
     {
-        if (telegram_chat_id === chatConstant.channel_chat_id)
+        if (isBroadcast)
         {
-            return request.post({
-                isTelegram: true,
-                url: telegramEndpoints.getChatMember,
-                data: {
-                    chat_id: chatConstant.channel_chat_id,
-                    user_id,
-                },
-            })
-                .then(res => !!(res.ok && res.result.status !== "left"))
+            if (telegram_chat_id === chatConstant.channel_chat_id)
+            {
+                request.post({
+                    isTelegram: true,
+                    url: telegramEndpoints.getChatMember,
+                    data: {
+                        chat_id: chatConstant.channel_chat_id,
+                        user_id,
+                    },
+                })
+                    .then(res => resolve(!!(res.ok && res.result.status !== "left")))
+                    .catch(() => resolve(false))
+            }
+            else resolve(false)
         }
-        else return new Promise(resolve => resolve(false))
-    }
-    else return new Promise(resolve => resolve(true))
+        else resolve(true)
+    })
 }
 
 const telegramController = {
