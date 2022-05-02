@@ -115,7 +115,7 @@ async function submitOrders({targets, userExchange, signal_id, size, lot, symbol
                     stopPrice: order.price,
                 },
             })
-            return {tpCount}
+            if (index === targets.length - 1) return {tpCount}
         }
     }
 }
