@@ -20,14 +20,14 @@ function updateSpotStopOrder({tpOrder, userExchange})
                     const stopOrder = stopOrders[stopOrders.length - 1]
                     kucoinController.cancelSpotOrder({isStop: true, userExchange, exchange_order_id: stopOrder.exchange_order_id})
 
-                    const tpOrders = orders.filter(order => order.type === "tp")
-                    if (entry_or_tp_index < targets.length - 1)
+                    const tpOrders = orders.filter(order => order.type === "tp" && order.entry_or_tp_index > entry_or_tp_index)
+                    if (entry_or_tp_index < tpOrders.length - 1)
                     {
                         orderController.addOrder({
                             user_exchange_id: stopOrder.user_exchange_id,
                             signal_id: stopOrder.signal_id,
                             price: entries[stopOrder.entry_fill_index].price,
-                            size: tpOrders.reduce((sum, order) => sum + (order.entry_or_tp_index > entry_or_tp_index ? order.size : 0), 0),
+                            size: tpOrders.reduce((sum, order) => sum + order.size, 0),
                             symbol: stopOrder.symbol,
                             type: stopOrder.type,
                             entry_fill_index: stopOrder.entry_fill_index,
