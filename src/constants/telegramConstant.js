@@ -36,7 +36,7 @@ const telegramConstant = {
     entryOrderFilledAndTPsAdded: ({entryIndex, tpCount}) => `انتری ${entryIndex}م سیگنال fill شد، ${tpCount} اردر tp گذاشته شد.`,
     entryOrderFilledAndTPsFailed: ({entryIndex}) => `انتری ${entryIndex}م سیگنال fill شد، اما در بارگزاری اردرهای tp مشکلی پیش آمد.`,
     stopSignalAndTpOrdersRemoved: "سیگنال متوقف شد، اردرهای tp پاک شدند.",
-    tpFilledAndDone: "آخرین اردر tp فیل شد! اردرها با موفقیت تمام شدند.",
+    tpFilledAndDone: ({entryIndex, isLastTp}) => `آخرین اردر tp از انتری ${entryIndex}م فیل شد!${isLastTp ? " اردرها با موفقیت تمام شدند." : ""}`,
     tpFilledAndStopUpdated: ({tpIndex}) => `اردر ${tpIndex}م tp فیل شد! اردر استاپ آپدیت شد.`,
     tpFilledAndStopFailed: ({tpIndex}) => `اردر ${tpIndex}م tp فیل شد! اما در آپدیت اردر استاپ مشکلی پیش آمد.`,
 }

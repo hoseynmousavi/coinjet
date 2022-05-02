@@ -57,8 +57,7 @@ function updateSpotStopOrder({tpOrder, userExchange})
                                     })
                             })
                     }
-                    else sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndDone})
-
+                    else sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndDone({entryIndex: entry_fill_index, isLastTp: entry_or_tp_index === tpOrders.length - 1})})
                 })
         })
 }
