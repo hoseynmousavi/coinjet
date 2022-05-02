@@ -19,6 +19,8 @@ function checkIfSignal({text})
     target = message.match(regexConstant.targets)?.[0]?.replace("targets:\n", "")
     stop = message.match(regexConstant.stop)?.[0]?.replace("stoploss:", "")
 
+    console.log({pair, is_futures, is_short, risk, entry, target, stop})
+
     if ((is_futures === false || (is_futures === true && is_short !== null)) && pair && risk && entry && target && stop)
     {
         let entries = []
@@ -40,6 +42,8 @@ function checkIfSignal({text})
             const price = target.replace(regexConstant.entry_target_percent, "")
             if (percent && price) targets.push({percent, price})
         })
+
+        console.log({targets, entries})
 
         if (targets.length && entries.length) return {pair, is_futures, is_short, risk, entries, targets, stop}
         else return false
