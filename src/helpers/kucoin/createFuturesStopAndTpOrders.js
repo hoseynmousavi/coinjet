@@ -100,18 +100,17 @@ async function submitOrders({targets, tpCount, remainedSize, userExchangeId, sig
                 entry_or_tp_index: index,
                 status: "open",
             })
-            const {_id: orderId, symbol, size, price} = order
             await kucoinController.createFutureOrder({
                 userExchange,
                 order: {
                     type: "market",
-                    clientOid: orderId,
+                    clientOid: order._id,
                     side: is_short ? "buy" : "sell",
-                    symbol,
+                    symbol: order.symbol,
                     leverage: 1,
-                    size,
+                    size: order.size,
                     stop: is_short ? "down" : "up",
-                    stopPrice: price,
+                    stopPrice: order.price,
                 },
             })
         }
