@@ -67,8 +67,9 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
                         text: telegramConstant.entryOrderFilledAndTPsAdded({tpCount, entryIndex: entry_or_tp_index + 1}),
                     })
                 })
-                .catch(() =>
+                .catch((e) =>
                 {
+                    console.log(e)
                     sendTelegramNotificationByUserExchange({
                         userExchange,
                         text: telegramConstant.entryOrderFilledAndTPsFailed({entryIndex: entry_or_tp_index + 1}),
