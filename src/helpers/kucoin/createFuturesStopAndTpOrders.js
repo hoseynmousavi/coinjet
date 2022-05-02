@@ -83,7 +83,7 @@ async function submitOrders({targets, userExchange, signal_id, size, lot, symbol
     for (let index = 0; index < targets.length; index++)
     {
         const {percent, price} = targets[index]
-        if (index < targets.length - 1 || remainedSize)
+        if (remainedSize)
         {
             tpCount++
             const sizeTemp = index === targets.length - 1 ? remainedSize : Math.min(size, Math[size <= targets.length ? "ceil" : "floor"](percent / 100 * size))
