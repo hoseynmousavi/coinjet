@@ -33,7 +33,7 @@ const telegramConstant = {
     signalFoundAndOrdersCreated: ({isFutures, ordersCount, isShort}) => `سیگنال ${isFutures ? "فیوچرز" : "اسپات"} جدیدی دریافت شد و ${ordersCount} اردر${!isFutures ? "" : isShort ? " short" : " long"} گذاشته شد.`,
     entryOrderFilledAndStopAdded: ({entryIndex}) => `انتری ${entryIndex}م سیگنال fill شد، اردر استاپ گذاشته شد.`,
     entryOrderFilledAndStopFailed: ({entryIndex}) => `انتری ${entryIndex}م سیگنال fill شد، اما در بارگزاری اردر استاپ مشکلی پیش آمد.`,
-    entryOrderFilledAndTPsAdded: ({entryIndex, tpCount}) => `انتری ${entryIndex}م سیگنال fill شد، اردر ${tpCount} اردر tp گذاشته شد.`,
+    entryOrderFilledAndTPsAdded: ({entryIndex, tpCount}) => `انتری ${entryIndex}م سیگنال fill شد، ${tpCount} اردر tp گذاشته شد.`,
     entryOrderFilledAndTPsFailed: ({entryIndex}) => `انتری ${entryIndex}م سیگنال fill شد، اما در بارگزاری اردرهای tp مشکلی پیش آمد.`,
     stopSignalAndTpOrdersRemoved: "سیگنال متوقف شد، اردرهای tp پاک شدند.",
     tpFilledAndDone: "آخرین اردر tp فیل شد! اردرها با موفقیت تمام شدند.",

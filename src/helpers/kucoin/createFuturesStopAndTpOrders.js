@@ -56,11 +56,8 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
                         })
                 })
 
-            let tpCount = 0
-            let remainedSize = size
-
-            submitOrders({targets, tpCount, remainedSize, userExchange, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
-                .then(() =>
+            submitOrders({targets, userExchange, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
+                .then(({tpCount}) =>
                 {
                     sendTelegramNotificationByUserExchange({
                         userExchange,
@@ -78,8 +75,11 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
         })
 }
 
-async function submitOrders({targets, tpCount, remainedSize, userExchange, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
+async function submitOrders({targets, userExchange, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
 {
+    let tpCount = 0
+    let remainedSize = size
+
     for (let index = 0; index < targets.length; index++)
     {
         const {percent, price} = targets[index]
@@ -113,6 +113,7 @@ async function submitOrders({targets, tpCount, remainedSize, userExchange, signa
                     stopPrice: order.price,
                 },
             })
+            return {tpCount}
         }
     }
 }
