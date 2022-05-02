@@ -9,7 +9,7 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
     const {signal_id, size, lot, symbol, entry_or_tp_index} = entryOrder
     const {_id: userExchangeId} = userExchange
 
-    signalController.getSignalById({signal_id: entryOrder.signal_id})
+    signalController.getSignalById({signal_id})
         .then(signal =>
         {
             const {stop, is_short, targets} = signal
