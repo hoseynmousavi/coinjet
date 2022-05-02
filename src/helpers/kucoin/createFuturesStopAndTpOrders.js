@@ -59,7 +59,7 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
             let tpCount = 0
             let remainedSize = size
 
-            submitOrders({targets, tpCount, remainedSize, userExchangeId, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
+            submitOrders({targets, tpCount, remainedSize, userExchange, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
                 .then(() =>
                 {
                     sendTelegramNotificationByUserExchange({
@@ -78,7 +78,7 @@ function createFuturesStopAndTpOrders({entryOrder, userExchange})
         })
 }
 
-async function submitOrders({targets, tpCount, remainedSize, userExchangeId, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
+async function submitOrders({targets, tpCount, remainedSize, userExchange, signal_id, size, lot, symbol, entry_or_tp_index, is_short})
 {
     for (let index = 0; index < targets.length; index++)
     {
@@ -89,7 +89,7 @@ async function submitOrders({targets, tpCount, remainedSize, userExchangeId, sig
             const sizeTemp = index === targets.length - 1 ? remainedSize : Math.min(size, Math[size <= targets.length ? "ceil" : "floor"](percent / 100 * size))
             remainedSize -= sizeTemp
             const order = await orderController.addOrder({
-                user_exchange_id: userExchangeId,
+                user_exchange_id: userExchange._id,
                 signal_id,
                 price,
                 size: sizeTemp,

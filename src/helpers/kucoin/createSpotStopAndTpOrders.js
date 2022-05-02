@@ -55,7 +55,7 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
                 })
 
 
-            submitOrders({targets, userExchangeId, signal_id, size, symbol, entry_or_tp_index})
+            submitOrders({targets, userExchange, signal_id, size, symbol, entry_or_tp_index})
                 .then(() =>
                 {
                     sendTelegramNotificationByUserExchange({
@@ -63,8 +63,9 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
                         text: telegramConstant.entryOrderFilledAndTPsAdded({tpCount: targets.length, entryIndex: entry_or_tp_index + 1}),
                     })
                 })
-                .catch(() =>
+                .catch((e) =>
                 {
+                    console.log(e)
                     sendTelegramNotificationByUserExchange({
                         userExchange,
                         text: telegramConstant.entryOrderFilledAndTPsFailed({entryIndex: entry_or_tp_index + 1}),
@@ -73,14 +74,14 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
         })
 }
 
-async function submitOrders({targets, userExchangeId, signal_id, size, symbol, entry_or_tp_index})
+async function submitOrders({targets, userExchange, signal_id, size, symbol, entry_or_tp_index})
 {
     for (let index = 0; index < targets.length; index++)
     {
         const {percent, price} = targets[index]
         const sizeTemp = percent / 100 * size
         const order = await orderController.addOrder({
-            user_exchange_id: userExchangeId,
+            user_exchange_id: userExchange._id,
             signal_id,
             price,
             size: sizeTemp,
@@ -90,17 +91,16 @@ async function submitOrders({targets, userExchangeId, signal_id, size, symbol, e
             entry_or_tp_index: index,
             status: "open",
         })
-        const {_id: orderId, symbol, size} = order
         await kucoinController.createSpotOrder({
             userExchange,
             order: {
                 type: "market",
-                clientOid: orderId,
+                clientOid: order._id,
                 side: "sell",
-                symbol,
-                size,
+                symbol: order.symbol,
+                size: order.size,
                 stop: "entry",
-                stopPrice: price,
+                stopPrice: order.price,
             },
         })
     }
