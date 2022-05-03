@@ -25,9 +25,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                 {
                                     const {available} = accounts[0] || {}
                                     const availableBalance = +available
-                                    console.log({use_balance_percent})
                                     const balance = Math.min(100, use_balance_percent) / 100 * availableBalance
-                                    console.log({balance})
                                     kucoinController.getSpotSymbols()
                                         .then(symbols =>
                                         {
@@ -86,8 +84,8 @@ async function submitOrders({signal_id, entries, balance, baseIncrement, symbol,
     for (let index = 0; index < entries.length; index++)
     {
         const {percent, price} = entries[index]
-        let size = Math.floor((percent / 100) * balance / price / +baseIncrement)
-        console.log({size})
+        let size = (percent / 100) * balance / price
+        size = size - (size % +baseIncrement)
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
             signal_id,
