@@ -40,6 +40,7 @@ function submitEntryOrders({addedSignal, user})
             }
             else
             {
+                console.log("HERE", addedSignal)
                 createSpotEntryOrders({isBroadcast: !user, userExchanges, signal: addedSignal})
             }
         })
