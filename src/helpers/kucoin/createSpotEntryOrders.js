@@ -31,6 +31,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                         {
                                             const symbol = pairToSpotSymbol({pair})
                                             const contract = symbols.filter(item => item.symbol === symbol)?.[0]
+                                            console.log({contract})
                                             if (contract)
                                             {
                                                 const {baseMinSize} = contract
@@ -85,6 +86,7 @@ async function submitOrders({signal_id, entries, balance, symbol, userExchange})
     {
         const {percent, price} = entries[index]
         const size = ((percent / 100) * balance / price).toFixed(8)
+        console.log({size})
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
             signal_id,
