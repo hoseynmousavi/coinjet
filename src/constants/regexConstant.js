@@ -6,7 +6,7 @@ const regexConstant = {
     entries: /entries:(\d|\.|\n|\(|\)|%)*\)/,
     targets: /targets:(\d|\.|\n|\(|\)|%)*\)/,
     entry_target_index: /^\d*\./,
-    entry_target_percent: /\(\d{0,2}%\)/,
+    entry_target_percent: /\(\d{0,3}%\)/,
     stop: /stoploss:(\d|\.)*/,
 }
 
