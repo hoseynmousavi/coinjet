@@ -10,8 +10,10 @@ const signalTb = mongoose.model("signal", signalModel)
 
 function addSignal({telegram_id, signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
 {
-    const leverage = Math.min(Math.floor(1 / (Math.abs(entries[0].price - stop) / entries[0].price)), 20)
-    new signalTb({text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop, leverage}).save()
+    const stopLossPercent = Math.floor(1 / (Math.abs(entries[0].price - stop) / entries[0].price))
+    let leverage = Math.min(20, Math.max(1, stopLossPercent - 3))
+    const use_balance_percent = stopLossPercent * risk
+    new signalTb({text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop, leverage, use_balance_percent}).save()
         .then(addedSignal =>
         {
             if (telegram_id)

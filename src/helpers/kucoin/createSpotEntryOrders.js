@@ -9,7 +9,7 @@ import telegramController from "../../controllers/telegramController"
 
 function createSpotEntryOrders({isBroadcast, userExchanges, signal})
 {
-    const {_id: signal_id, telegram_chat_id, leverage, entries, pair, risk, is_futures} = signal
+    const {_id: signal_id, telegram_chat_id, use_balance_percent, entries, pair, risk, is_futures} = signal
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
@@ -25,7 +25,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                 {
                                     const {available} = accounts[0] || {}
                                     const availableBalance = +available
-                                    const balance = (Math.min(100, risk * leverage) / 100) * availableBalance
+                                    const balance = Math.min(100, use_balance_percent) / 100 * availableBalance
                                     kucoinController.getSpotSymbols()
                                         .then(symbols =>
                                         {

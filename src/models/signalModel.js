@@ -51,7 +51,11 @@ const signalModel = new schema({
     },
     leverage: {
         type: Number,
-        required: "leverage is required if is_futures is specified",
+        required: "enter leverage!",
+    },
+    use_balance_percent: {
+        type: Number,
+        required: "enter use_balance_percent!",
     },
     created_date: {
         type: Date,
