@@ -6,6 +6,7 @@ import getCurrencyFromPair from "../getCurrencyFromPair"
 import pairToSpotSymbol from "./pairToSpotSymbol"
 import userController from "../../controllers/userController"
 import telegramController from "../../controllers/telegramController"
+import countDecimalPoints from "../countDecimalPoints"
 
 function createSpotEntryOrders({isBroadcast, userExchanges, signal})
 {
@@ -84,9 +85,7 @@ async function submitOrders({signal_id, entries, balance, baseIncrement, baseMin
     for (let index = 0; index < entries.length; index++)
     {
         const {percent, price} = entries[index]
-        let size = (percent / 100) * balance / price
-        size = size - (size % +baseIncrement)
-        console.log({size, baseMinSize, baseIncrement})
+        let size = ((percent / 100) * balance / price).toFixed(countDecimalPoints(baseIncrement))
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
             signal_id,
