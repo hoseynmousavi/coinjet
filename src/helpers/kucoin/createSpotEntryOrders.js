@@ -25,7 +25,9 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                 {
                                     const {available} = accounts[0] || {}
                                     const availableBalance = +available
+                                    console.log({use_balance_percent})
                                     const balance = Math.min(100, use_balance_percent) / 100 * availableBalance
+                                    console.log({balance})
                                     kucoinController.getSpotSymbols()
                                         .then(symbols =>
                                         {
