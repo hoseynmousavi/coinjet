@@ -31,14 +31,13 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                         {
                                             const symbol = pairToSpotSymbol({pair})
                                             const contract = symbols.filter(item => item.symbol === symbol)?.[0]
-                                            console.log({contract})
                                             if (contract)
                                             {
-                                                const {baseMinSize} = contract
+                                                const {baseMinSize, baseIncrement} = contract
                                                 const enoughBalanceAndContract = entries.every(({price, percent}) => (percent / 100) * balance / price >= +baseMinSize)
                                                 if (enoughBalanceAndContract)
                                                 {
-                                                    submitOrders({signal_id, entries, balance, symbol, userExchange})
+                                                    submitOrders({signal_id, entries, balance, baseIncrement, symbol, userExchange})
                                                         .then(() =>
                                                         {
                                                             sendTelegramNotificationByUserExchange({
@@ -80,13 +79,12 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
     })
 }
 
-async function submitOrders({signal_id, entries, balance, symbol, userExchange})
+async function submitOrders({signal_id, entries, balance, baseIncrement, symbol, userExchange})
 {
     for (let index = 0; index < entries.length; index++)
     {
         const {percent, price} = entries[index]
-        const size = ((percent / 100) * balance / price).toFixed(8)
-        console.log({size})
+        let size = Math.floor((percent / 100) * balance / price / +baseIncrement)
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
             signal_id,
