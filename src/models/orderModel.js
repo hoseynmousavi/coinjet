@@ -28,6 +28,12 @@ const orderModel = new schema({
     lot: {
         type: Number,
     },
+    base_min_size: {
+        type: Number,
+    },
+    base_increment: {
+        type: Number,
+    },
     symbol: {
         type: String,
         required: "enter symbol!",

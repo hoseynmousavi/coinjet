@@ -37,7 +37,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                                 const enoughBalanceAndContract = entries.every(({price, percent}) => (percent / 100) * balance / price >= +baseMinSize)
                                                 if (enoughBalanceAndContract)
                                                 {
-                                                    submitOrders({signal_id, entries, balance, baseIncrement, symbol, userExchange})
+                                                    submitOrders({signal_id, entries, balance, baseIncrement, baseMinSize, symbol, userExchange})
                                                         .then(() =>
                                                         {
                                                             sendTelegramNotificationByUserExchange({
@@ -79,19 +79,20 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
     })
 }
 
-async function submitOrders({signal_id, entries, balance, baseIncrement, symbol, userExchange})
+async function submitOrders({signal_id, entries, balance, baseIncrement, baseMinSize, symbol, userExchange})
 {
     for (let index = 0; index < entries.length; index++)
     {
         const {percent, price} = entries[index]
         let size = (percent / 100) * balance / price
         size = size - (size % +baseIncrement)
-        console.log({size, baseIncrement})
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
             signal_id,
             price,
             size,
+            base_increment: baseIncrement,
+            base_min_size: baseMinSize,
             symbol,
             type: "entry",
             entry_or_tp_index: index,
