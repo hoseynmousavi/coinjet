@@ -5,10 +5,12 @@ import createSpotEntryOrders from "../helpers/kucoin/createSpotEntryOrders"
 import userExchangeController from "./userExchangeController"
 import userExchangeConstant from "../constants/userExchangeConstant"
 import userController from "./userController"
+import sendTelegramMessage from "../helpers/telegram/sendTelegramMessage"
+import telegramConstant from "../constants/telegramConstant"
 
 const signalTb = mongoose.model("signal", signalModel)
 
-function addSignal({telegram_id, signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
+function addSignal({telegram_id, message_id, signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
 {
     const stopLossPercent = Math.floor(1 / (Math.abs(entries[0].price - stop) / entries[0].price))
     let leverage = Math.min(20, Math.max(1, stopLossPercent - 3))
@@ -16,6 +18,13 @@ function addSignal({telegram_id, signal: {text, telegram_chat_id, title, pair, i
     new signalTb({text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop, leverage, use_balance_percent}).save()
         .then(addedSignal =>
         {
+            sendTelegramMessage({
+                telegram_chat_id,
+                reply_to_message_id: message_id,
+                text: telegramConstant.cancelSignal,
+                inline_keyboard: [({text: telegramConstant.cancelBtn, callback_data: "SHIT"})],
+            })
+
             if (telegram_id)
             {
                 userController.getUserByTelegramId({telegram_id})

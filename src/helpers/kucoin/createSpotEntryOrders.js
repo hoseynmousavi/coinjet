@@ -16,7 +16,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
         userController.getUserById({_id: userExchange.user_id})
             .then(user =>
             {
-                telegramController.checkSubscription({isBroadcast, telegram_chat_id, user_id: user.telegram_id})
+                telegramController.checkSubscription({isBroadcast, user_id: user.telegram_id})
                     .then(isSubscribed =>
                     {
                         if (isSubscribed)
@@ -47,7 +47,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                                                 text: telegramConstant.signalFoundAndOrdersCreated({
                                                                     isFutures: is_futures,
                                                                     ordersCount: entries.length,
-                                                                    pair
+                                                                    pair,
                                                                 }),
                                                             })
                                                         })

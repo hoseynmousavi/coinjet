@@ -19,6 +19,7 @@ import chatConstant from "../constants/chatConstant"
 
 function getMessage(req, res)
 {
+    console.log(req.body)
     const {message, channel_post} = req.body || {}
     if (message) handlePvChat({message})
     else if (channel_post) handleChannelChat({channel_post})
@@ -49,7 +50,11 @@ function handlePvChat({message})
                 if (signal)
                 {
                     const {pair, is_futures, is_short, risk, entries, targets, stop} = signal
-                    signalController.addSignal({telegram_id, signal: {text, telegram_chat_id, title: ((first_name || "") + " " + (last_name || "")).trim(), pair, is_futures, is_short, risk, entries, targets, stop}})
+                    signalController.addSignal({
+                        telegram_id,
+                        message_id,
+                        signal: {text, telegram_chat_id, title: ((first_name || "") + " " + (last_name || "")).trim(), pair, is_futures, is_short, risk, entries, targets, stop},
+                    })
                 }
                 else sendTelegramMessage({telegram_chat_id, text: telegramConstant.notOk, reply_to_message_id: message_id})
             }
@@ -65,36 +70,38 @@ function handleChannelChat({channel_post})
         const {type, id: telegram_chat_id, title} = chat
         if (type === "channel")
         {
-            const signal = checkIfSignal({text})
-            if (signal)
+            if (telegram_chat_id === chatConstant.channel_chat_id)
             {
-                const {pair, is_futures, is_short, risk, entries, targets, stop} = signal
-                signalController.addSignal({signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop}})
+                const signal = checkIfSignal({text})
+                if (signal)
+                {
+                    const {pair, is_futures, is_short, risk, entries, targets, stop} = signal
+                    signalController.addSignal({
+                        message_id,
+                        signal: {text, telegram_chat_id, title, pair, is_futures, is_short, risk, entries, targets, stop},
+                    })
+                }
             }
         }
     }
 }
 
-function checkSubscription({isBroadcast, telegram_chat_id, user_id})
+function checkSubscription({isBroadcast, user_id})
 {
     return new Promise(resolve =>
     {
         if (isBroadcast)
         {
-            if (telegram_chat_id === chatConstant.channel_chat_id)
-            {
-                request.post({
-                    isTelegram: true,
-                    url: telegramEndpoints.getChatMember,
-                    data: {
-                        chat_id: chatConstant.channel_chat_id,
-                        user_id,
-                    },
-                })
-                    .then(res => resolve(!!(res.ok && res.result.status !== "left")))
-                    .catch(() => resolve(false))
-            }
-            else resolve(false)
+            request.post({
+                isTelegram: true,
+                url: telegramEndpoints.getChatMember,
+                data: {
+                    chat_id: chatConstant.channel_chat_id,
+                    user_id,
+                },
+            })
+                .then(res => resolve(!!(res.ok && res.result.status !== "left")))
+                .catch(() => resolve(false))
         }
         else resolve(true)
     })

@@ -14,7 +14,7 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
         userController.getUserById({_id: userExchange.user_id})
             .then(user =>
             {
-                telegramController.checkSubscription({isBroadcast, telegram_chat_id, user_id: user.telegram_id})
+                telegramController.checkSubscription({isBroadcast, user_id: user.telegram_id})
                     .then(isSubscribed =>
                     {
                         if (isSubscribed)

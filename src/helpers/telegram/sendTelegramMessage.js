@@ -1,7 +1,7 @@
 import request from "../../request/request"
 import telegramEndpoints from "../../constants/telegramEndpoints"
 
-function sendTelegramMessage({telegram_chat_id, text, reply_buttons, reply_to_message_id})
+function sendTelegramMessage({telegram_chat_id, text, reply_buttons, inline_keyboard, reply_to_message_id})
 {
     request.post({
         isTelegram: true,
@@ -9,7 +9,13 @@ function sendTelegramMessage({telegram_chat_id, text, reply_buttons, reply_to_me
         data: {
             chat_id: telegram_chat_id,
             text,
-            reply_markup: reply_buttons?.length ? {keyboard: [reply_buttons], one_time_keyboard: true, resize_keyboard: true} : {remove_keyboard: true},
+            reply_markup: inline_keyboard?.length ?
+                {inline_keyboard: [inline_keyboard]}
+                :
+                reply_buttons?.length ?
+                    {keyboard: [reply_buttons], one_time_keyboard: true, resize_keyboard: true}
+                    :
+                    {remove_keyboard: true},
             reply_to_message_id,
             allow_sending_without_reply: true,
         },
