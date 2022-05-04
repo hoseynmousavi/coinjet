@@ -59,11 +59,11 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
 
 
             submitOrders({targets, userExchange, signal_id, size, base_min_size, base_increment, symbol, entry_or_tp_index})
-                .then(() =>
+                .then(({tpCount}) =>
                 {
                     sendTelegramNotificationByUserExchange({
                         userExchange,
-                        text: telegramConstant.entryOrderFilledAndTPsAdded({tpCount: targets.length, entryIndex: entry_or_tp_index + 1}),
+                        text: telegramConstant.entryOrderFilledAndTPsAdded({tpCount, entryIndex: entry_or_tp_index + 1}),
                     })
                 })
                 .catch((e) =>
@@ -116,6 +116,7 @@ async function submitOrders({targets, userExchange, signal_id, size, base_min_si
                 },
             })
         }
+        if (index === targets.length - 1) return {tpCount}
     }
 }
 
