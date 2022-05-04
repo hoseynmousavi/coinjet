@@ -40,7 +40,7 @@ function removeTpOrders({isFutures, stopOrder, userExchange})
                 text: telegramConstant.stopSignalAndTpOrdersRemoved({
                     isFutures,
                     pair,
-                    lossInPercent: price / entries[entry_fill_index].price * 100,
+                    lossInPercent: (1 - (price / entries[entry_fill_index].price)) * 100,
                 }),
             })
         })

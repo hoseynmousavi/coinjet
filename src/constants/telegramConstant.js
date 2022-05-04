@@ -32,11 +32,10 @@ const telegramConstant = {
     signalFoundButErr: ({isFutures, pair}) => `یک سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} رسید، اما این جفت‌ارز در صرافی Kucoin ${isFutures ? "Futures" : "Spot"} وجود نداشت و به همین دلیل برای شما اجرا نشد.`,
     signalFoundAndOrdersCreated: ({isFutures, ordersCount, pair}) => `سیگنال جدید!\nیک سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} رسید و ${ordersCount} سفارش خرید برای شما ثبت شد.`,
     entryOrderFilledAndStopTpAdded: ({entryIndex, isFutures, pair, ordersCount}) => `${entryIndex} سفارش خرید سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد. ${ordersCount} سفارش فروش و استاپ‌لاس برای شما ثبت شد.`,
-    entryOrderFilledAndStopTpFailed: ({entryIndex, isFutures, pair}) => `${entryIndex} سفارش خرید سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد، اما در بارگزاری استاپ لاس و سفارش‌های فروش مشکلاتی پیش آمد.`,
+    entryOrderFilledAndStopTpFailed: ({entryIndex, isFutures, pair}) => `${entryIndex} سفارش خرید سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد، اما در بارگزاری استاپ‌لاس و سفارش‌های فروش مشکلاتی پیش آمد.`,
     stopSignalAndTpOrdersRemoved: ({lossInPercent, isFutures, pair}) => `٪${lossInPercent} ضرر!\nاستاپ‌لاس سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} فعال شد.`,
-    tpFilledAndDone: ({entryIndex, isLastTp}) => `آخرین اردر tp از انتری ${entryIndex}م فیل شد!${isLastTp ? " اردرها با موفقیت تمام شدند." : ""}`,
-    tpFilledAndStopUpdated: ({tpIndex}) => `اردر ${tpIndex}م tp فیل شد! اردر استاپ آپدیت شد.`,
-    tpFilledAndStopFailed: ({tpIndex}) => `اردر ${tpIndex}م tp فیل شد! اما در آپدیت اردر استاپ مشکلی پیش آمد.`,
+    tpFilled: ({tpIndex, isFutures, pair, profitInPercent, firstTp}) => `${profitInPercent}٪ سود!\n$${tpIndex} سفارش فروش سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد.${firstTp ? " استاپ‌لاس به نقطه‌خرید منتقل شد." : ""}`,
+    tpFilledButStopErr: ({tpIndex, isFutures, pair, profitInPercent}) => `${profitInPercent}٪ سود!\n$${tpIndex} سفارش فروش سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد، اما در بارگزاری استاپ‌لاس مشکلاتی پیش آمد.`,
 }
 
 export default telegramConstant

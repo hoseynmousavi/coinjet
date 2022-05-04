@@ -3,16 +3,17 @@ import orderController from "../../controllers/orderController"
 import kucoinController from "../../controllers/kucoinController"
 import sendTelegramNotificationByUserExchange from "../telegram/sendTelegramNotificationByUserExchange"
 import telegramConstant from "../../constants/telegramConstant"
+import indexToLetter from "../indexToLetter"
 
 function updateFuturesStopOrder({tpOrder, userExchange})
 {
-    const {signal_id, entry_fill_index, entry_or_tp_index} = tpOrder
+    const {signal_id, entry_fill_index, entry_or_tp_index, price} = tpOrder
     const {user_id} = userExchange
 
     signalController.getSignalById({signal_id})
         .then(signal =>
         {
-            const {title, entries, is_short} = signal
+            const {title, entries, is_short, is_futures, pair} = signal
             orderController.findOrders({query: {user_id, entry_fill_index, signal_id}})
                 .then(orders =>
                 {
@@ -21,7 +22,7 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                     kucoinController.cancelFutureOrder({userExchange, exchange_order_id: stopOrder.exchange_order_id})
 
                     const tpOrders = orders.filter(order => order.type === "tp" && order.entry_or_tp_index > entry_or_tp_index)
-                    if (entry_or_tp_index < tpOrders.length - 1)
+                    if (tpOrders.length)
                     {
                         orderController.addOrder({
                             user_exchange_id: stopOrder.user_exchange_id,
@@ -54,15 +55,27 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                                         sendTelegramNotificationByUserExchange({
                                             userExchange,
                                             title,
-                                            text: telegramConstant.tpFilledAndStopUpdated({tpIndex: entry_or_tp_index + 1}),
+                                            text: telegramConstant.tpFilled({
+                                                tpIndex: indexToLetter(entry_or_tp_index + 1),
+                                                pair,
+                                                isFutures: is_futures,
+                                                firstTp: entry_or_tp_index === 0,
+                                                profitInPercent: ((price / entries[entry_fill_index].price) - 1) * 100,
+                                            }),
                                         })
                                     })
-                                    .catch(() =>
+                                    .catch(e =>
                                     {
+                                        console.log(e)
                                         sendTelegramNotificationByUserExchange({
                                             userExchange,
                                             title,
-                                            text: telegramConstant.tpFilledAndStopFailed({tpIndex: entry_or_tp_index + 1}),
+                                            text: telegramConstant.tpFilledButStopErr({
+                                                tpIndex: indexToLetter(entry_or_tp_index + 1),
+                                                pair,
+                                                isFutures: is_futures,
+                                                profitInPercent: ((price / entries[entry_fill_index].price) - 1) * 100,
+                                            }),
                                         })
                                     })
                             })
@@ -72,7 +85,13 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                         sendTelegramNotificationByUserExchange({
                             userExchange,
                             title,
-                            text: telegramConstant.tpFilledAndDone({entryIndex: entry_fill_index, isLastTp: entry_or_tp_index === tpOrders.length - 1}),
+                            text: telegramConstant.tpFilled({
+                                tpIndex: "اخرین",
+                                pair,
+                                isFutures: is_futures,
+                                firstTp: false,
+                                profitInPercent: ((price / entries[entry_fill_index].price) - 1) * 100,
+                            }),
                         })
                     }
                 })
