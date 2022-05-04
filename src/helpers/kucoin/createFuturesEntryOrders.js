@@ -8,7 +8,7 @@ import userController from "../../controllers/userController"
 
 function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
 {
-    const {_id: signal_id, telegram_chat_id, leverage, use_balance_percent, entries, pair, risk, is_futures, is_short} = signal
+    const {_id: signal_id, title, telegram_chat_id, leverage, use_balance_percent, entries, pair, is_futures, is_short} = signal
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
@@ -48,10 +48,11 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
                                                         {
                                                             sendTelegramNotificationByUserExchange({
                                                                 userExchange,
+                                                                title,
                                                                 text: telegramConstant.signalFoundAndOrdersCreated({
                                                                     isFutures: is_futures,
                                                                     ordersCount: entries.length,
-                                                                    isShort: is_short,
+                                                                    pair,
                                                                 }),
                                                             })
                                                         })
@@ -59,7 +60,11 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
                                                         {
                                                             sendTelegramNotificationByUserExchange({
                                                                 userExchange,
-                                                                text: telegramConstant.signalFoundButErr,
+                                                                title,
+                                                                text: telegramConstant.signalFoundButErr({
+                                                                    isFutures: is_futures,
+                                                                    pair,
+                                                                }),
                                                             })
                                                         })
                                                 }
@@ -67,6 +72,7 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
                                                 {
                                                     sendTelegramNotificationByUserExchange({
                                                         userExchange,
+                                                        title,
                                                         text: telegramConstant.signalFoundButNoBalance,
                                                     })
                                                 }
@@ -75,6 +81,7 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
                                             {
                                                 sendTelegramNotificationByUserExchange({
                                                     userExchange,
+                                                    title,
                                                     text: telegramConstant.signalFoundButNoCoinSupport,
                                                 })
                                             }

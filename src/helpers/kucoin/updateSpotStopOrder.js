@@ -12,7 +12,7 @@ function updateSpotStopOrder({tpOrder, userExchange})
     signalController.getSignalById({signal_id})
         .then(signal =>
         {
-            const {targets, entries} = signal
+            const {title, entries} = signal
             orderController.findOrders({query: {user_id, entry_fill_index: entry_fill_index, signal_id}})
                 .then(orders =>
                 {
@@ -51,15 +51,30 @@ function updateSpotStopOrder({tpOrder, userExchange})
                                 })
                                     .then(() =>
                                     {
-                                        sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndStopUpdated({tpIndex: entry_or_tp_index + 1})})
+                                        sendTelegramNotificationByUserExchange({
+                                            userExchange,
+                                            title,
+                                            text: telegramConstant.tpFilledAndStopUpdated({tpIndex: entry_or_tp_index + 1}),
+                                        })
                                     })
                                     .catch(() =>
                                     {
-                                        sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndStopFailed({tpIndex: entry_or_tp_index + 1})})
+                                        sendTelegramNotificationByUserExchange({
+                                            userExchange,
+                                            title,
+                                            text: telegramConstant.tpFilledAndStopFailed({tpIndex: entry_or_tp_index + 1}),
+                                        })
                                     })
                             })
                     }
-                    else sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.tpFilledAndDone({entryIndex: entry_fill_index, isLastTp: entry_or_tp_index === tpOrders.length - 1})})
+                    else
+                    {
+                        sendTelegramNotificationByUserExchange({
+                            userExchange,
+                            title,
+                            text: telegramConstant.tpFilledAndDone({entryIndex: entry_fill_index, isLastTp: entry_or_tp_index === tpOrders.length - 1}),
+                        })
+                    }
                 })
         })
 }

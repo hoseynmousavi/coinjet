@@ -4,6 +4,7 @@ import kucoinController from "../../controllers/kucoinController"
 import sendTelegramNotificationByUserExchange from "../telegram/sendTelegramNotificationByUserExchange"
 import telegramConstant from "../../constants/telegramConstant"
 import countDecimalPoints from "../countDecimalPoints"
+import indexToLetter from "../indexToLetter"
 
 function createSpotStopAndTpOrders({entryOrder, userExchange})
 {
@@ -13,7 +14,7 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
     signalController.getSignalById({signal_id})
         .then(signal =>
         {
-            const {stop, targets} = signal
+            const {stop, title, targets, pair, is_futures} = signal
             orderController.addOrder({
                 user_exchange_id: userExchangeId,
                 signal_id,
@@ -43,36 +44,47 @@ function createSpotStopAndTpOrders({entryOrder, userExchange})
                     })
                         .then(() =>
                         {
-                            sendTelegramNotificationByUserExchange({
-                                userExchange,
-                                text: telegramConstant.entryOrderFilledAndStopAdded({entryIndex: entry_or_tp_index + 1}),
-                            })
+                            submitOrders({targets, userExchange, signal_id, size, base_min_size, base_increment, symbol, entry_or_tp_index})
+                                .then(({tpCount}) =>
+                                {
+                                    sendTelegramNotificationByUserExchange({
+                                        userExchange,
+                                        title,
+                                        text: telegramConstant.entryOrderFilledAndStopTpAdded({
+                                            entryIndex: indexToLetter(entry_or_tp_index + 1),
+                                            pair,
+                                            isFutures: is_futures,
+                                            ordersCount: tpCount,
+                                        }),
+                                    })
+                                })
+                                .catch(e =>
+                                {
+                                    console.log(e)
+                                    sendTelegramNotificationByUserExchange({
+                                        userExchange,
+                                        title,
+                                        text: telegramConstant.entryOrderFilledAndStopTpFailed({
+                                            entryIndex: indexToLetter(entry_or_tp_index + 1),
+                                            pair,
+                                            isFutures: is_futures,
+                                        }),
+                                    })
+                                })
                         })
-                        .catch(() =>
+                        .catch(e =>
                         {
+                            console.log(e)
                             sendTelegramNotificationByUserExchange({
                                 userExchange,
-                                text: telegramConstant.entryOrderFilledAndStopFailed({entryIndex: entry_or_tp_index + 1}),
+                                title,
+                                text: telegramConstant.entryOrderFilledAndStopTpFailed({
+                                    entryIndex: indexToLetter(entry_or_tp_index + 1),
+                                    pair,
+                                    isFutures: is_futures,
+                                }),
                             })
                         })
-                })
-
-
-            submitOrders({targets, userExchange, signal_id, size, base_min_size, base_increment, symbol, entry_or_tp_index})
-                .then(({tpCount}) =>
-                {
-                    sendTelegramNotificationByUserExchange({
-                        userExchange,
-                        text: telegramConstant.entryOrderFilledAndTPsAdded({tpCount, entryIndex: entry_or_tp_index + 1}),
-                    })
-                })
-                .catch((e) =>
-                {
-                    console.log(e)
-                    sendTelegramNotificationByUserExchange({
-                        userExchange,
-                        text: telegramConstant.entryOrderFilledAndTPsFailed({entryIndex: entry_or_tp_index + 1}),
-                    })
                 })
         })
 }

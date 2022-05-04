@@ -10,7 +10,7 @@ import countDecimalPoints from "../countDecimalPoints"
 
 function createSpotEntryOrders({isBroadcast, userExchanges, signal})
 {
-    const {_id: signal_id, telegram_chat_id, use_balance_percent, entries, pair, risk, is_futures} = signal
+    const {_id: signal_id, title, telegram_chat_id, use_balance_percent, entries, pair, risk, is_futures} = signal
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
@@ -43,9 +43,11 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                                         {
                                                             sendTelegramNotificationByUserExchange({
                                                                 userExchange,
+                                                                title,
                                                                 text: telegramConstant.signalFoundAndOrdersCreated({
                                                                     isFutures: is_futures,
                                                                     ordersCount: entries.length,
+                                                                    pair
                                                                 }),
                                                             })
                                                         })
@@ -53,7 +55,11 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                                         {
                                                             sendTelegramNotificationByUserExchange({
                                                                 userExchange,
-                                                                text: telegramConstant.signalFoundButErr,
+                                                                title,
+                                                                text: telegramConstant.signalFoundButErr({
+                                                                    isFutures: is_futures,
+                                                                    pair,
+                                                                }),
                                                             })
                                                         })
                                                 }
@@ -61,6 +67,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                                 {
                                                     sendTelegramNotificationByUserExchange({
                                                         userExchange,
+                                                        title,
                                                         text: telegramConstant.signalFoundButNoBalance,
                                                     })
                                                 }
@@ -69,6 +76,7 @@ function createSpotEntryOrders({isBroadcast, userExchanges, signal})
                                             {
                                                 sendTelegramNotificationByUserExchange({
                                                     userExchange,
+                                                    title,
                                                     text: telegramConstant.signalFoundButNoCoinSupport,
                                                 })
                                             }

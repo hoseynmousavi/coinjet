@@ -6,12 +6,14 @@ import telegramConstant from "../../constants/telegramConstant"
 
 function removeTpOrders({isFutures, stopOrder, userExchange})
 {
-    const {signal_id, entry_fill_index} = stopOrder
+    const {signal_id, entry_fill_index, price} = stopOrder
     const {user_id} = userExchange
 
     signalController.getSignalById({signal_id})
-        .then(() =>
+        .then(signal =>
         {
+            const {title, pair, entries} = signal
+
             orderController.findOrders({query: {user_id, type: "tp", entry_fill_index, signal_id}})
                 .then(orders =>
                 {
@@ -32,7 +34,15 @@ function removeTpOrders({isFutures, stopOrder, userExchange})
                     })
                 })
 
-            sendTelegramNotificationByUserExchange({userExchange, text: telegramConstant.stopSignalAndTpOrdersRemoved})
+            sendTelegramNotificationByUserExchange({
+                userExchange,
+                title,
+                text: telegramConstant.stopSignalAndTpOrdersRemoved({
+                    isFutures,
+                    pair,
+                    lossInPercent: price / entries[entry_fill_index].price * 100,
+                }),
+            })
         })
 }
 
