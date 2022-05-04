@@ -28,6 +28,8 @@ function updateSpotStopOrder({tpOrder, userExchange})
                             signal_id: stopOrder.signal_id,
                             price: entries[stopOrder.entry_fill_index].price,
                             size: tpOrders.reduce((sum, order) => sum + order.size, 0),
+                            base_min_size: stopOrder.base_min_size,
+                            base_increment: stopOrder.base_increment,
                             symbol: stopOrder.symbol,
                             type: stopOrder.type,
                             entry_fill_index: stopOrder.entry_fill_index,

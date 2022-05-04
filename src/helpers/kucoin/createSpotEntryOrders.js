@@ -85,7 +85,7 @@ async function submitOrders({signal_id, entries, balance, baseIncrement, baseMin
     for (let index = 0; index < entries.length; index++)
     {
         const {percent, price} = entries[index]
-        let size = ((percent / 100) * balance / price).toFixed(countDecimalPoints(baseIncrement))
+        let size = +((percent / 100) * balance / price).toFixed(countDecimalPoints(baseIncrement))
         const order = await orderController.addOrder({
             user_exchange_id: userExchange._id,
             signal_id,
