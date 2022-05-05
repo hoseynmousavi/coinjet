@@ -35,9 +35,9 @@ const telegramConstant = {
     signalFoundAndOrdersCreated: ({isFutures, ordersCount, pair}) => `سیگنال جدید!\nیک سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} رسید و ${ordersCount} سفارش خرید برای شما ثبت شد.`,
     entryOrderFilledAndStopTpAdded: ({entryIndex, isFutures, pair, ordersCount}) => `${entryIndex} سفارش خرید سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد. ${ordersCount} سفارش فروش و استاپ‌لاس برای شما ثبت شد.`,
     entryOrderFilledAndStopTpFailed: ({entryIndex, isFutures, pair}) => `${entryIndex} سفارش خرید سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد، اما در بارگزاری استاپ‌لاس و سفارش‌های فروش مشکلاتی پیش آمد.`,
-    stopSignalAndTpOrdersRemoved: ({lossInPercent, isFutures, pair}) => `٪${lossInPercent} ضرر!\nاستاپ‌لاس سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} فعال شد.`,
-    tpFilled: ({tpIndex, isFutures, pair, profitInPercent, firstTp}) => `${profitInPercent}٪ سود!\n$${tpIndex} سفارش فروش سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد.${firstTp ? " استاپ‌لاس به نقطه‌خرید منتقل شد." : ""}`,
-    tpFilledButStopErr: ({tpIndex, isFutures, pair, profitInPercent}) => `${profitInPercent}٪ سود!\n$${tpIndex} سفارش فروش سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد، اما در بارگزاری استاپ‌لاس مشکلاتی پیش آمد.`,
+    stopSignalAndTpOrdersRemoved: ({lossInPercent, isFutures, pair}) => `٪${lossInPercent.toFixed(1)} ضرر!\nاستاپ‌لاس سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} فعال شد.`,
+    tpFilled: ({tpIndex, isFutures, pair, profitInPercent, firstTp}) => `${profitInPercent.toFixed(1)}٪ سود!\n${tpIndex} سفارش فروش سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد.${firstTp ? " استاپ‌لاس به نقطه‌خرید منتقل شد." : ""}`,
+    tpFilledButStopErr: ({tpIndex, isFutures, pair, profitInPercent}) => `${profitInPercent.toFixed(1)}٪ سود!\n${tpIndex} سفارش فروش سیگنال ${isFutures ? "Futures" : "Spot"} برای ${pair} پُر شد، اما در بارگزاری استاپ‌لاس مشکلاتی پیش آمد.`,
 }
 
 export default telegramConstant
