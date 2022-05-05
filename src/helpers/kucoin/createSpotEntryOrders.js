@@ -10,7 +10,7 @@ import countDecimalPoints from "../countDecimalPoints"
 
 function createSpotEntryOrders({isBroadcast, userExchanges, signal})
 {
-    const {_id: signal_id, title, telegram_chat_id, use_balance_percent, entries, pair, risk, is_futures} = signal
+    const {_id: signal_id, title, use_balance_percent, entries, pair, is_futures} = signal
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})

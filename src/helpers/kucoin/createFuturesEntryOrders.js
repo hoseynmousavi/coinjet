@@ -8,7 +8,7 @@ import userController from "../../controllers/userController"
 
 function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
 {
-    const {_id: signal_id, title, telegram_chat_id, leverage, use_balance_percent, entries, pair, is_futures, is_short} = signal
+    const {_id: signal_id, title, leverage, use_balance_percent, entries, pair, is_futures, is_short} = signal
     userExchanges.forEach(userExchange =>
     {
         userController.getUserById({_id: userExchange.user_id})
@@ -22,7 +22,7 @@ function createFuturesEntryOrders({isBroadcast, userExchanges, signal})
                             kucoinController.getFutureAccountOverview({userExchange})
                                 .then(({availableBalance}) =>
                                 {
-                                    const usdtBalance = Math.floor(use_balance_percent / leverage / 100 * availableBalance)
+                                    const usdtBalance = Math.floor(use_balance_percent / 100 * availableBalance)
                                     kucoinController.getFuturesActiveContracts()
                                         .then(contracts =>
                                         {
