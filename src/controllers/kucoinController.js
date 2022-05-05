@@ -91,9 +91,9 @@ function createFutureOrder({userExchange, order: {type, clientOid, side, symbol,
             })
             .catch(err =>
             {
-                const error = err?.response
+                const error = err?.response?.data
                 console.error({error})
-                if (+error.code === 429000) setTimeout(() => createFutureOrder(arguments[0]), 100)
+                if (error?.code && +error.code === 429000) setTimeout(() => createFutureOrder(arguments[0]), 100)
                 else
                 {
                     reject(error.msg)
@@ -189,9 +189,9 @@ function createSpotOrder({userExchange, order: {type, clientOid, side, symbol, s
             })
             .catch(err =>
             {
-                const error = err?.response
+                const error = err?.response?.data
                 console.error({error})
-                if (+error.code === 429000) setTimeout(() => createSpotOrder(arguments[0]), 100)
+                if (error?.code && +error.code === 429000) setTimeout(() => createFutureOrder(arguments[0]), 100)
                 else
                 {
                     reject(error.msg)
