@@ -100,9 +100,13 @@ async function submitOrders({targets, userExchange, signal_id, size, base_min_si
         if (remainedSize)
         {
             tpCount++
-            const sizeTemp = index === targets.length - 1 ? remainedSize : Math.min(size, Math.max(base_min_size, +(percent / 100 * size).toFixed(countDecimalPoints(base_increment))))
-            console.log({sizeTemp, remainedSize})
+            let sizeTemp = index === targets.length - 1 ? remainedSize : Math.min(size, Math.max(base_min_size, +(percent / 100 * size).toFixed(countDecimalPoints(base_increment))))
             remainedSize = (remainedSize - sizeTemp).toFixed(countDecimalPoints(base_increment))
+            if (remainedSize < base_min_size)
+            {
+                sizeTemp = +(sizeTemp + remainedSize).toFixed(countDecimalPoints(base_increment))
+                remainedSize = 0
+            }
             const order = await orderController.addOrder({
                 user_exchange_id: userExchange._id,
                 signal_id,
