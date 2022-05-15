@@ -9,7 +9,9 @@ function sendTelegramNotificationByUserExchange({userExchange, title, text, repl
             const {telegram_chat_id} = user
             sendTelegramMessage({
                 telegram_chat_id,
-                text: `${title ? `کانال ${title}\n` : ""}${text}`,
+                text: (title ? `کانال ${title}\n` : "") +
+                    `حساب ${userExchange.name}\n`
+                    + text,
                 reply_to_message_id,
                 reply_buttons,
             })

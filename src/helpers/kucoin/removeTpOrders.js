@@ -34,15 +34,23 @@ function removeTpOrders({isFutures, stopOrder, userExchange})
                     })
                 })
 
-            sendTelegramNotificationByUserExchange({
-                userExchange,
-                title,
-                text: telegramConstant.stopSignalAndTpOrdersRemoved({
-                    isFutures,
-                    pair,
-                    lossInPercent: (1 - (price / entries[entry_fill_index].price)) * 100,
-                }),
-            })
+            orderController.findOrders({query: {user_id, type: "stop", signal_id}})
+                .then(orders =>
+                {
+                    const lastStopIndex = orders.reduce((sum, item) => item.entry_fill_index > sum ? item.entry_fill_index : sum, 0)
+                    if (lastStopIndex === entry_fill_index)
+                    {
+                        sendTelegramNotificationByUserExchange({
+                            userExchange,
+                            title,
+                            text: telegramConstant.stopSignalAndTpOrdersRemoved({
+                                isFutures,
+                                pair,
+                                lossInPercent: (1 - (price / entries[entry_fill_index].price)) * 100,
+                            }),
+                        })
+                    }
+                })
         })
 }
 

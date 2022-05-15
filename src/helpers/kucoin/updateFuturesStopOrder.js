@@ -82,6 +82,15 @@ function updateFuturesStopOrder({tpOrder, userExchange})
                     }
                     else
                     {
+                        orderController.findOrders({query: {user_id, type: "entry", status: "open", signal_id}})
+                            .then(orders =>
+                            {
+                                orders.forEach(order =>
+                                {
+                                    kucoinController.cancelFutureOrder({userExchange, exchange_order_id: order.exchange_order_id})
+                                })
+                            })
+
                         sendTelegramNotificationByUserExchange({
                             userExchange,
                             title,
